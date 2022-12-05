@@ -63,37 +63,35 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
+        android:layout_marginTop="10dp"
         android:id="@+id/btn_minus_giohang"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginBottom="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/img_giohang"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/minus" />
 
     <TextView
         android:id="@+id/tv_number_giohang"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="7dp"
         android:text="1"
         android:textColor="#373b54"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_minus_giohang"
-        app:layout_constraintStart_toEndOf="@+id/btn_minus_giohang"
-        app:layout_constraintTop_toTopOf="@+id/btn_minus_giohang" />
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <ImageView
         android:id="@+id/btn_plus_giohang"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_minus_giohang"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toEndOf="@+id/tv_number_giohang"
-        app:layout_constraintTop_toTopOf="@+id/btn_minus_giohang"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
         app:srcCompat="@drawable/plus" />
 
     <TextView

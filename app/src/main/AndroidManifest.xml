@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.doan_tmdt">
-
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the "MyLocation" functionality.
+    -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -18,7 +22,35 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DoAn_TMDT"
         tools:replace="android:theme">
-        <activity android:name=".View.CTHDActivity"></activity>
+        <activity android:name=".View.DetailSPActivity"></activity>
+        <activity android:name=".View.Admin.AdminUsersActivity" />
+        <activity android:name=".View.SearchActivity" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity android:name=".View.Admin.AdminCTHDActivity" />
+        <activity android:name=".View.Admin.AdminAddLoaiSPActivity" />
+        <activity android:name=".View.Admin.AdminAddSPActivity" />
+        <activity android:name=".View.Admin.AdminProductActivity" />
+        <activity android:name=".View.Admin.AdminChartBillActivity" />
+        <activity
+            android:name=".View.Admin.AdminBillMainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".View.Admin.AdminHomeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".View.CTHDActivity"
+            android:exported="true" />
         <activity
             android:name=".View.CategoryActivity"
             android:exported="true" />

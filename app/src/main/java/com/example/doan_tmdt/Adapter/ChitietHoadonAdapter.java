@@ -43,7 +43,7 @@ public class ChitietHoadonAdapter extends RecyclerView.Adapter<ChitietHoadonAdap
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         Product product = list.get(position);
         holder.tvTenCTHD.setText(product.getTensp());
-        holder.tvTrongluongCTHD.setText(product.getTrongluong());
+        holder.tvHansudungCTHD.setText(product.getHansudung());
         holder.tvSoluongCTHD.setText(product.getSoluong()+"");
         holder.tvDongiaCTHD.setText(NumberFormat.getInstance().format(product.getGiatien()));
         holder.tvTotalCTHD.setText(NumberFormat.getInstance().format(product.getGiatien() * product.getSoluong()));
@@ -57,13 +57,13 @@ public class ChitietHoadonAdapter extends RecyclerView.Adapter<ChitietHoadonAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView tvTenCTHD, tvTrongluongCTHD, tvSoluongCTHD, tvDongiaCTHD, tvTotalCTHD;
+        private TextView tvTenCTHD, tvHansudungCTHD, tvSoluongCTHD, tvDongiaCTHD, tvTotalCTHD;
         private ImageView imgCTHD;
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
             tvTenCTHD = itemView.findViewById(R.id.tv_ten_cthd);
-            tvTrongluongCTHD = itemView.findViewById(R.id.tv_trongluong_cthd);
+            tvHansudungCTHD = itemView.findViewById(R.id.tv_hansudung_cthd);
             tvSoluongCTHD = itemView.findViewById(R.id.tv_number_cthd);
             tvDongiaCTHD = itemView.findViewById(R.id.tv_giatien_cthd);
             tvTotalCTHD = itemView.findViewById(R.id.tv_total_cthd);

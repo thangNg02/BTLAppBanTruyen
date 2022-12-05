@@ -8,7 +8,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -22,6 +25,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -42,6 +48,7 @@ import com.example.doan_tmdt.Models.Product;
 import com.example.doan_tmdt.Presenter.GioHangPresenter;
 import com.example.doan_tmdt.R;
 import com.example.doan_tmdt.View.CategoryActivity;
+import com.example.doan_tmdt.View.SearchActivity;
 import com.example.doan_tmdt.my_interface.GioHangView;
 import com.example.doan_tmdt.my_interface.IClickLoaiProduct;
 import com.example.doan_tmdt.my_interface.IClickOpenBottomSheet;
@@ -94,6 +101,7 @@ public class HomeFragment extends Fragment implements GioHangView {
     private BannerAdapter bannerAdapter;
 
     // Infor User
+    private Toolbar toolbarHome;
     private View view;
     private CircleImageView cirAvatarHome;
     private TextView tvNameHome, tvEmailHome;
@@ -114,6 +122,8 @@ public class HomeFragment extends Fragment implements GioHangView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbarHome);
+        setHasOptionsMenu(true);
         InitWidget();
         Event();
         if (NetworkUtil.isNetworkConnected(getContext())){
@@ -132,70 +142,71 @@ public class HomeFragment extends Fragment implements GioHangView {
 
         return view;
     }
+    private void replace(Fragment fragment){
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame, fragment);
+        transaction.commit();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NotNull MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.menu_two);
+        View view = MenuItemCompat.getActionView(menuItem);
+
+        CircleImageView cirToolbarProfile = view.findViewById(R.id.cir_toolbar_profile);
+        firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection("Profile")
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                if(queryDocumentSnapshots.size()>0){
+                    DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                    if(documentSnapshot!=null){
+                        try{
+                            if(documentSnapshot.getString("avatar").length()>0){
+                                Picasso.get().load(documentSnapshot.getString("avatar").trim()).into(cirToolbarProfile);
+                            }
+                        }catch (Exception e){
+                            Log.d("ERROR",e.getMessage());
+                        }
+                    }
+                }
+            }
+        });
+        cirToolbarProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Menu two clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_one:
+                Toast.makeText(getContext(), "Menu one", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_two:
+                replace(new ProfileFragment());
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private void Event() {
 
-        edtSearchHome.addTextChangedListener(new TextWatcher() {
+        edtSearchHome.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                search(charSequence);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                startActivity(intent);
             }
         });
 
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                filterList(newText);
-//                return true;
-//            }
-//        });
-    }
-
-//    private void filterList(String text) {
-//        GetAllProduct();
-//        ArrayList<Product> listsp = new ArrayList<>();
-//        for (Product product : arr_all_product){
-//            if (product.getTensp().toLowerCase().contains(text.toLowerCase())){
-//                listsp.clear();
-//                listsp.add(product);
-//                Log.d("search", "Data: " + listsp);
-//            }
-//        }
-//        if (listsp.isEmpty()){
-//            Toast.makeText(getActivity(), "Không tìm thấy sản phẩm phù hợp", Toast.LENGTH_SHORT).show();
-//        } else {
-//
-//        }
-//    }
-
-    private void search(CharSequence str) {
-        GetAllProduct();
-        try {
-            ArrayList<Product> listTemp = new ArrayList<>();
-            for (Product product : arr_all_product) {
-                if (product.getTensp().toLowerCase().contains(str.toString().toLowerCase())) {
-                    listTemp.clear();
-                    listTemp.add(product);
-                    Log.d("find", "Data: " + listTemp);
-                }
-            }
-
-        } catch (Exception e) {}
     }
 
     private void InitProduct() {
@@ -208,27 +219,6 @@ public class HomeFragment extends Fragment implements GioHangView {
         arr_sp_lau = new ArrayList<>();
         arr_sp_gy = new ArrayList<>();
         arr_all_product = new ArrayList<>();
-    }
-
-    // All product
-    public  void  GetAllProduct(){
-        firestore.collection("SanPham").
-                get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                if(queryDocumentSnapshots.size()>0){
-                    for(QueryDocumentSnapshot d : queryDocumentSnapshots){
-                        arr_all_product.add(new Product(d.getId(),d.getString("tensp"),
-                                d.getLong("giatien"),d.getString("hinhanh"),
-                                d.getString("loaisp"),d.getString("mota"),
-                                d.getLong("soluong"),d.getString("hansudung"),
-                                d.getLong("type"),d.getString("trongluong")));
-
-                    }
-                }
-
-            }
-        });
     }
     // Danh sách Product
     public  void  GetDataDSSanPham(){
@@ -566,11 +556,16 @@ public class HomeFragment extends Fragment implements GioHangView {
 
     }
     public void eventBottomSheet(){
+        btnMinusBottom.setVisibility(View.GONE);
         btnMinusBottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 slBottom = Integer.parseInt(tvSoluongBottom.getText().toString()) - 1;
                 tvSoluongBottom.setText(String.valueOf(slBottom));
+
+                if (slBottom < 2){
+                    btnMinusBottom.setVisibility(View.GONE);
+                } else btnMinusBottom.setVisibility(View.VISIBLE);
             }
         });
         btnPlusBottom.setOnClickListener(new View.OnClickListener() {
@@ -578,6 +573,10 @@ public class HomeFragment extends Fragment implements GioHangView {
             public void onClick(View view) {
                 slBottom = Integer.parseInt(tvSoluongBottom.getText().toString()) + 1;
                 tvSoluongBottom.setText(String.valueOf(slBottom));
+
+                if (slBottom < 2){
+                    btnMinusBottom.setVisibility(View.GONE);
+                } else btnMinusBottom.setVisibility(View.VISIBLE);
             }
         });
 
@@ -654,6 +653,7 @@ public class HomeFragment extends Fragment implements GioHangView {
 //        searchView.clearFocus();
         edtSearchHome = view.findViewById(R.id.edt_search_home);
 
+        toolbarHome = view.findViewById(R.id.toolbar_home);
         cirAvatarHome = view.findViewById(R.id.cir_avatar_home);
         tvNameHome = view.findViewById(R.id.tv_name_home);
         tvEmailHome = view.findViewById(R.id.tv_email_home);

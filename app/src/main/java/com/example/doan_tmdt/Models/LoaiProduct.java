@@ -1,12 +1,17 @@
 package com.example.doan_tmdt.Models;
 
-public class LoaiProduct {
+import java.io.Serializable;
+
+public class LoaiProduct{
     private String tenloai;
     private String hinhanh;
 
     public LoaiProduct(String tenloai, String hinhanh) {
         this.tenloai = tenloai;
         this.hinhanh = hinhanh;
+    }
+
+    public LoaiProduct() {
     }
 
     public String getTenloai() {

@@ -66,7 +66,6 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
         holder.tvGiatienGiohang.setText(String.valueOf(product.getGiatien()));
         holder.tvNumberGiohang.setText(String.valueOf(product.getSoluong()));
 
-
         holder.btnMinusGiohang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,10 +83,16 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
                                 soluong_sp = product.getSoluong();
                                 db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .collection("ALL").document(d.getId()).update("soluong",soluong_sp);
+
                             }
                         }
                     }
                 });
+
+                if (number < 2 ){
+                    holder.btnMinusGiohang.setVisibility(View.GONE);
+                } else holder.btnMinusGiohang.setVisibility(View.VISIBLE);
+
                 holder.tvNumberGiohang.setText(String.valueOf(number));
                 int numberCurrent = Integer.parseInt(holder.tvNumberGiohang.getText().toString());
                 int costCurrent = Integer.parseInt(holder.tvGiatienGiohang.getText().toString());
@@ -114,10 +119,16 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
                                 db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .collection("ALL").document(d.getId()).update("soluong",soluong_sp);
 
+
                             }
                         }
                     }
                 });
+
+                if (number < 2 ){
+                    holder.btnMinusGiohang.setVisibility(View.GONE);
+                } else holder.btnMinusGiohang.setVisibility(View.VISIBLE);
+
                 holder.tvNumberGiohang.setText(String.valueOf(number));
                 int numberCurrent = Integer.parseInt(holder.tvNumberGiohang.getText().toString());
                 int costCurrent = Integer.parseInt(holder.tvGiatienGiohang.getText().toString());
@@ -125,6 +136,11 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
                 CartFragment.TongTienGioHang();
             }
         });
+
+        Log.d("soluong", "Number: " + product.getSoluong());
+
+
+
         holder.tvTrongluongGiohang.setText(product.getTrongluong());
         int numberCurrent = Integer.parseInt(holder.tvNumberGiohang.getText().toString());
         int costCurrent = Integer.parseInt(holder.tvGiatienGiohang.getText().toString());

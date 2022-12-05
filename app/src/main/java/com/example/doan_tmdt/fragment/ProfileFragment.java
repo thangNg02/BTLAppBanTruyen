@@ -218,6 +218,7 @@ public class ProfileFragment extends Fragment {
                         hashMap.put("ngaysinh","");
                         hashMap.put("gioitinh","");
                         hashMap.put("avatar","");
+                        hashMap.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
                         firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                 .collection("Profile").add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
@@ -235,6 +236,7 @@ public class ProfileFragment extends Fragment {
                     hashMap.put("ngaysinh","");
                     hashMap.put("gioitinh","");
                     hashMap.put("avatar","");
+                    hashMap.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
                     firestore.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                             .collection("Profile").add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override

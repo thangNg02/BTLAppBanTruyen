@@ -40,7 +40,7 @@ public class HoaDonPreSenter implements IHoaDon {
         hoaDonModels.HandleUpdateStatusBill(i,id);
     }
 
-    public void HandleReadDataHD(int position) {
-        hoaDonModels.HandleReadData(position);
+    public void HandleReadDataHD(String iduser, int positionStatus) {
+        hoaDonModels.HandleReadData(iduser, positionStatus);
     }
 }

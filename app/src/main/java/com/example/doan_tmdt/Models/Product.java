@@ -1,8 +1,26 @@
 package com.example.doan_tmdt.Models;
 
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.doan_tmdt.Adapter.SearchAdapter;
+import com.example.doan_tmdt.View.SearchActivity;
+import com.example.doan_tmdt.my_interface.IClickCTHD;
+import com.example.doan_tmdt.my_interface.IHoaDon;
+import com.example.doan_tmdt.my_interface.IProduct;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.io.Serializable;
 
-public class Product {
+public class Product implements Serializable{
 
     private  String id;
     private  String idsp;
@@ -16,7 +34,15 @@ public class Product {
     private  long type;
     private  String trongluong;
 
+    private IProduct callback;
+    private FirebaseFirestore db;
+
     public Product() {
+    }
+
+    public Product(IProduct callback) {
+        this.callback=callback;
+        db=FirebaseFirestore.getInstance();
     }
 
     public Product(String id, String idsp, String tensp, long giatien, String hinhanh, String loaisp, String mota, long soluong, String hansudung, long type, String trongluong) {
@@ -132,5 +158,26 @@ public class Product {
 
     public void setTrongluong(String trongluong) {
         this.trongluong = trongluong;
+    }
+
+
+    public void HandleGetDataProduct(){
+        db.collection("SanPham").
+                get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                if(queryDocumentSnapshots.size()>0){
+                    for(QueryDocumentSnapshot d : queryDocumentSnapshots){
+                        callback.getDataProduct(d.getId(),d.getString("tensp"),
+                                d.getLong("giatien"),d.getString("hinhanh"),
+                                d.getString("loaisp"),d.getString("mota"),
+                                d.getLong("soluong"),d.getString("hansudung"),
+                                d.getLong("type"),d.getString("trongluong"));
+
+                    }
+                }
+
+            }
+        });
     }
 }

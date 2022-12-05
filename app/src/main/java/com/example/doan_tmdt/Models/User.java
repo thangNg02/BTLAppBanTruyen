@@ -1,6 +1,20 @@
 package com.example.doan_tmdt.Models;
 
-public class User {
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+
+import com.example.doan_tmdt.View.Admin.AdminUsersActivity;
+import com.example.doan_tmdt.View.Admin.AdminUsersAdapter;
+import com.example.doan_tmdt.my_interface.IClickCTHD;
+import com.example.doan_tmdt.my_interface.IUser;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String iduser;
     private String email;
     private String name;
@@ -8,12 +22,20 @@ public class User {
     private String phone;
     private String date;
     private String sex;
-    private String password;
+    private String avatar;
+    private FirebaseFirestore db;
+    private IUser callback;
+
 
     public User() {
     }
 
-    public User(String iduser, String email, String name, String address, String phone, String date, String sex) {
+    public User(IUser callback) {
+        this.callback = callback;
+        db = FirebaseFirestore.getInstance();
+    }
+
+    public User(String iduser, String email, String name, String address, String phone, String date, String sex, String avatar) {
         this.iduser = iduser;
         this.email = email;
         this.name = name;
@@ -21,19 +43,7 @@ public class User {
         this.phone = phone;
         this.date = date;
         this.sex = sex;
-    }
-
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+        this.avatar = avatar;
     }
 
     public String getIduser() {
@@ -90,5 +100,28 @@ public class User {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+
+    public void HandleGetUsers(String iduser, String email){
+        db.collection("User").document(iduser)
+                .collection("Profile").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot q : queryDocumentSnapshots){
+                    callback.getDataUser(iduser, email, q.getString("hoten")
+                            , q.getString("diachi"), q.getString("sdt"), q.getString("ngaysinh"), q.getString("gioitinh")
+                            , q.getString("avatar"));
+                }
+            }
+        });
     }
 }

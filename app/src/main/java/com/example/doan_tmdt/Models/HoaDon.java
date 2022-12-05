@@ -13,6 +13,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 public class HoaDon implements Serializable {
@@ -150,25 +152,17 @@ public class HoaDon implements Serializable {
     // TK user: lấy ra hóa đơn của tk user hiện tại, với điều kiện trạng thái nào
     public  void HandleReadDataStatus(int status){
         db.collection("HoaDon").whereEqualTo("UID", FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                .whereEqualTo("trangthai", status).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                if(queryDocumentSnapshots.size()>0){
-
-                        db.collection("HoaDon").whereEqualTo("trangthai", status).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                            @Override
-                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                for(QueryDocumentSnapshot c : queryDocumentSnapshots){
-                                    callback.getDataHD(c.getId(),c.getString("UID"),c.getString("ghichu"), c.getString("diachi"),
-                                            c.getString("hoten"),c.getString("ngaydat"),c.getString("phuongthuc"),c.getString("sdt"),
-                                            c.getString("tongtien"),c.getLong("trangthai"));
-                                }
-
-                            }
-                        });
-
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if (queryDocumentSnapshots.size() > 0){
+                    for(QueryDocumentSnapshot c : queryDocumentSnapshots){
+                        Log.d("currenthd", c.getString("UID"));
+                        callback.getDataHD(c.getId(),c.getString("UID"),c.getString("ghichu"), c.getString("diachi"),
+                                c.getString("hoten"),c.getString("ngaydat"),c.getString("phuongthuc"),c.getString("sdt"),
+                                c.getString("tongtien"),c.getLong("trangthai"));
+                    }
                 }
-
             }
         });
     }
@@ -188,26 +182,30 @@ public class HoaDon implements Serializable {
         });
     }
 
+
+
     // TK admin: - Nếu position = 0 thì lấy tất cả hóa đơn của tất cả user
     //           - Ngược lại: lấy ra hóa đơn tương ứng với trạng thái
-    public void HandleReadData(int position) {
-        if(position==0){
+    public void HandleReadData(String iduser, int positionStatus) {
+
+        if(positionStatus==0 && iduser == null) {
             db.collection("HoaDon")
                     .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                    if(queryDocumentSnapshots.size()>0){
-                        for(QueryDocumentSnapshot d : queryDocumentSnapshots){
-                            callback.getDataHD(d.getId(),d.getString("UID"),d.getString("ghichu"),d.getString("diachi"),
-                                    d.getString("hoten"),d.getString("ngaydat"),d.getString("phuongthuc"),d.getString("sdt"),
-                                    d.getString("tongtien"),d.getLong("trangthai"));
+                    if (queryDocumentSnapshots.size() > 0) {
+                        for (QueryDocumentSnapshot d : queryDocumentSnapshots) {
+                            callback.getDataHD(d.getId(), d.getString("UID"), d.getString("ghichu"), d.getString("diachi"),
+                                    d.getString("hoten"), d.getString("ngaydat"), d.getString("phuongthuc"), d.getString("sdt"),
+                                    d.getString("tongtien"), d.getLong("trangthai"));
                         }
                     }
 
                 }
             });
-        }else{
-            db.collection("HoaDon").whereEqualTo("trangthai",position)
+        }
+        else {
+            db.collection("HoaDon").whereEqualTo("UID",iduser).whereEqualTo("trangthai",positionStatus)
                     .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
@@ -222,6 +220,5 @@ public class HoaDon implements Serializable {
                 }
             });
         }
-
     }
 }

@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         InitWidget();
         Init();
         MyReceiver = new MyReceiver();      // Check Internet
@@ -103,9 +103,9 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation_Main.add(new MeowBottomNavigation.Model(1, R.drawable.ic_home));
         bottomNavigation_Main.add(new MeowBottomNavigation.Model(2, R.drawable.ic_profile));
         bottomNavigation_Main.add(new MeowBottomNavigation.Model(3, R.drawable.ic_cart));
-        bottomNavigation_Main.add(new MeowBottomNavigation.Model(4, R.drawable.ic_notification));
+        bottomNavigation_Main.add(new MeowBottomNavigation.Model(4, R.drawable.ic_bill));
         bottomNavigation_Main.add(new MeowBottomNavigation.Model(5, R.drawable.ic_contact));
-        bottomNavigation_Main.setCount(4, "10");        // Hiển thông báo
+//        bottomNavigation_Main.setCount(4, "10");        // Hiển thông báo
         bottomNavigation_Main.show(1,true);
         replace(new HomeFragment());
 
@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void Event() {
+//        bottomNavigation_Main.getCellById(3).setSelected(true);
         bottomNavigation_Main.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
             @Override
             public Unit invoke(MeowBottomNavigation.Model model) {
@@ -135,12 +136,13 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 4:
-                        replace(new NotifyFragment());
+                        replace(new BillFragment());
                         break;
 
                     case 5:
-                        replace(new BillFragment());
+                        replace(new NotifyFragment());
                         break;
+
                 }
                 return null;
             }

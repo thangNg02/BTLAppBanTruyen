@@ -24,8 +24,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -56,28 +59,45 @@ public class SignUpActivity extends AppCompatActivity {
                 String email = edtSignUpEmail.getText().toString().trim();
                 String pass = edtSignUpPassword.getText().toString().trim();
                 String confirm = edtSignUpConfirm.getText().toString().trim();
-                if (pass.equals(confirm)){
-                    FirebaseAuth auth = FirebaseAuth.getInstance();
-                    auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                            if (task.isSuccessful()){
-                                Toast.makeText(SignUpActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                User user = new User();
-                                user.setIduser(auth.getUid());
-                                user.setEmail(email);
-                                finishAffinity();
-                            } else {
-                                Toast.makeText(SignUpActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                Log.w("signup","failed", task.getException());
-                            }
+                if (email.length() > 0){
+                    if (pass.length() > 0){
+                        if (pass.equals(confirm)){
+                            FirebaseAuth auth = FirebaseAuth.getInstance();
+                            auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()){
+                                        HashMap<String,String> hashMap =  new HashMap<>();
+                                        hashMap.put("iduser",FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                        hashMap.put("email", email);
+                                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                        db.collection("IDUser").add(hashMap);
+                                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        User user = new User();
+                                        user.setIduser(auth.getUid());
+                                        user.setEmail(email);
+                                        finishAffinity();
+                                        Toast.makeText(SignUpActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                                    } else if (!isEmailValid(email)){
+                                        Toast.makeText(SignUpActivity.this, "Email định dạng không đúng", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(SignUpActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                        Log.w("signup","failed", task.getException());
+                                    }
+                                }
+                            });
+                        } else {
+                            Toast.makeText(SignUpActivity.this, "Mật khẩu xác nhận không khớp.\nVui lòng nhập lại!", Toast.LENGTH_SHORT).show();
                         }
-                    });
+                    } else {
+                        Toast.makeText(SignUpActivity.this, "Bạn chưa nhập mật khẩu", Toast.LENGTH_SHORT).show();
+                    }
+
                 } else {
-                    Toast.makeText(SignUpActivity.this, "Mật khẩu xác nhận không khớp.\nVui lòng nhập lại!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUpActivity.this, "Bạn chưa nhập Email", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
@@ -95,6 +115,10 @@ public class SignUpActivity extends AppCompatActivity {
         edtSignUpConfirm = findViewById(R.id.edt_sign_up_confirm);
         btnSignUpDangKy = findViewById(R.id.btn_sign_up_dangky);
         tvLoginUser = findViewById(R.id.tv_log_in_user);
+    }
+
+    private boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     // Check Internet
