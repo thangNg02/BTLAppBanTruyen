@@ -149,7 +149,22 @@ public class AdminBillMainActivity extends AppCompatActivity implements HoaDonVi
                                     adapter.notifyDataSetChanged();
                                 }
                                 hoaDonPreSenter.HandleReadDataHD(null, 0);
-                            } // Show mlistFilter theo trạng thái, theo iduser:
+                            } else if (positionStatus == 0){
+                                mListFilter.clear();
+                                if (adapter!=null){
+                                    adapter.notifyDataSetChanged();
+                                }
+                                hoaDonPreSenter.HandleReadDataHD(iduser, 0);
+                                Log.d("listBill", mListFilter.size()+"");
+                            } else if (iduser.equals("Tất cả")){
+                                mListFilter.clear();
+                                if (adapter!=null){
+                                    adapter.notifyDataSetChanged();
+                                }
+                                hoaDonPreSenter.HandleReadDataHD(null, positionStatus);
+                                Log.d("listBill", mListFilter.size()+"");
+                            }
+                            // Show mlistFilter theo trạng thái, theo iduser:
                             else {
                                 mListFilter.clear();
                                 if (adapter!=null){
@@ -175,7 +190,7 @@ public class AdminBillMainActivity extends AppCompatActivity implements HoaDonVi
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_update_trangthai);
         dialog.show();
-        adapter.notifyDataSetChanged();
+//        adapter.notifyDataSetChanged();
 
         Spinner spiner = dialog.findViewById(R.id.spinerCapNhat);
         String[] s = {"Chọn Mục","Đang xử lý", "Đang giao hàng", "Đã giao", "Đã hủy"} ;
@@ -228,7 +243,7 @@ public class AdminBillMainActivity extends AppCompatActivity implements HoaDonVi
         if(adapter!=null){
             adapter.notifyDataSetChanged();
         }
-        hoaDonPreSenter.HandleReadDataHD(iduser, positionStatus);
+        hoaDonPreSenter.HandleReadDataHD(null, 0);
         Toast.makeText(this, "Cập nhật trạng thái thành công", Toast.LENGTH_SHORT).show();
     }
 

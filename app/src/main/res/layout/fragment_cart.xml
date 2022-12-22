@@ -7,8 +7,21 @@
     android:background="#FFFFFF"
     tools:context=".fragment.CartFragment">
 
+    <TextView
+        android:id="@+id/tv_null_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Giỏ hàng của bạn đang trống"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <ScrollView
-        android:id="@+id/scrollView3"
+        android:visibility="gone"
+        android:id="@+id/scrollView_cart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

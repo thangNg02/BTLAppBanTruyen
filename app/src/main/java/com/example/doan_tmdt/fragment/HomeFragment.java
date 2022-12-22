@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Handler;
@@ -48,8 +49,12 @@ import com.example.doan_tmdt.Models.Product;
 import com.example.doan_tmdt.Presenter.GioHangPresenter;
 import com.example.doan_tmdt.R;
 import com.example.doan_tmdt.View.CategoryActivity;
+import com.example.doan_tmdt.View.ChatActivity;
+import com.example.doan_tmdt.View.DetailSPActivity;
+import com.example.doan_tmdt.View.FavoriteActivity;
 import com.example.doan_tmdt.View.SearchActivity;
 import com.example.doan_tmdt.my_interface.GioHangView;
+import com.example.doan_tmdt.my_interface.IClickCTHD;
 import com.example.doan_tmdt.my_interface.IClickLoaiProduct;
 import com.example.doan_tmdt.my_interface.IClickOpenBottomSheet;
 import com.example.doan_tmdt.ultil.MyReceiver;
@@ -77,17 +82,10 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.relex.circleindicator.CircleIndicator;
 
-public class HomeFragment extends Fragment implements GioHangView {
+public class HomeFragment extends Fragment {
 
+    private SwipeRefreshLayout swipeHome;
     private Product product;
-    private GioHangPresenter gioHangPresenter;
-
-    // Bottom Sheet Dialog
-    private TextView tvTenBottom, tvGiaBottom, tvSoluongBottom, tvMotaBottom;
-    private ImageView imgBottom, btnMinusBottom, btnPlusBottom;
-    private Button btnBottom;
-    private BottomSheetDialog bottomSheetDialog;
-    private int slBottom = 1;
 
     // Data Product
     private  ArrayList<Product> arr_ds_sp,arr_sp_nb,arr_sp_du,arr_sp_hq,arr_sp_mc,arr_sp_yt,arr_sp_lau,arr_sp_gy;
@@ -115,9 +113,10 @@ public class HomeFragment extends Fragment implements GioHangView {
 
     //Search Data
     private EditText edtSearchHome;
-    private ArrayList<Product> arr_all_product;
 
-    private SearchView searchView;
+    private ImageView imgHomeFavorite, imgHomeMessage;
+
+    private TextView tvNumberFavorite;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -138,10 +137,27 @@ public class HomeFragment extends Fragment implements GioHangView {
             GetDataSPYeuThich();
             GetDataSPLau();
             GetDataSPGoiY();
+            LoadFavorite();
         }
 
         return view;
     }
+
+    private void LoadFavorite() {
+        firestore.collection("Favorite").whereEqualTo("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if (queryDocumentSnapshots.size() > 0){
+                    tvNumberFavorite.setVisibility(View.VISIBLE);
+                    tvNumberFavorite.setText(queryDocumentSnapshots.size()+"");
+                } else {
+                    tvNumberFavorite.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
     private void replace(Fragment fragment){
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame, fragment);
@@ -207,6 +223,41 @@ public class HomeFragment extends Fragment implements GioHangView {
             }
         });
 
+        imgHomeFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), FavoriteActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        imgHomeMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent2 = new Intent(getContext(), ChatActivity.class);
+                intent2.putExtra("message", 2);
+                startActivity(intent2);
+            }
+        });
+
+        swipeHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeHome.setRefreshing(false);
+                        LoadFavorite();
+//                        getFragmentManager().beginTransaction().detach(HomeFragment.this).attach(HomeFragment.this).commit();
+//                        Toast.makeText(getContext(), "Swipe", Toast.LENGTH_SHORT).show();
+                    }
+                }, 500);
+
+            }
+        });
+
     }
 
     private void InitProduct() {
@@ -218,7 +269,6 @@ public class HomeFragment extends Fragment implements GioHangView {
         arr_sp_yt = new ArrayList<>();
         arr_sp_lau = new ArrayList<>();
         arr_sp_gy = new ArrayList<>();
-        arr_all_product = new ArrayList<>();
     }
     // Danh sách Product
     public  void  GetDataDSSanPham(){
@@ -238,18 +288,10 @@ public class HomeFragment extends Fragment implements GioHangView {
                     productDSAdapter = new ProductAdapter(getContext(), arr_ds_sp, 1, new IClickOpenBottomSheet() {
                         @Override
                         public void onClickOpenBottomSheet(int position) {
-                            showBottomSheetDialog();
 
                             // Do something
                             product = arr_ds_sp.get(position);
-                            tvTenBottom.setText(product.getTensp());
-                            tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
-//                            tvSoluongBottom.setText(product.getSoluong()+"");
-                            tvMotaBottom.setText(product.getMota());
-                            Picasso.get().load(product.getHinhanh()).into(imgBottom);
-                            eventBottomSheet();
-
-                            bottomSheetDialog.show();
+                            TruyenData();
                         }
                     });
                     rcvDSSP.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
@@ -279,18 +321,9 @@ public class HomeFragment extends Fragment implements GioHangView {
                     productNBAdapter = new ProductAdapter(getContext(), arr_sp_nb, 2, new IClickOpenBottomSheet() {
                         @Override
                         public void onClickOpenBottomSheet(int position) {
-                            showBottomSheetDialog();
-
                             // Do something
                             product = arr_sp_nb.get(position);
-                            tvTenBottom.setText(product.getTensp());
-                            tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
-//                            tvSoluongBottom.setText(product.getSoluong()+"");
-                            tvMotaBottom.setText(product.getMota());
-                            Picasso.get().load(product.getHinhanh()).into(imgBottom);
-                            eventBottomSheet();
-
-                            bottomSheetDialog.show();
+                            TruyenData();
                         }
                     });
                     rcvSPNoiBat.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
@@ -319,18 +352,10 @@ public class HomeFragment extends Fragment implements GioHangView {
                     productDUAdapter = new ProductAdapter(getContext(), arr_sp_du, 3, new IClickOpenBottomSheet() {
                         @Override
                         public void onClickOpenBottomSheet(int position) {
-                            showBottomSheetDialog();
 
                             // Do something
                             product = arr_sp_du.get(position);
-                            tvTenBottom.setText(product.getTensp());
-                            tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
-//                            tvSoluongBottom.setText(product.getSoluong()+"");
-                            tvMotaBottom.setText(product.getMota());
-                            Picasso.get().load(product.getHinhanh()).into(imgBottom);
-                            eventBottomSheet();
-
-                            bottomSheetDialog.show();
+                            TruyenData();
                         }
                     });
                     rcvSPDoUong.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
@@ -360,18 +385,10 @@ public class HomeFragment extends Fragment implements GioHangView {
                     productHQAdapter = new ProductAdapter(getContext(), arr_sp_hq, 4, new IClickOpenBottomSheet() {
                         @Override
                         public void onClickOpenBottomSheet(int position) {
-                            showBottomSheetDialog();
 
                             // Do something
                             product = arr_sp_hq.get(position);
-                            tvTenBottom.setText(product.getTensp());
-                            tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
-//                            tvSoluongBottom.setText(product.getSoluong()+"");
-                            tvMotaBottom.setText(product.getMota());
-                            Picasso.get().load(product.getHinhanh()).into(imgBottom);
-                            eventBottomSheet();
-
-                            bottomSheetDialog.show();
+                            TruyenData();
                         }
                     });
                     rcvSPHQ.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
@@ -399,18 +416,10 @@ public class HomeFragment extends Fragment implements GioHangView {
                     productMCAdapter = new ProductAdapter(getContext(), arr_sp_mc, 5, new IClickOpenBottomSheet() {
                         @Override
                         public void onClickOpenBottomSheet(int position) {
-                            showBottomSheetDialog();
 
                             // Do something
                             product = arr_sp_mc.get(position);
-                            tvTenBottom.setText(product.getTensp());
-                            tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
-//                            tvSoluongBottom.setText(product.getSoluong()+"");
-                            tvMotaBottom.setText(product.getMota());
-                            Picasso.get().load(product.getHinhanh()).into(imgBottom);
-                            eventBottomSheet();
-
-                            bottomSheetDialog.show();
+                            TruyenData();
                         }
                     });
                     rcvSPMC.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
@@ -439,18 +448,9 @@ public class HomeFragment extends Fragment implements GioHangView {
                     productYTAdapter = new ProductAdapter(getContext(), arr_sp_yt, 6, new IClickOpenBottomSheet() {
                         @Override
                         public void onClickOpenBottomSheet(int position) {
-                            showBottomSheetDialog();
-
                             // Do something
                             product = arr_sp_yt.get(position);
-                            tvTenBottom.setText(product.getTensp());
-                            tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
-//                            tvSoluongBottom.setText(product.getSoluong()+"");
-                            tvMotaBottom.setText(product.getMota());
-                            Picasso.get().load(product.getHinhanh()).into(imgBottom);
-                            eventBottomSheet();
-
-                            bottomSheetDialog.show();
+                            TruyenData();
                         }
                     });
                     rcvSPYT.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
@@ -479,18 +479,10 @@ public class HomeFragment extends Fragment implements GioHangView {
                     productLauAdapter = new ProductAdapter(getContext(), arr_sp_lau, 7, new IClickOpenBottomSheet() {
                         @Override
                         public void onClickOpenBottomSheet(int position) {
-                            showBottomSheetDialog();
 
                             // Do something
                             product = arr_sp_lau.get(position);
-                            tvTenBottom.setText(product.getTensp());
-                            tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
-//                            tvSoluongBottom.setText(product.getSoluong()+"");
-                            tvMotaBottom.setText(product.getMota());
-                            Picasso.get().load(product.getHinhanh()).into(imgBottom);
-                            eventBottomSheet();
-
-                            bottomSheetDialog.show();
+                            TruyenData();
                         }
                     });
                     rcvSPLau.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
@@ -519,18 +511,10 @@ public class HomeFragment extends Fragment implements GioHangView {
                     productGYAdapter = new ProductAdapter(getContext(), arr_sp_gy, 8, new IClickOpenBottomSheet() {
                         @Override
                         public void onClickOpenBottomSheet(int position) {
-                            showBottomSheetDialog();
 
                             // Do something
                             product = arr_sp_gy.get(position);
-                            tvTenBottom.setText(product.getTensp());
-                            tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
-//                            tvSoluongBottom.setText(product.getSoluong()+"");
-                            tvMotaBottom.setText(product.getMota());
-                            Picasso.get().load(product.getHinhanh()).into(imgBottom);
-                            eventBottomSheet();
-
-                            bottomSheetDialog.show();
+                            TruyenData();
                         }
                     });
                     rcvSPGY.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
@@ -541,52 +525,6 @@ public class HomeFragment extends Fragment implements GioHangView {
         });
     }
 
-    public void showBottomSheetDialog() {
-        // Bottom sheet Dialog
-        bottomSheetDialog = new BottomSheetDialog(getActivity());
-        bottomSheetDialog.setContentView(R.layout.layout_persistent_bottom_sheet);
-        tvTenBottom = bottomSheetDialog.findViewById(R.id.tv_ten_bottom);
-        imgBottom = bottomSheetDialog.findViewById(R.id.img_bottom);
-        tvGiaBottom = bottomSheetDialog.findViewById(R.id.tv_gia_bottom);
-        btnMinusBottom = bottomSheetDialog.findViewById(R.id.btn_minus_bottom);
-        btnPlusBottom = bottomSheetDialog.findViewById(R.id.btn_plus_bottom);
-        tvSoluongBottom = bottomSheetDialog.findViewById(R.id.tv_soluong_bottom);
-        tvMotaBottom = bottomSheetDialog.findViewById(R.id.tv_mota_bottom);
-        btnBottom = bottomSheetDialog.findViewById(R.id.btn_bottom);
-
-    }
-    public void eventBottomSheet(){
-        btnMinusBottom.setVisibility(View.GONE);
-        btnMinusBottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                slBottom = Integer.parseInt(tvSoluongBottom.getText().toString()) - 1;
-                tvSoluongBottom.setText(String.valueOf(slBottom));
-
-                if (slBottom < 2){
-                    btnMinusBottom.setVisibility(View.GONE);
-                } else btnMinusBottom.setVisibility(View.VISIBLE);
-            }
-        });
-        btnPlusBottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                slBottom = Integer.parseInt(tvSoluongBottom.getText().toString()) + 1;
-                tvSoluongBottom.setText(String.valueOf(slBottom));
-
-                if (slBottom < 2){
-                    btnMinusBottom.setVisibility(View.GONE);
-                } else btnMinusBottom.setVisibility(View.VISIBLE);
-            }
-        });
-
-        btnBottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gioHangPresenter.AddCart(product.getId(), Long.valueOf(slBottom));
-            }
-        });
-    }
 
     private void Banner() {
         arrayList = new ArrayList<>();
@@ -597,7 +535,15 @@ public class HomeFragment extends Fragment implements GioHangView {
                 for(QueryDocumentSnapshot d : queryDocumentSnapshots){
                     arrayList.add(d.getString("hinhanh"));
                 }
-                bannerAdapter = new BannerAdapter(getContext(),arrayList);
+                bannerAdapter = new BannerAdapter(getContext(), arrayList, new IClickCTHD() {
+                    @Override
+                    public void onClickCTHD(int pos) {
+//                        String s = arrayList.get(pos);
+//                        Toast.makeText(getContext(), "clicked: " + s, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getContext(), SearchActivity.class);
+                        startActivity(intent);
+                    }
+                });
                 viewPager.setAdapter(bannerAdapter);
                 circleIndicator.setViewPager(viewPager);
                 bannerAdapter.registerDataSetObserver(circleIndicator.getDataSetObserver());
@@ -649,8 +595,10 @@ public class HomeFragment extends Fragment implements GioHangView {
     }
 
     private void InitWidget() {
-//        searchView = view.findViewById(R.id.search_view_home);
-//        searchView.clearFocus();
+        swipeHome = view.findViewById(R.id.swipe_home);
+        tvNumberFavorite = view.findViewById(R.id.tv_number_favorite);
+        imgHomeFavorite = view.findViewById(R.id.img_home_favorite);
+        imgHomeMessage = view.findViewById(R.id.img_home_message);
         edtSearchHome = view.findViewById(R.id.edt_search_home);
 
         toolbarHome = view.findViewById(R.id.toolbar_home);
@@ -682,8 +630,6 @@ public class HomeFragment extends Fragment implements GioHangView {
         rcvSPLau = view.findViewById(R.id.rcv_sp_lau);
         rcvSPGY = view.findViewById(R.id.rcv_sp_goiy);
 
-        gioHangPresenter = new GioHangPresenter(HomeFragment.this);
-
     }
 
     private List<LoaiProduct> getListLoaiProduct(){
@@ -709,6 +655,12 @@ public class HomeFragment extends Fragment implements GioHangView {
         return mlistproduct;
     }
 
+    private void TruyenData(){
+        Intent intent = new Intent(getContext(), DetailSPActivity.class);
+        intent.putExtra("search", product);
+        startActivity(intent);
+    }
+
     public TextView getTvNameHome(){
         return tvNameHome;
     }
@@ -717,21 +669,5 @@ public class HomeFragment extends Fragment implements GioHangView {
     }
     public CircleImageView getCirAvatarHome(){
         return cirAvatarHome;
-    }
-
-
-    @Override
-    public void OnSucess() {
-        Toast.makeText(getActivity(), "Thêm vào giỏ hàng thành công", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void OnFail() {
-        Toast.makeText(getActivity(), "Thêm vào giỏ hàng lỗi", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void getDataSanPham(String id, String idsp, String tensp, Long giatien, String hinhanh, String loaisp, String mota, Long soluong, String hansudung, Long type, String trongluong) {
-
     }
 }

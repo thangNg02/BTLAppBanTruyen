@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doan_tmdt.Models.HoaDon;
@@ -25,9 +26,11 @@ import java.util.ArrayList;
 
 public class ChitietHoadonAdapter extends RecyclerView.Adapter<ChitietHoadonAdapter.ViewHolder> {
     private ArrayList<Product> list;
+    private IClickCTHD iClickCTHD;
 
-    public void setDataChitietHoadon(ArrayList<Product> list){
+    public void setDataChitietHoadon(ArrayList<Product> list, IClickCTHD iClickCTHD){
         this.list = list;
+        this.iClickCTHD = iClickCTHD;
         notifyDataSetChanged();
     }
 
@@ -48,6 +51,13 @@ public class ChitietHoadonAdapter extends RecyclerView.Adapter<ChitietHoadonAdap
         holder.tvDongiaCTHD.setText(NumberFormat.getInstance().format(product.getGiatien()));
         holder.tvTotalCTHD.setText(NumberFormat.getInstance().format(product.getGiatien() * product.getSoluong()));
         Picasso.get().load(product.getHinhanh()).into(holder.imgCTHD);
+
+        holder.constraintLayoutItemCTHD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iClickCTHD.onClickCTHD(position);
+            }
+        });
     }
 
     @Override
@@ -57,6 +67,7 @@ public class ChitietHoadonAdapter extends RecyclerView.Adapter<ChitietHoadonAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
+        private ConstraintLayout constraintLayoutItemCTHD;
         private TextView tvTenCTHD, tvHansudungCTHD, tvSoluongCTHD, tvDongiaCTHD, tvTotalCTHD;
         private ImageView imgCTHD;
         public ViewHolder(@NonNull @NotNull View itemView) {
@@ -68,6 +79,7 @@ public class ChitietHoadonAdapter extends RecyclerView.Adapter<ChitietHoadonAdap
             tvDongiaCTHD = itemView.findViewById(R.id.tv_giatien_cthd);
             tvTotalCTHD = itemView.findViewById(R.id.tv_total_cthd);
             imgCTHD = itemView.findViewById(R.id.img_cthd);
+            constraintLayoutItemCTHD = itemView.findViewById(R.id.constraint_item_cthd);
         }
     }
 

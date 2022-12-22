@@ -36,6 +36,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -56,6 +58,8 @@ public class AdminUsersActivity extends AppCompatActivity implements UserView {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private UserPresenter userPresenter;
+
+    DatabaseReference reference1, reference2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +120,24 @@ public class AdminUsersActivity extends AppCompatActivity implements UserView {
                                                 chinh.put("gioitinh", "");
                                                 chinh.put("avatar", "");
                                                 db.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).collection("Profile").add(chinh);
+
+                                                // Realtime Firebase: Tạo 1 database có tên Users, id tự động đặt cho tài khoản
+                                                String username= "any name";
+                                                reference1 = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                                HashMap<String, String> mapRealtime = new HashMap<>();
+                                                mapRealtime.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                                mapRealtime.put("name", username);
+                                                mapRealtime.put("avatar", "default");
+                                                mapRealtime.put("status", "online");
+                                                mapRealtime.put("search", username.toLowerCase());
+                                                reference1.setValue(mapRealtime);
+
+                                                reference2 = FirebaseDatabase.getInstance().getReference("Chatlist").child("WvPK8OV0erKJP8w2KZNp")
+                                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                                HashMap<String, String> mapRealtime2 = new HashMap<>();
+                                                mapRealtime2.put("id", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                                reference2.setValue(mapRealtime2);
+
                                                 Toast.makeText(AdminUsersActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
                                                 dialog.cancel();
 
@@ -198,23 +220,23 @@ public class AdminUsersActivity extends AppCompatActivity implements UserView {
                 dialog.setContentView(R.layout.dialog_info_users);
                 dialog.show();
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                EditText edtIdusers = dialog.findViewById(R.id.edt_id_users);
-                EditText edtEmailUsers = dialog.findViewById(R.id.edt_email_users);
-                EditText edtNameUsers = dialog.findViewById(R.id.edt_name_users);
-                EditText edtAddressUsers = dialog.findViewById(R.id.edt_address_users);
-                EditText edtSDTUsers = dialog.findViewById(R.id.edt_sdt_users);
-                EditText edtDateUsers = dialog.findViewById(R.id.edt_date_users);
-                EditText edtGenderUsers = dialog.findViewById(R.id.edt_gender_users);
+                TextView tvIdusers = dialog.findViewById(R.id.tv_id_users);
+                TextView tvEmailUsers = dialog.findViewById(R.id.tv_email_users);
+                TextView tvNameUsers = dialog.findViewById(R.id.tv_name_users);
+                TextView tvAddressUsers = dialog.findViewById(R.id.tv_address_users);
+                TextView tvSDTUsers = dialog.findViewById(R.id.tv_sdt_users);
+                TextView tvDateUsers = dialog.findViewById(R.id.tv_date_users);
+                TextView tvGenderUsers = dialog.findViewById(R.id.tv_gender_users);
                 ImageView btnCancelUsers = dialog.findViewById(R.id.btn_cancel_users);
                 dialog.setCanceledOnTouchOutside(true);
 
-                edtIdusers.setText(user.getIduser());
-                edtEmailUsers.setText(user.getEmail());
-                edtNameUsers.setText(user.getName());
-                edtAddressUsers.setText(user.getAddress());
-                edtSDTUsers.setText(user.getPhone());
-                edtDateUsers.setText(user.getDate());
-                edtGenderUsers.setText(user.getSex());
+                tvIdusers.setText(user.getIduser());
+                tvEmailUsers.setText(user.getEmail());
+                tvNameUsers.setText(user.getName());
+                tvAddressUsers.setText(user.getAddress());
+                tvSDTUsers.setText(user.getPhone());
+                tvDateUsers.setText(user.getDate());
+                tvGenderUsers.setText(user.getSex());
 
                 btnCancelUsers.setOnClickListener(new View.OnClickListener() {
                     @Override

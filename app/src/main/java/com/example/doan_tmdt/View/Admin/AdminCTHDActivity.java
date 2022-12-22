@@ -61,39 +61,42 @@ public class AdminCTHDActivity extends AppCompatActivity implements GioHangView,
         btnAdminUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                DiaLogUpDate();
-                Toast.makeText(AdminCTHDActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                finish();
+                DiaLogUpDate();
+//                Toast.makeText(AdminCTHDActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+//                finish();
             }
         });
     }
 
-//    private void DiaLogUpDate() {
-//        Dialog dialog = new Dialog(this);
-//        dialog.setContentView(R.layout.dialog_update_trangthai);
-//        dialog.show();
-//        adapter.notifyDataSetChanged();
-//
-//        Spinner spiner = dialog.findViewById(R.id.spinerCapNhat);
-//        String[] s = {"Chọn Mục","Đang xử lý","Đang giao hàng","Giao hàng thành công","Hủy hàng"} ;
-//        ArrayAdapter arrayAdapter  = new ArrayAdapter(this, android.R.layout.simple_list_item_1,s);
-//        spiner.setAdapter( arrayAdapter);
-//        spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                if(position>0){
-//                    hoaDonPreSenter.CapNhatTrangThai(position,hoaDon.getId());
-//                    dialog.cancel();
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-//
-//    }
+    private void DiaLogUpDate() {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_update_trangthai);
+        dialog.show();
+
+
+        Spinner spiner = dialog.findViewById(R.id.spinerCapNhat);
+        String[] s = {"Chọn Mục","Đang xử lý","Đang giao hàng","Giao hàng thành công","Hủy hàng"} ;
+        ArrayAdapter arrayAdapter  = new ArrayAdapter(this, android.R.layout.simple_list_item_1,s);
+        spiner.setAdapter( arrayAdapter);
+        spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position>0){
+                    hoaDonPreSenter.CapNhatTrangThai(position,hoaDon.getId());
+                    adapter.notifyDataSetChanged();
+                    tvAdminStatusHD.setText(s[position]);
+                    Toast.makeText(AdminCTHDActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                    dialog.cancel();
+        }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+    }
 
     private void Init() {
         mlist = new ArrayList<>();

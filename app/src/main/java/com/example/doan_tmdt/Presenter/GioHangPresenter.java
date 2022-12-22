@@ -27,6 +27,9 @@ public class GioHangPresenter implements IGioHang {
         giohang.HandleDeleteDataGioHang(id);
     }
 
+    public void HandleAddHoaDon(String ghichu, String ngaydat, String diachi, String hoten, String sdt, String phuongthuc, String tongtien, ArrayList<Product> arrayList) {
+        giohang.HandleThanhToan(ghichu,ngaydat,diachi,hoten,sdt,phuongthuc,tongtien,arrayList);
+    }
     @Override
     public void OnSucess() {
         callback.OnSucess();

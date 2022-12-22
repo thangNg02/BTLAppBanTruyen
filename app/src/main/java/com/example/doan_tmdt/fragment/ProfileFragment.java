@@ -56,6 +56,8 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -99,6 +101,9 @@ public class ProfileFragment extends Fragment {
     private  String key = "";
 
     private boolean reloadData = false;
+
+    DatabaseReference reference;
+    FirebaseUser firebaseUser;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
@@ -357,6 +362,14 @@ public class ProfileFragment extends Fragment {
 
                     }
                 });
+
+                // Import vào Realtime của Firebase
+                reference = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                map.put("name", strFullName);
+                map.put("search", strFullName.toLowerCase());
+                reference.updateChildren(map);
             }
         });
 
@@ -481,6 +494,12 @@ public class ProfileFragment extends Fragment {
                                             }
                                         }
                                     });
+
+                                    // update vào realtime database của firebase
+                                    reference = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                    HashMap<String, Object> map = new HashMap<>();
+                                    map.put("avatar", uri.toString());
+                                    reference.updateChildren(map);
                                 }
                             });
                         }

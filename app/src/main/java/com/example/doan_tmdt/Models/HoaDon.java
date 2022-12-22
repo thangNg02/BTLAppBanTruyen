@@ -203,6 +203,36 @@ public class HoaDon implements Serializable {
 
                 }
             });
+        } else if (positionStatus == 0){
+            db.collection("HoaDon").whereEqualTo("UID",iduser)
+                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                    if(queryDocumentSnapshots.size()>0){
+                        for(QueryDocumentSnapshot d : queryDocumentSnapshots){
+                            callback.getDataHD(d.getId(),d.getString("UID"),d.getString("ghichu"),d.getString("diachi"),
+                                    d.getString("hoten"),d.getString("ngaydat"),d.getString("phuongthuc"),d.getString("sdt"),
+                                    d.getString("tongtien"),d.getLong("trangthai"));
+                        }
+                    }
+
+                }
+            });
+        } else if (iduser == null){
+            db.collection("HoaDon").whereEqualTo("trangthai",positionStatus)
+                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                    if(queryDocumentSnapshots.size()>0){
+                        for(QueryDocumentSnapshot d : queryDocumentSnapshots){
+                            callback.getDataHD(d.getId(),d.getString("UID"),d.getString("ghichu"),d.getString("diachi"),
+                                    d.getString("hoten"),d.getString("ngaydat"),d.getString("phuongthuc"),d.getString("sdt"),
+                                    d.getString("tongtien"),d.getLong("trangthai"));
+                        }
+                    }
+
+                }
+            });
         }
         else {
             db.collection("HoaDon").whereEqualTo("UID",iduser).whereEqualTo("trangthai",positionStatus)

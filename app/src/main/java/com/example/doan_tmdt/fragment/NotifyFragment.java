@@ -59,6 +59,7 @@ public class NotifyFragment extends Fragment implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        Log.d("state", "onCreateView");
         return v;
     }
 
@@ -85,5 +86,11 @@ public class NotifyFragment extends Fragment implements OnMapReadyCallback {
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,18)); // đọc camera
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d("state", "onSave");
     }
 }

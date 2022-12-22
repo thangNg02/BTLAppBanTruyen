@@ -1,5 +1,6 @@
 package com.example.doan_tmdt.Models;
 
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -8,12 +9,16 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.doan_tmdt.Adapter.FavoriteAdapter;
 import com.example.doan_tmdt.Adapter.SearchAdapter;
+import com.example.doan_tmdt.View.DetailSPActivity;
+import com.example.doan_tmdt.View.FavoriteActivity;
 import com.example.doan_tmdt.View.SearchActivity;
 import com.example.doan_tmdt.my_interface.IClickCTHD;
 import com.example.doan_tmdt.my_interface.IHoaDon;
 import com.example.doan_tmdt.my_interface.IProduct;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -176,6 +181,20 @@ public class Product implements Serializable{
 
                     }
                 }
+
+            }
+        });
+    }
+
+    public void HandleGetWithIDProduct(String idproduct){
+        db.collection("SanPham").document(idproduct).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot d) {
+                callback.getDataProduct(idproduct,d.getString("tensp"),
+                        d.getLong("giatien"),d.getString("hinhanh"),
+                        d.getString("loaisp"),d.getString("mota"),
+                        d.getLong("soluong"),d.getString("hansudung"),
+                        d.getLong("type"),d.getString("trongluong"));
 
             }
         });

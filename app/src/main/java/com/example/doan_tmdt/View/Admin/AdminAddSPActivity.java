@@ -6,17 +6,23 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.webkit.CookieManager;
+import android.webkit.URLUtil;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -31,6 +37,7 @@ import com.example.doan_tmdt.Models.Product;
 import com.example.doan_tmdt.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -39,17 +46,27 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdminAddSPActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    private TextView tvTaoMaQR;
+    private ImageView imgQRProduct;
+    private Button btnQRProduct, btnDownQRProduct;
 
     private CircleImageView imgAddLoaiProduct;
     private ImageView btnAddBack, btnRefresh, btnSave;
@@ -159,6 +176,7 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
                                                     Toast.makeText(AdminAddSPActivity.this, "Xoá sản phẩm thành công!!!", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
+//                                            db.collection("QRproduct").document(product.getId()).delete();
                                         }
                                     }
                                 });
@@ -193,6 +211,7 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
                     sp.setTrongluong(edtTrongluongSP.getText().toString());
                     sp.setLoaisp(spinnerDanhMuc.getSelectedItem().toString());
                     sp.setHinhanh(image);
+
                     db.collection("SanPham").add(sp).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(@NonNull DocumentReference documentReference) {
@@ -249,6 +268,78 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
                 }
             }
         });
+
+        btnQRProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MultiFormatWriter writer = new MultiFormatWriter();
+                try {
+
+                    BitMatrix matrix = writer.encode(product.getId(), BarcodeFormat.QR_CODE, 350, 350);
+                    BarcodeEncoder encoder = new BarcodeEncoder();
+                    Bitmap bitmap = encoder.createBitmap(matrix);
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    byte[] data = baos.toByteArray();
+                    String filename = System.currentTimeMillis() + "";
+                    StorageReference storageReference;
+                    storageReference = FirebaseStorage.getInstance("gs://doan-dc57a.appspot.com/").getReference();
+                    storageReference.child("QRProduct").child(filename + ".jpg").putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                            if (taskSnapshot.getTask().isSuccessful()) {
+                                storageReference.child("QRProduct").child(filename + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(@NonNull Uri uri) {
+                                        imgQRProduct.setImageBitmap(bitmap);
+                                        HashMap<String, String> maps = new HashMap<>();
+                                        maps.put("idproduct", product.getId());
+                                        maps.put("hinhanh_qr", uri.toString());
+                                        db.collection("QRProduct").add(maps);
+                                    }
+                                });
+
+                            }
+                            dialog.dismiss();
+                        }
+                    });
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        btnDownQRProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.collection("QRProduct").whereEqualTo("idproduct", product.getId())
+                        .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot q : queryDocumentSnapshots){
+                            if (q.getString("idproduct").equals(product.getId())){
+                                String getUrl = q.getString("hinhanh_qr");
+                                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(getUrl));
+                                String title = URLUtil.guessFileName(getUrl, null, null);
+                                request.setTitle(title);
+                                request.setDescription("Đang tải File, vui lòng đợi....");
+                                String cookie = CookieManager.getInstance().getCookie(getUrl);
+                                request.addRequestHeader("cookie", cookie);
+                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, title);
+
+                                DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                                downloadManager.enqueue(request);
+                                Toast.makeText(AdminAddSPActivity.this, "Đã tải mã QR, kiểm tra trong thư viện ảnh", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+
+            }
+        });
     }
 
     private void Init() {
@@ -261,6 +352,24 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
             product = (Product) getIntent().getSerializableExtra("SP");
         }
         if (product != null) {
+            btnQRProduct.setVisibility(View.VISIBLE);
+            imgQRProduct.setVisibility(View.VISIBLE);
+            tvTaoMaQR.setVisibility(View.VISIBLE);
+            db.collection("QRProduct").whereEqualTo("idproduct", product.getId())
+                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    for (QueryDocumentSnapshot q : queryDocumentSnapshots){
+                        if (q.getString("idproduct").equals(product.getId())){
+                            btnQRProduct.setVisibility(View.GONE);
+                            btnDownQRProduct.setVisibility(View.VISIBLE);
+                            Picasso.get().load(q.getString("hinhanh_qr")).into(imgQRProduct);
+                            tvTaoMaQR.setText("Mã QR sản phẩm");
+                        }
+                    }
+                }
+            });
+
             edtTrongluongSP.setText(product.getTrongluong());
             edtMotaSP.setText(product.getMota());
             edtHansudungSP.setText(product.getHansudung());
@@ -342,6 +451,10 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
     }
 
     private void InitWidget() {
+        btnDownQRProduct = findViewById(R.id.btn_down_qr_product);
+        tvTaoMaQR = findViewById(R.id.tv_taomaqr);
+        imgQRProduct = findViewById(R.id.img_qr_product);
+        btnQRProduct = findViewById(R.id.btn_qr_product);
         tvTitle = findViewById(R.id.tv_title);
         imgAddLoaiProduct = findViewById(R.id.img_add_loaiproduct);
         btnAddBack = findViewById(R.id.btn_add_back);

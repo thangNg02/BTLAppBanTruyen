@@ -1,12 +1,14 @@
 package com.example.doan_tmdt;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -24,24 +26,31 @@ import com.example.doan_tmdt.fragment.ProfileFragment;
 import com.example.doan_tmdt.ultil.MyReceiver;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
 public class MainActivity extends AppCompatActivity {
 
+    private CartFragment cartFragment = new CartFragment();
     public  static CountDownTimer countDownTimer;
     private static final int TIME_DELAY = 2000;
     private static long back_pressed;
     private MeowBottomNavigation bottomNavigation_Main;
     private HomeFragment homeFragment = new HomeFragment();
-    private FirebaseFirestore db;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     // Check Internet
     private BroadcastReceiver MyReceiver = null;
+    private DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +114,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation_Main.add(new MeowBottomNavigation.Model(3, R.drawable.ic_cart));
         bottomNavigation_Main.add(new MeowBottomNavigation.Model(4, R.drawable.ic_bill));
         bottomNavigation_Main.add(new MeowBottomNavigation.Model(5, R.drawable.ic_contact));
-//        bottomNavigation_Main.setCount(4, "10");        // Hiển thông báo
+
+//        bottomNavigation_Main.setCount(3, "10");
         bottomNavigation_Main.show(1,true);
         replace(new HomeFragment());
 
@@ -155,17 +165,12 @@ public class MainActivity extends AppCompatActivity {
         if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
             super.onBackPressed();
         } else {
-            Toast.makeText(getBaseContext(), "Press once again to exit!",
+            Toast.makeText(getBaseContext(), "Nhấn lần nữa để thoát!",
                     Toast.LENGTH_SHORT).show();
         }
         back_pressed = System.currentTimeMillis();
     }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(MyReceiver, filter);
-    }
+
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -181,11 +186,29 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // Check Internet
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(MyReceiver);
-    }
 
+
+//    private void status(String stastus){
+//        reference = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+//
+//        HashMap<String, Object> hashMap = new HashMap<>();
+//        hashMap.put("status", stastus);
+//
+//        reference.updateChildren(hashMap);
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        status("online");
+//        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+//        registerReceiver(MyReceiver, filter);
+//    }
+//    // Check Internet
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        status("offline");
+//        unregisterReceiver(MyReceiver);
+//    }
 }

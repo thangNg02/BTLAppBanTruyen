@@ -8,11 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.doan_tmdt.R;
+import com.example.doan_tmdt.View.ChatActivity;
 import com.example.doan_tmdt.View.SignInActivity;
 
 public class AdminHomeActivity extends AppCompatActivity {
 
-    private CardView cHoaDon, cThongKe, cAddProduct, cSignOut, cAddUser;
+    private CardView cHoaDon, cThongKe, cAddProduct, cSignOut, cAddUser, cChat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,16 @@ public class AdminHomeActivity extends AppCompatActivity {
     }
 
     private void Event() {
+
+        cChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminHomeActivity.this, ChatActivity.class);
+                intent.putExtra("message", 1);
+                startActivity(intent);
+            }
+        });
+
         cAddUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,6 +77,7 @@ public class AdminHomeActivity extends AppCompatActivity {
     }
 
     private void Init() {
+        cChat = findViewById(R.id.cChat);
         cAddUser = findViewById(R.id.cAddUser);
         cHoaDon = findViewById(R.id.cHoaDon);
         cThongKe = findViewById(R.id.cThongKe);

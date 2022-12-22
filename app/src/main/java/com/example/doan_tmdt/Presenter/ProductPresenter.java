@@ -19,6 +19,10 @@ public class ProductPresenter implements IProduct {
     public void HandleGetDataProduct(){
         product.HandleGetDataProduct();
     }
+
+    public void HandleGetWithIDProduct(String idproduct){
+        product.HandleGetWithIDProduct(idproduct);
+    }
     @Override
     public void OnSucess() {
 

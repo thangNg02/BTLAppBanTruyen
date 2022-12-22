@@ -35,6 +35,8 @@ import org.checkerframework.checker.units.qual.A;
 import java.util.ArrayList;
 
 public class DangXuLyFragment extends Fragment implements HoaDonView {
+
+    private TextView tvNullDangxuly;
     private View view;
     private RecyclerView rcvBill;
     private HoaDonPreSenter hoaDonPreSenter;
@@ -44,6 +46,7 @@ public class DangXuLyFragment extends Fragment implements HoaDonView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dang_xu_ly, container, false);
 
+        tvNullDangxuly = view.findViewById(R.id.tv_null_dangxuly);
         rcvBill = view.findViewById(R.id.rcv_bill_dxl);
         hoaDonPreSenter = new HoaDonPreSenter(this);
         listHoadon = new ArrayList<>();
@@ -56,6 +59,9 @@ public class DangXuLyFragment extends Fragment implements HoaDonView {
     public void getDataHD(String id, String uid, String ghichu, String diachi, String hoten, String ngaydat, String phuongthuc, String sdt, String tongtien, Long type) {
 
         listHoadon.add(new HoaDon(id,uid,ghichu,diachi,hoten,ngaydat,phuongthuc,sdt,tongtien,type));
+        if (listHoadon.size() != 0){
+            tvNullDangxuly.setVisibility(View.GONE);
+        } else tvNullDangxuly.setVisibility(View.VISIBLE);
         hoaDonAdapter = new HoaDonAdapter();
         hoaDonAdapter.setDataHoadon(listHoadon, new IClickCTHD() {
             @Override

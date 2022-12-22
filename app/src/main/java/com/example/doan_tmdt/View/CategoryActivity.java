@@ -37,16 +37,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryActivity extends AppCompatActivity implements GioHangView {
-
-    private GioHangPresenter gioHangPresenter;
-
-    private TextView tvTenBottom, tvGiaBottom, tvSoluongBottom, tvMotaBottom;
-    private ImageView imgBottom, btnMinusBottom, btnPlusBottom;
-    private Button btnBottom;
-    private int slBottom;
-    private BottomSheetDialog bottomSheetDialog;
-
+public class CategoryActivity extends AppCompatActivity {
     private ImageView imgBack;
     private TextView tvCategory;
     private EditText edtSearch;
@@ -91,14 +82,8 @@ public class CategoryActivity extends AppCompatActivity implements GioHangView {
                                 @Override
                                 public void onClickOpenBottomSheet(int position) {
 
-                                    setBottomSheetDialog();
                                     product = arr_khac.get(position);
-                                    tvTenBottom.setText(product.getTensp());
-                                    tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
-                                    tvMotaBottom.setText(product.getMota());
-                                    Picasso.get().load(product.getHinhanh()).into(imgBottom);
-                                    initBottomSheet();
-                                    bottomSheetDialog.show();
+                                    SendData();
                                 }
                             });
                             rcvCategory.setLayoutManager(new LinearLayoutManager(CategoryActivity.this,RecyclerView.VERTICAL,false));
@@ -130,14 +115,9 @@ public class CategoryActivity extends AppCompatActivity implements GioHangView {
                             categoryAdapter = new CategoryAdapter(CategoryActivity.this, arr_micay, new IClickOpenBottomSheet() {
                                 @Override
                                 public void onClickOpenBottomSheet(int position) {
-                                    setBottomSheetDialog();
+//                                    setBottomSheetDialog();
                                     product = arr_micay.get(position);
-                                    tvTenBottom.setText(product.getTensp());
-                                    tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
-                                    tvMotaBottom.setText(product.getMota());
-                                    Picasso.get().load(product.getHinhanh()).into(imgBottom);
-                                    initBottomSheet();
-                                    bottomSheetDialog.show();
+                                    SendData();
                                 }
                             });
                             rcvCategory.setLayoutManager(new LinearLayoutManager(CategoryActivity.this,RecyclerView.VERTICAL,false));
@@ -169,14 +149,8 @@ public class CategoryActivity extends AppCompatActivity implements GioHangView {
                             categoryAdapter = new CategoryAdapter(CategoryActivity.this, arr_chaosup, new IClickOpenBottomSheet() {
                                 @Override
                                 public void onClickOpenBottomSheet(int position) {
-                                    setBottomSheetDialog();
                                     product = arr_chaosup.get(position);
-                                    tvTenBottom.setText(product.getTensp());
-                                    tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
-                                    tvMotaBottom.setText(product.getMota());
-                                    Picasso.get().load(product.getHinhanh()).into(imgBottom);
-                                    initBottomSheet();
-                                    bottomSheetDialog.show();
+                                    SendData();
                                 }
                             });
                             rcvCategory.setLayoutManager(new LinearLayoutManager(CategoryActivity.this,RecyclerView.VERTICAL,false));
@@ -208,14 +182,8 @@ public class CategoryActivity extends AppCompatActivity implements GioHangView {
                             categoryAdapter = new CategoryAdapter(CategoryActivity.this, arr_pizza, new IClickOpenBottomSheet() {
                                 @Override
                                 public void onClickOpenBottomSheet(int position) {
-                                    setBottomSheetDialog();
                                     product = arr_pizza.get(position);
-                                    tvTenBottom.setText(product.getTensp());
-                                    tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
-                                    tvMotaBottom.setText(product.getMota());
-                                    Picasso.get().load(product.getHinhanh()).into(imgBottom);
-                                    initBottomSheet();
-                                    bottomSheetDialog.show();
+                                    SendData();
                                 }
                             });
                             rcvCategory.setLayoutManager(new LinearLayoutManager(CategoryActivity.this,RecyclerView.VERTICAL,false));
@@ -247,14 +215,8 @@ public class CategoryActivity extends AppCompatActivity implements GioHangView {
                             categoryAdapter = new CategoryAdapter(CategoryActivity.this, arr_sandwich, new IClickOpenBottomSheet() {
                                 @Override
                                 public void onClickOpenBottomSheet(int position) {
-                                    setBottomSheetDialog();
                                     product = arr_sandwich.get(position);
-                                    tvTenBottom.setText(product.getTensp());
-                                    tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
-                                    tvMotaBottom.setText(product.getMota());
-                                    Picasso.get().load(product.getHinhanh()).into(imgBottom);
-                                    initBottomSheet();
-                                    bottomSheetDialog.show();
+                                    SendData();
                                 }
                             });
                             rcvCategory.setLayoutManager(new LinearLayoutManager(CategoryActivity.this,RecyclerView.VERTICAL,false));
@@ -286,14 +248,8 @@ public class CategoryActivity extends AppCompatActivity implements GioHangView {
                             categoryAdapter = new CategoryAdapter(CategoryActivity.this, arr_douong, new IClickOpenBottomSheet() {
                                 @Override
                                 public void onClickOpenBottomSheet(int position) {
-                                    setBottomSheetDialog();
                                     product = arr_douong.get(position);
-                                    tvTenBottom.setText(product.getTensp());
-                                    tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
-                                    tvMotaBottom.setText(product.getMota());
-                                    Picasso.get().load(product.getHinhanh()).into(imgBottom);
-                                    initBottomSheet();
-                                    bottomSheetDialog.show();
+                                    SendData();
                                 }
                             });
                             rcvCategory.setLayoutManager(new LinearLayoutManager(CategoryActivity.this,RecyclerView.VERTICAL,false));
@@ -325,14 +281,8 @@ public class CategoryActivity extends AppCompatActivity implements GioHangView {
                             categoryAdapter = new CategoryAdapter(CategoryActivity.this, arr_lau, new IClickOpenBottomSheet() {
                                 @Override
                                 public void onClickOpenBottomSheet(int position) {
-                                    setBottomSheetDialog();
                                     product = arr_lau.get(position);
-                                    tvTenBottom.setText(product.getTensp());
-                                    tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
-                                    tvMotaBottom.setText(product.getMota());
-                                    Picasso.get().load(product.getHinhanh()).into(imgBottom);
-                                    initBottomSheet();
-                                    bottomSheetDialog.show();
+                                    SendData();
                                 }
                             });
                             rcvCategory.setLayoutManager(new LinearLayoutManager(CategoryActivity.this,RecyclerView.VERTICAL,false));
@@ -364,14 +314,8 @@ public class CategoryActivity extends AppCompatActivity implements GioHangView {
                             categoryAdapter = new CategoryAdapter(CategoryActivity.this, arr_doannhanh, new IClickOpenBottomSheet() {
                                 @Override
                                 public void onClickOpenBottomSheet(int position) {
-                                    setBottomSheetDialog();
                                     product = arr_doannhanh.get(position);
-                                    tvTenBottom.setText(product.getTensp());
-                                    tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
-                                    tvMotaBottom.setText(product.getMota());
-                                    Picasso.get().load(product.getHinhanh()).into(imgBottom);
-                                    initBottomSheet();
-                                    bottomSheetDialog.show();
+                                    SendData();
                                 }
                             });
                             rcvCategory.setLayoutManager(new LinearLayoutManager(CategoryActivity.this,RecyclerView.VERTICAL,false));
@@ -387,41 +331,10 @@ public class CategoryActivity extends AppCompatActivity implements GioHangView {
         }
     }
 
-    private void setBottomSheetDialog(){
-        // Bottom sheet Dialog
-        bottomSheetDialog = new BottomSheetDialog(this);
-        bottomSheetDialog.setContentView(R.layout.layout_persistent_bottom_sheet);
-        tvTenBottom = bottomSheetDialog.findViewById(R.id.tv_ten_bottom);
-        imgBottom = bottomSheetDialog.findViewById(R.id.img_bottom);
-        tvGiaBottom = bottomSheetDialog.findViewById(R.id.tv_gia_bottom);
-        btnMinusBottom = bottomSheetDialog.findViewById(R.id.btn_minus_bottom);
-        btnPlusBottom = bottomSheetDialog.findViewById(R.id.btn_plus_bottom);
-        tvSoluongBottom = bottomSheetDialog.findViewById(R.id.tv_soluong_bottom);
-        tvMotaBottom = bottomSheetDialog.findViewById(R.id.tv_mota_bottom);
-        btnBottom = bottomSheetDialog.findViewById(R.id.btn_bottom);
-    }
-    public void initBottomSheet(){
-        btnMinusBottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                slBottom = Integer.parseInt(tvSoluongBottom.getText().toString()) - 1;
-                tvSoluongBottom.setText(String.valueOf(slBottom));
-            }
-        });
-        btnPlusBottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                slBottom = Integer.parseInt(tvSoluongBottom.getText().toString()) + 1;
-                tvSoluongBottom.setText(String.valueOf(slBottom));
-            }
-        });
-
-        btnBottom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gioHangPresenter.AddCart(product.getId(), Long.valueOf(slBottom));
-            }
-        });
+    private void SendData(){
+        Intent intent = new Intent(CategoryActivity.this, DetailSPActivity.class);
+        intent.putExtra("search", product);
+        startActivity(intent);
     }
 
     private void Event() {
@@ -448,21 +361,6 @@ public class CategoryActivity extends AppCompatActivity implements GioHangView {
         arr_lau = new ArrayList<>();
         arr_doannhanh = new ArrayList<>();
 
-        gioHangPresenter = new GioHangPresenter(this);
     }
 
-    @Override
-    public void OnSucess() {
-        Toast.makeText(this, "Thêm vào giỏ hàng thành công", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void OnFail() {
-        Toast.makeText(this, "Thêm vào giỏ hàng thất bại", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void getDataSanPham(String id, String idsp, String tensp, Long giatien, String hinhanh, String loaisp, String mota, Long soluong, String hansudung, Long type, String trongluong) {
-
-    }
 }

@@ -16,6 +16,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -68,6 +70,78 @@ public class Giohang {
 
     public void setSoluong(long soluong) {
         this.soluong = soluong;
+    }
+
+    public void HandleThanhToan(String ghichu, String ngaydat, String diachi, String hoten, String sdt, String phuongthuc, String tongtien, ArrayList<Product> arrayList) {
+
+        HashMap<String,Object> hashMap = new HashMap<>();
+        hashMap.put("ghichu", ghichu);
+        hashMap.put("ngaydat",ngaydat);
+        hashMap.put("diachi",diachi);
+        hashMap.put("sdt",sdt);
+        hashMap.put("hoten",hoten);
+        hashMap.put("phuongthuc",phuongthuc);
+        hashMap.put("tongtien",tongtien);
+        hashMap.put("trangthai",1);
+        hashMap.put("UID",FirebaseAuth.getInstance().getCurrentUser().getUid());
+        db.collection("HoaDon")
+                .add(hashMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if(task.isSuccessful()){
+                    for(Product sanPhamModels : arrayList){
+                        HashMap<String,Object> map_chitiet = new HashMap<>();
+                        map_chitiet.put("id_hoadon",task.getResult().getId());
+                        map_chitiet.put("id_product",sanPhamModels.getIdsp());
+                        map_chitiet.put("soluong",sanPhamModels.getSoluong());
+
+                        db.collection("ChitietHoaDon").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .collection("ALL").add(map_chitiet).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                if(task.isSuccessful()){
+                                    db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                            .collection("ALL").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                            for (QueryDocumentSnapshot q : queryDocumentSnapshots){
+                                                db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                        .collection("ALL").document(q.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            callback.OnSucess();
+                                                        } else {
+                                                            callback.OnFail();
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+//                                            document(sanPhamModels.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                        @Override
+//                                        public void onComplete(@NonNull Task<Void> task) {
+//                                            if(task.isSuccessful()){
+//                                                callback.OnSucess();
+//                                            }else{
+//                                                callback.OnFail();
+//                                            }
+//                                        }
+//                                    });
+                                }
+
+                            }
+                        });
+
+                    }
+
+                }else{
+
+                }
+
+            }
+        });
     }
 
     //check giỏ hàng đúng id user
@@ -145,16 +219,7 @@ public class Giohang {
     }
     public  void HandleDeleteDataGioHang(String id){
         db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .collection("ALL").document(id).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    callback.OnSucess();
-                }else {
-                    callback.OnFail();
-                }
-            }
-        });
+                .collection("ALL").document(id).delete();
     }
 
     public void HandleGetDataCTHD(String id) {
@@ -193,7 +258,7 @@ public class Giohang {
                 public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
                     if(queryDocumentSnapshots.size()>0){
                         for(QueryDocumentSnapshot s : queryDocumentSnapshots){
-                            Log.d("CHECKED",s.getString("id_product"));
+//                            Log.d("CHECKED",s.getString("id_product"));
                             db.collection("SanPham").document(s.getString("id_product"))
                                     .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override

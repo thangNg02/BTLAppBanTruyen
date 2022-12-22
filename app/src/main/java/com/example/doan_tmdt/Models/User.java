@@ -26,6 +26,9 @@ public class User implements Serializable {
     private FirebaseFirestore db;
     private IUser callback;
 
+    // Chat
+    private String status;
+    private String search;
 
     public User() {
     }
@@ -34,6 +37,16 @@ public class User implements Serializable {
         this.callback = callback;
         db = FirebaseFirestore.getInstance();
     }
+
+    public User(String iduser, String name, String avatar, String status, String search) {
+        this.iduser = iduser;
+        this.name = name;
+        this.avatar = avatar;
+        this.status = status;
+        this.search = search;
+    }
+
+
 
     public User(String iduser, String email, String name, String address, String phone, String date, String sex, String avatar) {
         this.iduser = iduser;
@@ -44,6 +57,22 @@ public class User implements Serializable {
         this.date = date;
         this.sex = sex;
         this.avatar = avatar;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 
     public String getIduser() {

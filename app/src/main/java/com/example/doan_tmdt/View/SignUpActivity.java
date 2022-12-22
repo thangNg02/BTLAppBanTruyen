@@ -24,6 +24,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +41,8 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText edtSignUpEmail, edtSignUpPassword, edtSignUpConfirm;
     private Button btnSignUpDangKy;
     private TextView tvLoginUser;
+
+    DatabaseReference reference1, reference2;
 
     // Check Internet
     private BroadcastReceiver MyReceiver = null;
@@ -72,6 +80,25 @@ public class SignUpActivity extends AppCompatActivity {
                                         hashMap.put("email", email);
                                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                                         db.collection("IDUser").add(hashMap);
+
+                                        // Realtime Firebase: Tạo 1 database có tên Users, id tự động đặt cho tài khoản
+                                        String username= "any name";
+                                        reference1 = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                        HashMap<String, String> mapRealtime = new HashMap<>();
+                                        mapRealtime.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                        mapRealtime.put("name", username);
+                                        mapRealtime.put("avatar", "default");
+                                        mapRealtime.put("status", "online");
+                                        mapRealtime.put("search", username.toLowerCase());
+                                        reference1.setValue(mapRealtime);
+
+                                        reference2 = FirebaseDatabase.getInstance().getReference("Chatlist").child("WvPK8OV0erKJP8w2KZNp")
+                                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                        HashMap<String, String> mapRealtime2 = new HashMap<>();
+                                        mapRealtime2.put("id", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                        reference2.setValue(mapRealtime2);
+
+
                                         Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                                         startActivity(intent);
                                         User user = new User();

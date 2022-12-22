@@ -4,9 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.doan_tmdt.R;
 import com.github.mikephil.charting.charts.BarChart;
@@ -25,21 +30,40 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.time.Period;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class AdminChartBillActivity extends AppCompatActivity {
+
+    private EditText edtFromDate, edtToDate;
+    private TextView tvDoanhThu;
+    private Toolbar toolbar;
     private BarChart barChart;
     private PieChart pieChart;
     private  float dangxuly = 0,danggiaohang=0,giaohangthanhcong=0,huyhang=0;
+    int total;
+    Number number;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_chart_bill);
+
+        InitWidget();
+        Init();
+        Canculator();
+        Event();
+
 
 //        // Define format
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss O yyyy");
@@ -62,18 +86,91 @@ public class AdminChartBillActivity extends AppCompatActivity {
 //        System.out.println(
 //                period.getYears() + " years and " + period.getMonths() + " months since " + startDate.getYear());
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        pieChart = findViewById(R.id.piechart);
-        barChart = findViewById(R.id.barchart);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Back");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+    }
+
+    private void Canculator() {
+
+        db.collection("HoaDon").whereEqualTo("trangthai", 3)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot q : queryDocumentSnapshots){
+                    String s = q.getString("tongtien");
+                    try {
+                        number = NumberFormat.getInstance().parse(s);
+                         total += Integer.parseInt(String.valueOf(number));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+                tvDoanhThu.setText(NumberFormat.getInstance().format(total));
+
+
+
+
+            }
+        });
+
+    }
+
+    private void Event() {
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+
+        edtFromDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int ngay = calendar.get(Calendar.DATE);
+                int thang = calendar.get(Calendar.MONTH);
+                int nam = calendar.get(Calendar.YEAR);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(AdminChartBillActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        // i:năm - i1:tháng - i2:ngày
+                        calendar.set(i, i1, i2);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/YYYY");
+                        edtFromDate.setText(simpleDateFormat.format(calendar.getTime()));
+                    }
+                }, nam, thang, ngay);
+                datePickerDialog.show();
+            }
+        });
+
+        edtToDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int ngay = calendar.get(Calendar.DATE);
+                int thang = calendar.get(Calendar.MONTH);
+                int nam = calendar.get(Calendar.YEAR);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(AdminChartBillActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        // i:năm - i1:tháng - i2:ngày
+                        calendar.set(i, i1, i2);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/YYYY");
+                        edtToDate.setText(simpleDateFormat.format(calendar.getTime()));
+                    }
+                }, nam, thang, ngay);
+                datePickerDialog.show();
+            }
+        });
+
+    }
+
+    private void Init() {
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Back");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ArrayList<BarEntry> barEntries = new ArrayList<>();
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
@@ -155,5 +252,16 @@ public class AdminChartBillActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private void InitWidget() {
+        tvDoanhThu = findViewById(R.id.tv_doanh_thu);
+        edtFromDate = findViewById(R.id.edt_bill_from_date);
+        edtToDate = findViewById(R.id.edt_bill_to_date);
+
+        toolbar = findViewById(R.id.toolbar);
+        pieChart = findViewById(R.id.piechart);
+        barChart = findViewById(R.id.barchart);
     }
 }

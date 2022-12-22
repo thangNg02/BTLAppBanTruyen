@@ -4,15 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.doan_tmdt.Adapter.ChitietHoadonAdapter;
+import com.example.doan_tmdt.Adapter.HoaDonDaGiaoAdapter;
 import com.example.doan_tmdt.Models.HoaDon;
 import com.example.doan_tmdt.Models.Product;
 import com.example.doan_tmdt.Presenter.GioHangPresenter;
@@ -20,10 +30,17 @@ import com.example.doan_tmdt.Presenter.HoaDonPreSenter;
 import com.example.doan_tmdt.R;
 import com.example.doan_tmdt.my_interface.GioHangView;
 import com.example.doan_tmdt.my_interface.HoaDonView;
+import com.example.doan_tmdt.my_interface.IClickCTHD;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaDonView {
 
@@ -33,9 +50,14 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
     private Button btnCapnhat;
     private HoaDon hoaDon;
     private ArrayList<Product> mlist;
-    private ChitietHoadonAdapter chitietHoadonAdapter;
+    private HoaDonDaGiaoAdapter hoaDonDaGiaoAdapter;
     private GioHangPresenter gioHangPresenter;
     private HoaDonPreSenter hoaDonPreSenter;
+    boolean cm;
+    String danhgia = "";
+    String r="5";
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +79,7 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
             public void onClick(View view) {
                 hoaDonPreSenter.CapNhatTrangThai(4, hoaDon.getId());
                 mlist.clear();
-                chitietHoadonAdapter.notifyDataSetChanged();
+                hoaDonDaGiaoAdapter.notifyDataSetChanged();
                 Toast.makeText(CTHDActivity.this, "Đã hủy đơn hàng", Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -68,6 +90,7 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
         mlist = new ArrayList<>();
         Intent intent = getIntent();
         hoaDon = (HoaDon) intent.getSerializableExtra("HD");
+        cm = intent.getBooleanExtra("CM", false);
         tvMaCTHD.setText(hoaDon.getId());
         tvNgaydatCTHD.setText(hoaDon.getNgaydat());
         tvHotenCTHD.setText(hoaDon.getHoten());
@@ -94,6 +117,8 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
         hoaDonPreSenter = new HoaDonPreSenter(this);
         gioHangPresenter = new GioHangPresenter(this);
         gioHangPresenter.HandlegetDataCTHD(hoaDon.getId(),hoaDon.getUid());
+
+
     }
 
     private void InitWidget() {
@@ -112,10 +137,121 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
     @Override
     public void getDataSanPham(String id, String idsp, String tensp, Long giatien, String hinhanh, String loaisp, String mota, Long soluong, String hansudung, Long type, String trongluong) {
         mlist.add(new Product(id,idsp,tensp,giatien,hinhanh,loaisp,mota,soluong,hansudung,type,trongluong));
-        chitietHoadonAdapter = new ChitietHoadonAdapter();
-        chitietHoadonAdapter.setDataChitietHoadon(mlist);
+        hoaDonDaGiaoAdapter = new HoaDonDaGiaoAdapter();
+
+        if (!cm){
+            hoaDonDaGiaoAdapter.TrangThaiKhac(true);
+        }
+        hoaDonDaGiaoAdapter.setDataHoaDonDaGiao(this, mlist, new IClickCTHD() {
+            @Override
+            public void onClickCTHD(int pos) {
+                if (cm){
+                    ShowDialog(pos);
+                }
+            }
+        });
+
         rcvCTHD.setLayoutManager(new LinearLayoutManager(this));
-        rcvCTHD.setAdapter(chitietHoadonAdapter);
+        rcvCTHD.setAdapter(hoaDonDaGiaoAdapter);
+
+
+    }
+
+    private void ShowDialog(int pos){
+        Product product = mlist.get(pos);
+        Dialog dialog = new Dialog(CTHDActivity.this);
+        dialog.setContentView(R.layout.dialog_danhgia);
+        dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        CustomDialog(dialog, product);
+    }
+
+    private void CustomDialog(Dialog dialog, Product product) {
+        ImageView imgDanhgia = dialog.findViewById(R.id.img_danhgia);
+        TextView tvNameDanhgia = dialog.findViewById(R.id.tv_name_danhgia);
+        TextView tvNumberDanhgia = dialog.findViewById(R.id.tv_number_danhgia);
+        RadioGroup rdgDanhgia = dialog.findViewById(R.id.rdg_danhgia);
+        RadioButton rdoDanhgiaTot = dialog.findViewById(R.id.rdo_danhgia_tot);
+        RadioButton rdoDanhgiaKhongTot = dialog.findViewById(R.id.rdo_danhgia_khongtot);
+        RadioButton rdoDanhgiaKhac = dialog.findViewById(R.id.rdo_danhgia_khac);
+        EditText edtDanhgiaKhac = dialog.findViewById(R.id.edt_danhgia_khac);
+        RatingBar ratingDanhgia = dialog.findViewById(R.id.rating_danhgia);
+        Button btnGuiDanhgia = dialog.findViewById(R.id.btn_danhgia_gui);
+        Button btnHuyDanhgia = dialog.findViewById(R.id.btn_danhgia_huy);
+
+        Picasso.get().load(product.getHinhanh()).into(imgDanhgia);
+        tvNameDanhgia.setText(product.getTensp());
+        tvNumberDanhgia.setText(product.getSoluong()+"");
+        rdgDanhgia.clearCheck();
+        edtDanhgiaKhac.setEnabled(false);
+//        danhgia = edtDanhgiaKhac.getText().toString();
+        rdgDanhgia.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if (rdoDanhgiaTot.isChecked()){
+                    danhgia = "Sản phẩm rất tốt";
+                    edtDanhgiaKhac.setEnabled(false);
+                } else if (rdoDanhgiaKhongTot.isChecked()){
+                    danhgia = "Không hài lòng";
+                    edtDanhgiaKhac.setEnabled(false);
+                } else if (rdoDanhgiaKhac.isChecked()){
+                    edtDanhgiaKhac.setEnabled(true);
+                    edtDanhgiaKhac.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            danhgia = edtDanhgiaKhac.getText().toString();
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+
+                        }
+                    });
+
+                }
+            }
+        });
+
+
+
+        ratingDanhgia.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+               r = String.valueOf(ratingDanhgia.getRating());
+            }
+        });
+
+        btnGuiDanhgia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("idproduct", product.getIdsp());
+                map.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                map.put("noidung", danhgia);
+                map.put("rate", r);
+                db.collection("BinhLuan").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        hoaDonDaGiaoAdapter.TrangThaiDaGiao(false);
+                        hoaDonDaGiaoAdapter.notifyDataSetChanged();
+                        Toast.makeText(CTHDActivity.this, "Đánh giá thành công", Toast.LENGTH_SHORT).show();
+                        dialog.cancel();
+                    }
+                });
+            }
+        });
+
+        btnHuyDanhgia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
     }
 
     @Override

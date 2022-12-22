@@ -1,14 +1,19 @@
 package com.example.doan_tmdt.View;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,11 +36,22 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import com.journeyapps.barcodescanner.CaptureActivity;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class SearchActivity extends AppCompatActivity implements ProductView, StoryView {
+
+    private SwipeRefreshLayout swipeSearch;
+    private ImageView imgMic, imgQRCode;
     private ImageView imgBackSearch;
     private SearchView searchView;
     private RecyclerView rcvSearch, rcvLichSuSearch;
@@ -48,6 +64,7 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
 
     private LichSuSearchAdapter lichSuSearchAdapter;
     private ArrayList<String> mlistStory;
+    private static final int REQUEST_CODE_SPEECH_INPUT = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +83,77 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
             }
         });
 
+        imgMic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+                intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Hãy thử nói gì đó");
+
+                try {
+                    startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT);
+                } catch (Exception e){
+                    Toast.makeText(SearchActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        imgQRCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ScanOptions scanOptions = new ScanOptions();
+                scanOptions.setPrompt("Đưa mã QR của bạn vào máy ảnh");
+                scanOptions.setBeepEnabled(true);
+                scanOptions.setOrientationLocked(true);
+                scanOptions.setCaptureActivity(CaptureAct.class);
+                barLaucher.launch(scanOptions);
+            }
+        });
+
+        swipeSearch.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mlistStory.clear();
+                        storyPresenter.HandleGetStory(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        lichSuSearchAdapter.setdata(SearchActivity.this, mlistStory, new IClickCTHD() {
+                            @Override
+                            public void onClickCTHD(int pos) {
+                            }
+                        });
+                        swipeSearch.setRefreshing(false);
+                    }
+                }, 500);
+
+            }
+        });
+
     }
+    ActivityResultLauncher<ScanOptions> barLaucher = registerForActivityResult(new ScanContract(), result ->
+    {
+        // Nếu quét dc mã QR và ngược lại:
+       if (result.getContents() != null){
+           try {
+               for (Product product: mlistsearch){
+                   if(result.getContents().equals(product.getId())){
+                       Intent intent = new Intent(SearchActivity.this, DetailSPActivity.class);
+                       intent.putExtra("search", product);
+                       startActivity(intent);
+                   }
+               }
+
+           } catch (Exception e){
+                e.printStackTrace();
+           }
+
+       } else {
+           Toast.makeText(this, "Hủy quét mã", Toast.LENGTH_SHORT).show();
+       }
+    });
 
     private void StorySearch(String text){
         HashMap<String,String> hashMap =  new HashMap<>();
@@ -77,6 +164,9 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
 
     private void InitWidget() {
 
+        swipeSearch = findViewById(R.id.swipe_search);
+        imgQRCode = findViewById(R.id.img_qrcode);
+        imgMic = findViewById(R.id.img_mic);
         imgBackSearch = findViewById(R.id.img_back_search);
         searchView = findViewById(R.id.search_view);
         rcvSearch = findViewById(R.id.rcv_search_monan);
@@ -87,6 +177,8 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
         storyPresenter = new StoryPresenter(this);
         mlistsearch = new ArrayList<>();
         mlistStory = new ArrayList<>();
+
+        rcvSearch.setVisibility(View.GONE);
 
         productPresenter.HandleGetDataProduct();
         storyPresenter.HandleGetStory(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -112,7 +204,7 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
                 Intent intent = new Intent(SearchActivity.this, DetailSPActivity.class);
                 intent.putExtra("search", product);
                 startActivity(intent);
-                Toast.makeText(SearchActivity.this, product.getTensp(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(SearchActivity.this, product.getTensp(), Toast.LENGTH_SHORT).show();
             }
         });
         rcvSearch.setLayoutManager(new LinearLayoutManager(SearchActivity.this,RecyclerView.VERTICAL,false));
@@ -126,6 +218,7 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                rcvSearch.setVisibility(View.VISIBLE);
                 adapter.filter(newText);
                 return true;
             }
@@ -146,5 +239,21 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
         GridLayoutManager manager = new GridLayoutManager(SearchActivity.this, 6);
         rcvLichSuSearch.setLayoutManager(manager);
         rcvLichSuSearch.setAdapter(lichSuSearchAdapter);
+    }
+
+    // Nhận đầu vào bằng giọng nói và xử lý nó
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode){
+            // get text array from voice intent
+            case REQUEST_CODE_SPEECH_INPUT:
+                if (resultCode == RESULT_OK && null != data){
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    searchView.setQuery(result.get(0), false);
+                }
+                break;
+        }
     }
 }

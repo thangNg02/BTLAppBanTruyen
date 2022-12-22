@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.doan_tmdt.Adapter.HoaDonAdapter;
 import com.example.doan_tmdt.Models.HoaDon;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 
 public class DangGiaoFragment extends Fragment implements HoaDonView {
 
+    private TextView tvNullDanggiao;
     private View view;
     private RecyclerView rcvBill;
     private HoaDonPreSenter hoaDonPreSenter;
@@ -34,6 +36,7 @@ public class DangGiaoFragment extends Fragment implements HoaDonView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dang_giao, container, false);
 
+        tvNullDanggiao = view.findViewById(R.id.tv_null_danggiao);
         rcvBill = view.findViewById(R.id.rcv_bill_danggiao);
         hoaDonPreSenter = new HoaDonPreSenter(this);
         listHoadon = new ArrayList<>();
@@ -44,6 +47,9 @@ public class DangGiaoFragment extends Fragment implements HoaDonView {
     @Override
     public void getDataHD(String id, String uid, String ghichu, String diachi, String hoten, String ngaydat, String phuongthuc, String sdt, String tongtien, Long type) {
         listHoadon.add(new HoaDon(id,uid,ghichu,diachi,hoten,ngaydat,phuongthuc,sdt,tongtien,type));
+        if (listHoadon.size() != 0){
+            tvNullDanggiao.setVisibility(View.GONE);
+        } else tvNullDanggiao.setVisibility(View.VISIBLE);
         hoaDonAdapter = new HoaDonAdapter();
         hoaDonAdapter.setDataHoadon(listHoadon, new IClickCTHD() {
             @Override

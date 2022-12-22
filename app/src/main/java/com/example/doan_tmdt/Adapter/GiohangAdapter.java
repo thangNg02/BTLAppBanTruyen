@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.doan_tmdt.Models.Giohang;
@@ -17,6 +18,7 @@ import com.example.doan_tmdt.Models.LoaiProduct;
 import com.example.doan_tmdt.Models.Product;
 import com.example.doan_tmdt.R;
 import com.example.doan_tmdt.fragment.CartFragment;
+import com.example.doan_tmdt.my_interface.GioHangView;
 import com.example.doan_tmdt.my_interface.IClickLoaiProduct;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,17 +34,20 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHolder>{
+public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHolder> {
 
     private Context context;
     private ArrayList<Product> mListGiohang;
     private int number;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private Fragment fragment;
+    private CartFragment cartFragment = new CartFragment();
 
 
-    public GiohangAdapter(Context context, ArrayList<Product> mListGiohang) {
+    public GiohangAdapter(Context context, ArrayList<Product> mListGiohang, Fragment fragment) {
         this.context = context;
         this.mListGiohang = mListGiohang;
+        this.fragment = fragment;
     }
     public void updateListGioHang(ArrayList<Product> newArr){
         this.mListGiohang.clear();
@@ -97,7 +102,8 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
                 int numberCurrent = Integer.parseInt(holder.tvNumberGiohang.getText().toString());
                 int costCurrent = Integer.parseInt(holder.tvGiatienGiohang.getText().toString());
                 holder.tvTotalGiohang.setText(NumberFormat.getInstance().format(numberCurrent * costCurrent));
-                CartFragment.TongTienGioHang();
+//                cartFragment.TongTienGioHang();
+                ((CartFragment) fragment).TongTienGioHang();
             }
         });
         holder.btnPlusGiohang.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +139,8 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
                 int numberCurrent = Integer.parseInt(holder.tvNumberGiohang.getText().toString());
                 int costCurrent = Integer.parseInt(holder.tvGiatienGiohang.getText().toString());
                 holder.tvTotalGiohang.setText(NumberFormat.getInstance().format(numberCurrent * costCurrent));
-                CartFragment.TongTienGioHang();
+//                cartFragment.TongTienGioHang();
+                ((CartFragment) fragment).TongTienGioHang();
             }
         });
 

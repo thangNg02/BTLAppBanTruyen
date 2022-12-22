@@ -5,11 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.example.doan_tmdt.R;
+import com.example.doan_tmdt.my_interface.IClickCTHD;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -17,10 +19,12 @@ import java.util.ArrayList;
 public class BannerAdapter extends PagerAdapter {
     private Context context;
     private ArrayList<String> arrayList;
+    private IClickCTHD iClickCTHD;
 
-    public BannerAdapter(Context context, ArrayList<String> arrayList) {
+    public BannerAdapter(Context context, ArrayList<String> arrayList, IClickCTHD iClickCTHD) {
         this.context = context;
         this.arrayList = arrayList;
+        this.iClickCTHD = iClickCTHD;
     }
 
     @Override
@@ -38,6 +42,13 @@ public class BannerAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view = LayoutInflater.from(context).inflate(R.layout.dong_banner,null);
         ImageView banner_image = view.findViewById(R.id.image_banner);
+
+        banner_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iClickCTHD.onClickCTHD(position);
+            }
+        });
 
         Picasso.get().load(arrayList.get(position).trim()).into(banner_image);
         container.addView(view);

@@ -275,7 +275,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="75dp"
+
                 android:background="@color/white"
                 android:orientation="vertical"
                 android:padding="10dp">
@@ -290,15 +290,74 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:gravity="top|left"
+                    android:inputType="textMultiLine"
+                    android:lines="6"
+                    android:overScrollMode="always"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollbars="vertical"
+                    android:scrollHorizontally="false"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/edt_motasp"
                     android:layout_width="match_parent"
-                    android:layout_height="130dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/button"
                     android:hint="Hiển thị thông tin sản phẩm"
                     android:padding="10dp"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="75dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/tv_taomaqr"
+                    android:textColor="#009688"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tạo mã QR sản phẩm"/>
+
+                <ImageView
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/border5"
+                    android:visibility="gone"
+                    android:id="@+id/img_qr_product"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"/>
+
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <Button
+                        android:visibility="gone"
+                        android:id="@+id/btn_qr_product"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tạo QR"/>
+                    <Button
+                        android:visibility="gone"
+                        android:textColor="@color/black"
+                        android:backgroundTint="@color/colorGray"
+                        android:id="@+id/btn_down_qr_product"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tải QR"/>
+                </LinearLayout>
 
             </LinearLayout>
 
