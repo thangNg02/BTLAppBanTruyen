@@ -5,20 +5,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.SearchManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
+import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
+import com.example.doan_tmdt.Adapter.AutoTextAdapter;
 import com.example.doan_tmdt.Adapter.LichSuSearchAdapter;
 import com.example.doan_tmdt.Adapter.SearchAdapter;
 import com.example.doan_tmdt.MainActivity;
@@ -36,6 +48,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firestore.v1.Cursor;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.CaptureActivity;
@@ -46,6 +59,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class SearchActivity extends AppCompatActivity implements ProductView, StoryView {
@@ -65,6 +79,9 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
     private LichSuSearchAdapter lichSuSearchAdapter;
     private ArrayList<String> mlistStory;
     private static final int REQUEST_CODE_SPEECH_INPUT = 1000;
+
+    // AutoComplete Text
+    private ArrayList<Product> mlistAuto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,12 +194,15 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
         storyPresenter = new StoryPresenter(this);
         mlistsearch = new ArrayList<>();
         mlistStory = new ArrayList<>();
+        mlistAuto = new ArrayList<>();
 
         rcvSearch.setVisibility(View.GONE);
 
         productPresenter.HandleGetDataProduct();
         storyPresenter.HandleGetStory(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
     }
+
 
     @Override
     public void OnSucess() {
@@ -197,6 +217,7 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
     @Override
     public void getDataProduct(String id, String ten, Long gia, String hinhanh, String loaisp, String mota, Long soluong, String hansudung, Long type, String trongluong) {
         mlistsearch.add(new Product(id, ten, gia, hinhanh, loaisp, mota, soluong, hansudung, type, trongluong));
+        mlistAuto.add(new Product(ten));
         adapter = new SearchAdapter(SearchActivity.this, mlistsearch, new IClickCTHD() {
             @Override
             public void onClickCTHD(int pos) {
@@ -204,11 +225,12 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
                 Intent intent = new Intent(SearchActivity.this, DetailSPActivity.class);
                 intent.putExtra("search", product);
                 startActivity(intent);
-//                Toast.makeText(SearchActivity.this, product.getTensp(), Toast.LENGTH_SHORT).show();
             }
         });
         rcvSearch.setLayoutManager(new LinearLayoutManager(SearchActivity.this,RecyclerView.VERTICAL,false));
         rcvSearch.setAdapter(adapter);
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -223,6 +245,13 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
                 return true;
             }
         });
+
+
+//        AutoTextAdapter autoTextAdapter = new AutoTextAdapter(this, R.layout.custom_dong_auto_text, mlistAuto);
+//        autoCompleteTextView.setAdapter(autoTextAdapter);
+
+
+
     }
 
     @Override
@@ -256,4 +285,6 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
                 break;
         }
     }
+
+
 }

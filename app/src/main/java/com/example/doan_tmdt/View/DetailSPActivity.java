@@ -18,6 +18,7 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.doan_tmdt.Adapter.BinhLuanAdapter;
+import com.example.doan_tmdt.Animation.AnimationUtil;
+import com.example.doan_tmdt.MainActivity;
 import com.example.doan_tmdt.Models.Binhluan;
 import com.example.doan_tmdt.Models.Favorite;
 import com.example.doan_tmdt.Models.Product;
@@ -53,6 +56,10 @@ import java.util.HashMap;
 
 public class DetailSPActivity extends AppCompatActivity implements BinhLuanView, GioHangView {
 
+    private ImageView viewAnimation;
+    private View viewEndAnimation;
+
+
     private AppCompatToggleButton toggleButtonFavorite;
     private FloatingActionButton btnAddCartDetail;
     private LinearLayout linearShowAllCmt;
@@ -74,6 +81,8 @@ public class DetailSPActivity extends AppCompatActivity implements BinhLuanView,
     private Button btnBottom;
     private int slBottom = 1;
     private GioHangPresenter gioHangPresenter;
+
+    private MainActivity mainActivity;
 
 
     @Override
@@ -190,7 +199,23 @@ public class DetailSPActivity extends AppCompatActivity implements BinhLuanView,
             @Override
             public void onClick(View view) {
                 gioHangPresenter.AddCart(product.getId(), Long.valueOf(slBottom));
-
+//                AnimationUtil.translateAnimation(viewAnimation, viewAnimation, viewEndAnimation, new Animation.AnimationListener() {
+//                    @Override
+//                    public void onAnimationStart(Animation animation) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onAnimationEnd(Animation animation) {
+//                        gioHangPresenter.AddCart(product.getId(), Long.valueOf(slBottom));
+////                        mainActivity.setCountProductInCart(mainActivity.getmCountProduct() + 1);
+//                    }
+//
+//                    @Override
+//                    public void onAnimationRepeat(Animation animation) {
+//
+//                    }
+//                });
             }
         });
     }
@@ -227,6 +252,9 @@ public class DetailSPActivity extends AppCompatActivity implements BinhLuanView,
     }
 
     private void InitWidget() {
+        mainActivity = new MainActivity();
+        viewAnimation = findViewById(R.id.view_animation);
+        viewEndAnimation = findViewById(R.id.view_end_animation);
         toggleButtonFavorite = findViewById(R.id.toogle_btn_favorite);
         btnAddCartDetail = findViewById(R.id.btn_addcart_detail);
         linearShowAllCmt = findViewById(R.id.linear_show_all_cmt);

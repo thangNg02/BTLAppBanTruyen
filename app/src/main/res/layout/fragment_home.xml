@@ -65,15 +65,15 @@
                     android:layout_height="wrap_content">
                     <ImageView
                         android:layout_centerHorizontal="true"
-                        android:id="@+id/img_home_favorite"
+                        android:id="@+id/img_home_cart"
                         android:layout_width="30dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/icons8_favorite_50"/>
+                        android:src="@drawable/ic_cart4"/>
 
                     <TextView
                         android:visibility="gone"
                         android:gravity="center"
-                        android:id="@+id/tv_number_favorite"
+                        android:id="@+id/tv_number_cart"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:background="@drawable/boder_score"
@@ -92,6 +92,8 @@
                     android:layout_width="0dp"
                     android:layout_height="25dp"
                     android:src="@drawable/ic_message"/>
+
+
             </LinearLayout>
 
 

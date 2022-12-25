@@ -11,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -119,6 +120,7 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
         gioHangPresenter.HandlegetDataCTHD(hoaDon.getId(),hoaDon.getUid());
 
 
+
     }
 
     private void InitWidget() {
@@ -132,24 +134,31 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
         tvTrangthaiCTHD = findViewById(R.id.tv_trangthai_cthd);
         rcvCTHD = findViewById(R.id.rcv_cthd);
         btnCapnhat = findViewById(R.id.btn_capnhat_cthd);
+        hoaDonDaGiaoAdapter = new HoaDonDaGiaoAdapter();
     }
 
     @Override
     public void getDataSanPham(String id, String idsp, String tensp, Long giatien, String hinhanh, String loaisp, String mota, Long soluong, String hansudung, Long type, String trongluong) {
         mlist.add(new Product(id,idsp,tensp,giatien,hinhanh,loaisp,mota,soluong,hansudung,type,trongluong));
-        hoaDonDaGiaoAdapter = new HoaDonDaGiaoAdapter();
 
-        if (!cm){
-            hoaDonDaGiaoAdapter.TrangThaiKhac(true);
-        }
-        hoaDonDaGiaoAdapter.setDataHoaDonDaGiao(this, mlist, new IClickCTHD() {
-            @Override
-            public void onClickCTHD(int pos) {
-                if (cm){
-                    ShowDialog(pos);
+        Log.d("cm", "cm: " + cm+"");
+        if (cm){
+            hoaDonDaGiaoAdapter.setDataHoaDonDaGiao(this, mlist, 1, new IClickCTHD() {
+                @Override
+                public void onClickCTHD(int pos) {
+                    if (cm){
+                        ShowDialog(pos);
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            hoaDonDaGiaoAdapter.setDataHoaDonDaGiao(this, mlist, 0, new IClickCTHD() {
+                @Override
+                public void onClickCTHD(int pos) {
+                }
+            });
+        }
+
 
         rcvCTHD.setLayoutManager(new LinearLayoutManager(this));
         rcvCTHD.setAdapter(hoaDonDaGiaoAdapter);
@@ -237,7 +246,7 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
                 db.collection("BinhLuan").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        hoaDonDaGiaoAdapter.TrangThaiDaGiao(false);
+//                        hoaDonDaGiaoAdapter.TrangThaiDaGiao(false);
                         hoaDonDaGiaoAdapter.notifyDataSetChanged();
                         Toast.makeText(CTHDActivity.this, "Đánh giá thành công", Toast.LENGTH_SHORT).show();
                         dialog.cancel();

@@ -50,6 +50,10 @@ public class Product implements Serializable{
         db=FirebaseFirestore.getInstance();
     }
 
+    public Product(String tensp) {
+        this.tensp = tensp;
+    }
+
     public Product(String id, String idsp, String tensp, long giatien, String hinhanh, String loaisp, String mota, long soluong, String hansudung, long type, String trongluong) {
         this.id = id;
         this.idsp = idsp;

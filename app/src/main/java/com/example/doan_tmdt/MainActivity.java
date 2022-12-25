@@ -3,6 +3,7 @@ package com.example.doan_tmdt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.doan_tmdt.fragment.BillFragment;
 import com.example.doan_tmdt.fragment.CartFragment;
+import com.example.doan_tmdt.fragment.FavoriteFragment;
 import com.example.doan_tmdt.fragment.HomeFragment;
 import com.example.doan_tmdt.fragment.NotifyFragment;
 import com.example.doan_tmdt.fragment.ProfileFragment;
@@ -41,7 +43,6 @@ import kotlin.jvm.functions.Function1;
 
 public class MainActivity extends AppCompatActivity {
 
-    private CartFragment cartFragment = new CartFragment();
     public  static CountDownTimer countDownTimer;
     private static final int TIME_DELAY = 2000;
     private static long back_pressed;
@@ -50,7 +51,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     // Check Internet
     private BroadcastReceiver MyReceiver = null;
-    private DatabaseReference reference;
+
+
+    private int mCountProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     private void Init() {
         bottomNavigation_Main.add(new MeowBottomNavigation.Model(1, R.drawable.ic_home));
         bottomNavigation_Main.add(new MeowBottomNavigation.Model(2, R.drawable.ic_profile));
-        bottomNavigation_Main.add(new MeowBottomNavigation.Model(3, R.drawable.ic_cart));
+        bottomNavigation_Main.add(new MeowBottomNavigation.Model(3, R.drawable.ic_baseline_favorite_24));
         bottomNavigation_Main.add(new MeowBottomNavigation.Model(4, R.drawable.ic_bill));
         bottomNavigation_Main.add(new MeowBottomNavigation.Model(5, R.drawable.ic_contact));
 
@@ -119,6 +122,14 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation_Main.show(1,true);
         replace(new HomeFragment());
 
+    }
+
+    public void setCountProductInCart(int count){
+        mCountProduct = count;
+        bottomNavigation_Main.setCount(3, String.valueOf(count));
+    }
+    public int getmCountProduct() {
+        return mCountProduct;
     }
 
     private void replace(Fragment fragment){
@@ -142,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case 3:
-                        replace(new CartFragment());
+                        replace(new FavoriteFragment());
                         break;
 
                     case 4:

@@ -1,12 +1,9 @@
-package com.example.doan_tmdt.View.Admin;
+package com.example.doan_tmdt.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -18,24 +15,15 @@ import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.doan_tmdt.Adapter.ChitietHoadonAdapter;
 import com.example.doan_tmdt.Models.HoaDon;
 import com.example.doan_tmdt.Models.Product;
-import com.example.doan_tmdt.Presenter.GioHangPresenter;
-import com.example.doan_tmdt.Presenter.HoaDonPreSenter;
 import com.example.doan_tmdt.R;
-import com.example.doan_tmdt.View.CTHDActivity;
-import com.example.doan_tmdt.my_interface.GioHangView;
-import com.example.doan_tmdt.my_interface.HoaDonView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -46,35 +34,33 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
-public class AdminCTHDActivity extends AppCompatActivity implements GioHangView, HoaDonView {
+public class OrderSuccessActivity extends AppCompatActivity {
+    private TextView tvIDHoadon, tvDateHoadon, tvSanphamHoadon,
+            tvNameHoadon, tvDiachiHoadon, tvSDTHoadon, tvPhuongthucHoadon, tvGhichuHoadon, tvTongtienHoadon;
+    private Button btnHoanthanhHoadon, btnXuatPDFHoadon;
 
-    private ImageView imgAdminFinishHD;
-    private TextView tvAdminMaHD, tvAdminDateHD, tvAdminNameHD, tvAdminAddressHD, tvAdminSdtHD, tvAdminTotalHD, tvAdminStatusHD;
-    private RecyclerView rcvAminHD;
-    private Button btnAdminUpdate;
-    private HoaDon hoaDon;
-    private ArrayList<Product> mlist;
-    private AdminCTHDAdapter adapter;
-    private GioHangPresenter gioHangPresenter;
-    private HoaDonPreSenter hoaDonPreSenter;
+    private String idhoadon, ngaydat, hoten, diachi, sdt, phuongthuc, ghichu, sanpham, tienthanhtoan;
+    private Bitmap bmp,scalebmp;
 
-    private Button btnExportHD;
-    private int num = 0;
     int pageWidth = 1200;
     private Date dateObj;
     private DateFormat dateFormat;
+
+    private Product product;
+    private ArrayList<Product> mlist;
     private int i = 0;
     private int j = 0;
     private String total = "";
     private int tong = 0;
-    private Bitmap bmp,scalebmp;
+    private int num = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_cthdactivity);
+        setContentView(R.layout.activity_order_success);
 
         InitWidget();
         Init();
@@ -82,29 +68,22 @@ public class AdminCTHDActivity extends AppCompatActivity implements GioHangView,
     }
 
     private void Event() {
-        imgAdminFinishHD.setOnClickListener(new View.OnClickListener() {
+
+        btnHoanthanhHoadon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
 
-        btnAdminUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DiaLogUpDate();
-//                Toast.makeText(AdminCTHDActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-//                finish();
-            }
-        });
-
-        btnExportHD.setOnClickListener(new View.OnClickListener() {
+        btnXuatPDFHoadon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 num++;
                 CreatePDF();
             }
         });
+
     }
 
     private void CreatePDF() {
@@ -137,10 +116,10 @@ public class AdminCTHDActivity extends AppCompatActivity implements GioHangView,
         myPaint.setTextAlign(Paint.Align.LEFT);
         myPaint.setTextSize(35f);
         myPaint.setColor(Color.BLACK);
-        canvas.drawText("Tên khách hàng: " + hoaDon.getHoten(), 20, 590, myPaint);
-        canvas.drawText("Liên hệ: " + hoaDon.getSdt(), 20, 640, myPaint);
-        canvas.drawText("Địa chỉ: " + hoaDon.getDiachi(), 20, 690, myPaint);
-        canvas.drawText("Phương thức: " + hoaDon.getPhuongthuc(), 20, 740, myPaint);
+        canvas.drawText("Tên khách hàng: " + hoten, 20, 590, myPaint);
+        canvas.drawText("Liên hệ: " + sdt, 20, 640, myPaint);
+        canvas.drawText("Địa chỉ: " + diachi, 20, 690, myPaint);
+        canvas.drawText("Phương thức: " + phuongthuc, 20, 740, myPaint);
 
 //        if (!ghichu.equals("")){
 //            myPaint.setTextAlign(Paint.Align.LEFT);
@@ -150,9 +129,9 @@ public class AdminCTHDActivity extends AppCompatActivity implements GioHangView,
 //        }
 
         myPaint.setTextAlign(Paint.Align.RIGHT);
-        canvas.drawText("ID hóa đơn: " + hoaDon.getId(), pageWidth-20, 590, myPaint);
+        canvas.drawText("ID hóa đơn: " + idhoadon, pageWidth-20, 590, myPaint);
 
-        canvas.drawText("Ngày đặt: " + hoaDon.getNgaydat(), pageWidth-20, 640, myPaint);
+        canvas.drawText("Ngày đặt: " + ngaydat, pageWidth-20, 640, myPaint);
 
         dateFormat = new SimpleDateFormat("HH:mm:ss");
         canvas.drawText("Thời gian: " + dateFormat.format(dateObj), pageWidth-20, 690, myPaint);
@@ -178,7 +157,7 @@ public class AdminCTHDActivity extends AppCompatActivity implements GioHangView,
         for (Product product: mlist){
             i++;
             if (product.getTensp().length() > 20 ){
-                s = product.getTensp().substring(0,20) + "...";
+                 s = product.getTensp().substring(0,20) + "...";
             } else s = product.getTensp();
 
             canvas.drawText(i + ". ", 40, 950+j, myPaint);
@@ -195,7 +174,7 @@ public class AdminCTHDActivity extends AppCompatActivity implements GioHangView,
         }
 
         try {
-            Number number = NumberFormat.getInstance().parse(hoaDon.getTongtien());
+            Number number = NumberFormat.getInstance().parse(tienthanhtoan);
             tong = Integer.parseInt(String.valueOf(number));
         } catch (ParseException e) {
             e.printStackTrace();
@@ -225,12 +204,12 @@ public class AdminCTHDActivity extends AppCompatActivity implements GioHangView,
         myPaint.setTextAlign(Paint.Align.LEFT);
         canvas.drawText("Tổng:", 700, 1950, myPaint);
         myPaint.setTextAlign(Paint.Align.RIGHT);
-        canvas.drawText(hoaDon.getTongtien() + " đ", pageWidth-40, 1950, myPaint);
+        canvas.drawText(tienthanhtoan + " đ", pageWidth-40, 1950, myPaint);
 
         myPdfDocument.finishPage(myPage);
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-                .getAbsolutePath() + "/Admin-Invoice-" + currentDate + "-" + num + ".pdf");
+                .getAbsolutePath() + "/NVC-Invoice-" + currentDate + "-" + num + ".pdf");
 
         try {
             myPdfDocument.writeTo(new FileOutputStream(file));
@@ -238,67 +217,36 @@ public class AdminCTHDActivity extends AppCompatActivity implements GioHangView,
             e.printStackTrace();
         }
         myPdfDocument.close();
-        Toast.makeText(this, "In hóa đơn hoàn tất", Toast.LENGTH_SHORT).show();
-    }
-
-    private void DiaLogUpDate() {
-        Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.dialog_update_trangthai);
-        dialog.show();
-
-
-        Spinner spiner = dialog.findViewById(R.id.spinerCapNhat);
-        String[] s = {"Chọn Mục","Đang xử lý","Đang giao hàng","Giao hàng thành công","Hủy hàng"} ;
-        ArrayAdapter arrayAdapter  = new ArrayAdapter(this, android.R.layout.simple_list_item_1,s);
-        spiner.setAdapter( arrayAdapter);
-        spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position>0){
-                    hoaDonPreSenter.CapNhatTrangThai(position,hoaDon.getId());
-                    adapter.notifyDataSetChanged();
-                    tvAdminStatusHD.setText(s[position]);
-                    Toast.makeText(AdminCTHDActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                    dialog.cancel();
-        }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
+        Toast.makeText(this, "Đã xuất File. Xem trong mục lưu trữ", Toast.LENGTH_SHORT).show();
     }
 
     private void Init() {
-        mlist = new ArrayList<>();
+
         Intent intent = getIntent();
-        hoaDon = (HoaDon) intent.getSerializableExtra("CTHD");
-        tvAdminMaHD.setText(hoaDon.getId());
-        tvAdminDateHD.setText(hoaDon.getNgaydat());
-        tvAdminNameHD.setText(hoaDon.getHoten());
-        tvAdminAddressHD.setText(hoaDon.getDiachi());
-        tvAdminSdtHD.setText(hoaDon.getSdt());
-        tvAdminTotalHD.setText(hoaDon.getTongtien());
-        switch ((int) hoaDon.getType()){
-            case  1:
-                tvAdminStatusHD.setText("Đang xử lý");
-                break;
-            case  2:
-                tvAdminStatusHD.setText("Đang giao hàng");
-                break;
-            case  3:
-                tvAdminStatusHD.setText("Giao Hàng Thành Công");
-                btnExportHD.setVisibility(View.VISIBLE);
-                break;
-            case  4:
-                tvAdminStatusHD.setText("Hủy Đơn Hàng");
-                break;
-        }
-        hoaDonPreSenter = new HoaDonPreSenter(this);
-        gioHangPresenter = new GioHangPresenter(this);
-        gioHangPresenter.HandlegetDataCTHD(hoaDon.getId(),hoaDon.getUid());
+        idhoadon = intent.getStringExtra("idhoadon");
+        ngaydat = intent.getStringExtra("ngaydat");
+        hoten = intent.getStringExtra("hoten");
+        diachi = intent.getStringExtra("diachi");
+        sdt = intent.getStringExtra("sdt");
+        phuongthuc = intent.getStringExtra("phuongthuc");
+        ghichu = intent.getStringExtra("ghichu");
+        sanpham = intent.getStringExtra("sanpham");
+        tienthanhtoan = intent.getStringExtra("tienthanhtoan");
+
+        mlist = new ArrayList<>();
+        mlist = (ArrayList<Product>) intent.getSerializableExtra("serialzable");
+
+
+        tvIDHoadon.setText(idhoadon);
+        tvDateHoadon.setText(ngaydat);
+        tvNameHoadon.setText(hoten);
+        tvDiachiHoadon.setText(diachi);
+        tvSDTHoadon.setText(sdt);
+        tvPhuongthucHoadon.setText(phuongthuc);
+        tvGhichuHoadon.setText(ghichu);
+        tvSanphamHoadon.setText(sanpham);
+        tvTongtienHoadon.setText(tienthanhtoan);
+
 
         ActivityCompat.requestPermissions(this, new String[]
                 {Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
@@ -306,43 +254,20 @@ public class AdminCTHDActivity extends AppCompatActivity implements GioHangView,
 
         bmp = BitmapFactory.decodeResource(getResources(), R.drawable.pizzahead);
         scalebmp = Bitmap.createScaledBitmap(bmp, 1200, 518, false);
+
     }
 
     private void InitWidget() {
-        imgAdminFinishHD = findViewById(R.id.img_admin_finish);
-        tvAdminMaHD = findViewById(R.id.tv_admin_mahd);
-        tvAdminDateHD = findViewById(R.id.tv_admin_datehd);
-        tvAdminNameHD = findViewById(R.id.tv_admin_namehd);
-        tvAdminAddressHD = findViewById(R.id.tv_admin_addresshd);
-        tvAdminSdtHD = findViewById(R.id.tv_admin_sdthd);
-        tvAdminTotalHD = findViewById(R.id.tv_admin_totalhd);
-        tvAdminStatusHD = findViewById(R.id.tv_admin_statushd);
-        rcvAminHD = findViewById(R.id.rcv_admin_hd);
-        btnAdminUpdate = findViewById(R.id.btn_admin_updatehd);
-        btnExportHD = findViewById(R.id.btn_admin_export_hd);
-    }
-
-    @Override
-    public void OnSucess() {
-
-    }
-
-    @Override
-    public void getDataHD(String id, String uid, String ghichu, String diachi, String hoten, String ngaydat, String phuongthuc, String sdt, String tongtien, Long type) {
-
-    }
-
-    @Override
-    public void OnFail() {
-
-    }
-
-    @Override
-    public void getDataSanPham(String id, String idsp, String tensp, Long giatien, String hinhanh, String loaisp, String mota, Long soluong, String hansudung, Long type, String trongluong) {
-        mlist.add(new Product(id,idsp,tensp,giatien,hinhanh,loaisp,mota,soluong,hansudung,type,trongluong));
-        adapter = new AdminCTHDAdapter();
-        adapter.setData(mlist);
-        rcvAminHD.setLayoutManager(new LinearLayoutManager(this));
-        rcvAminHD.setAdapter(adapter);
+        tvIDHoadon = findViewById(R.id.tv_id_hoadon);
+        tvDateHoadon = findViewById(R.id.tv_date_hoadon);
+        tvNameHoadon = findViewById(R.id.tv_name_hoadon);
+        tvDiachiHoadon = findViewById(R.id.tv_diachi_hoadon);
+        tvSDTHoadon = findViewById(R.id.tv_sdt_hoadon);
+        tvPhuongthucHoadon = findViewById(R.id.tv_phuongthuc_hoadon);
+        tvGhichuHoadon = findViewById(R.id.tv_ghichu_hoadon);
+        tvSanphamHoadon = findViewById(R.id.tv_sanpham_hoadon);
+        tvTongtienHoadon = findViewById(R.id.tv_tongtien_hoadon);
+        btnHoanthanhHoadon = findViewById(R.id.btn_hoanthanh_hoadon);
+        btnXuatPDFHoadon = findViewById(R.id.btn_xuat_pdf_hoadon);
     }
 }

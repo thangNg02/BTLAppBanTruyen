@@ -29,6 +29,7 @@
         app:mbn_defaultIconColor="#A59B9B"
         app:mbn_rippleColor="#2FFFFFFF"
         app:mbn_selectedIconColor="#FFFFFF"
-        app:mbn_shadowColor="#1f212121" />
+        app:mbn_shadowColor="#1f212121"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

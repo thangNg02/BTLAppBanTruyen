@@ -48,6 +48,7 @@ import com.example.doan_tmdt.Models.LoaiProduct;
 import com.example.doan_tmdt.Models.Product;
 import com.example.doan_tmdt.Presenter.GioHangPresenter;
 import com.example.doan_tmdt.R;
+import com.example.doan_tmdt.View.CartActivity;
 import com.example.doan_tmdt.View.CategoryActivity;
 import com.example.doan_tmdt.View.ChatActivity;
 import com.example.doan_tmdt.View.DetailSPActivity;
@@ -114,9 +115,9 @@ public class HomeFragment extends Fragment {
     //Search Data
     private EditText edtSearchHome;
 
-    private ImageView imgHomeFavorite, imgHomeMessage;
+    private ImageView imgHomeMessage, imgHomeCart;
 
-    private TextView tvNumberFavorite;
+    private TextView tvNumberCart;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -144,15 +145,21 @@ public class HomeFragment extends Fragment {
     }
 
     private void LoadFavorite() {
-        firestore.collection("Favorite").whereEqualTo("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid())
+        firestore.collection("Favorite").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection("ALL")
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 if (queryDocumentSnapshots.size() > 0){
-                    tvNumberFavorite.setVisibility(View.VISIBLE);
-                    tvNumberFavorite.setText(queryDocumentSnapshots.size()+"");
+                    int num = 0;
+                    Log.d("numCart", "Number: " + queryDocumentSnapshots.size());
+                    for (QueryDocumentSnapshot q : queryDocumentSnapshots){
+                        num++;
+                        tvNumberCart.setVisibility(View.VISIBLE);
+                        tvNumberCart.setText(num+"");
+                    }
                 } else {
-                    tvNumberFavorite.setVisibility(View.GONE);
+                    tvNumberCart.setVisibility(View.GONE);
                 }
             }
         });
@@ -223,20 +230,20 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        imgHomeFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), FavoriteActivity.class);
-                startActivity(intent);
-            }
-        });
-
         imgHomeMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent2 = new Intent(getContext(), ChatActivity.class);
                 intent2.putExtra("message", 2);
                 startActivity(intent2);
+            }
+        });
+
+        imgHomeCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), CartActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -595,9 +602,9 @@ public class HomeFragment extends Fragment {
     }
 
     private void InitWidget() {
+        imgHomeCart = view.findViewById(R.id.img_home_cart);
         swipeHome = view.findViewById(R.id.swipe_home);
-        tvNumberFavorite = view.findViewById(R.id.tv_number_favorite);
-        imgHomeFavorite = view.findViewById(R.id.img_home_favorite);
+        tvNumberCart = view.findViewById(R.id.tv_number_cart);
         imgHomeMessage = view.findViewById(R.id.img_home_message);
         edtSearchHome = view.findViewById(R.id.edt_search_home);
 

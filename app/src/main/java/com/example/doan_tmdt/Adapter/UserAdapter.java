@@ -1,5 +1,6 @@
 package com.example.doan_tmdt.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -122,6 +123,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
 
         reference.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
@@ -131,7 +133,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
                             chat.getReceiver().equals(userid) && chat.getSender().equals("WvPK8OV0erKJP8w2KZNp")){
                         theLastMessage = chat.getMessage();
                         Log.d("chat", chat.getMessage()+"");
-                    } if (chat.getReceiver().equals(userid)){
+                    } if (chat.getSender().equals(userid) || chat.getReceiver().equals(userid)){
                         theLastMessage = chat.getMessage();
                     }
 

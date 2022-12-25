@@ -94,7 +94,6 @@ public class Giohang {
                         map_chitiet.put("id_hoadon",task.getResult().getId());
                         map_chitiet.put("id_product",sanPhamModels.getIdsp());
                         map_chitiet.put("soluong",sanPhamModels.getSoluong());
-
                         db.collection("ChitietHoaDon").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                 .collection("ALL").add(map_chitiet).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                             @Override
@@ -119,16 +118,7 @@ public class Giohang {
                                             }
                                         }
                                     });
-//                                            document(sanPhamModels.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                        @Override
-//                                        public void onComplete(@NonNull Task<Void> task) {
-//                                            if(task.isSuccessful()){
-//                                                callback.OnSucess();
-//                                            }else{
-//                                                callback.OnFail();
-//                                            }
-//                                        }
-//                                    });
+
                                 }
 
                             }

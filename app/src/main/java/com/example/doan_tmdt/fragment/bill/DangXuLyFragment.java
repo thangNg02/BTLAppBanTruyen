@@ -69,6 +69,7 @@ public class DangXuLyFragment extends Fragment implements HoaDonView {
                 HoaDon hoaDon = listHoadon.get(pos);
                 Intent intent = new Intent(getContext(), CTHDActivity.class);
                 intent.putExtra("HD",hoaDon);
+                intent.putExtra("CM", false);
                 startActivity(intent);
             }
         });

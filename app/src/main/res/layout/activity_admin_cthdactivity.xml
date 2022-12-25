@@ -5,17 +5,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <Button
+    <LinearLayout
+        android:gravity="center"
         android:layout_marginBottom="20dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/border3"
-        app:backgroundTint="#FF5722"
-        android:id="@+id/btn_admin_updatehd"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:elevation="5dp"
-        android:text="Cập nhật trạng thái"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/border3"
+            app:backgroundTint="#FF5722"
+            android:id="@+id/btn_admin_updatehd"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:elevation="5dp"
+            android:text="Cập nhật trạng thái"/>
+        <Button
+            android:visibility="gone"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/border3"
+            app:backgroundTint="#FFFFFF"
+            android:id="@+id/btn_admin_export_hd"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:elevation="5dp"
+            android:textColor="#2196F3"
+            android:text="In hóa đơn"/>
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"

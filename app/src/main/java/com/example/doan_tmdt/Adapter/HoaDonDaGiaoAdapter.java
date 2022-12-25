@@ -29,24 +29,27 @@ import org.jetbrains.annotations.NotNull;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapter.ViewHolder> {
     private Context context;
     private ArrayList<Product> list;
     private IClickCTHD iClickCTHD;
+    private int type;
 
-    public void setDataHoaDonDaGiao(Context context, ArrayList<Product> list, IClickCTHD iClickCTHD) {
+    public void setDataHoaDonDaGiao(Context context, ArrayList<Product> list, int type, IClickCTHD iClickCTHD) {
         this.context = context;
         this.list = list;
+        this.type = type;
         this.iClickCTHD = iClickCTHD;
         notifyDataSetChanged();
-    }
-    public Boolean TrangThaiDaGiao(boolean b){
-        return b;
+
     }
 
-    public Boolean TrangThaiKhac(boolean c){
-        return c;
-    }
+//    public Boolean TrangThaiDaGiao(boolean b){
+//        return b;
+//    }
+
 
 
 
@@ -54,7 +57,10 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
     @Override
     public HoaDonDaGiaoAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view;
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dong_hoadon_dagiao, parent, false);
+        if (type == 1){
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dong_hoadon_dagiao, parent, false);
+        } else view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dong_hoadon_khac, parent, false);
+
         return new HoaDonDaGiaoAdapter.ViewHolder(view);
     }
 
@@ -76,10 +82,6 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
 //            }
 //        });
 
-//        if (TrangThaiKhac(true)){
-//            holder.btnDongDanhGia.setVisibility(View.GONE);
-//        } else holder.btnDongDanhGia.setVisibility(View.VISIBLE);
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("BinhLuan").whereEqualTo("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -87,7 +89,6 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 for (QueryDocumentSnapshot q : queryDocumentSnapshots){
                     if (product.getIdsp().equals(q.getString("idproduct"))){
-                        holder.btnDongDanhGia.setVisibility(View.VISIBLE);
                         holder.btnDongDanhGia.setEnabled(false);
                         holder.btnDongDanhGia.setText("Đã đánh giá");
                     }
@@ -95,11 +96,6 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
 
             }
         });
-        if (TrangThaiDaGiao(false)){
-            holder.btnDongDanhGia.setVisibility(View.VISIBLE);
-            holder.btnDongDanhGia.setEnabled(false);
-            holder.btnDongDanhGia.setText("Đã đánh giá");
-        }
 
         holder.btnDongDanhGia.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +103,7 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
                 iClickCTHD.onClickCTHD(position);
             }
         });
+
 
     }
 
@@ -121,7 +118,7 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
 
         private ConstraintLayout constraintDongDanhGia;
         private TextView tvTen, tvHansudung, tvSoluong, tvDongia, tvTotal;
-        private ImageView img;
+        private CircleImageView img;
         private Button btnDongDanhGia;
 
         public ViewHolder(@NonNull @NotNull View itemView) {

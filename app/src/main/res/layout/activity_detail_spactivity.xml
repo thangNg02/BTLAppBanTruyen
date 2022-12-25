@@ -54,6 +54,17 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <View
+        android:layout_gravity="center|bottom"
+        android:id="@+id/view_end_animation"
+        android:visibility="invisible"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
+
+
+
     <androidx.core.widget.NestedScrollView
         android:background="@drawable/layout_bg"
         android:layout_width="match_parent"
@@ -229,5 +240,14 @@
         android:layout_marginRight="30dp"
         app:backgroundTint="#FF5722"
         android:backgroundTint="#FF5722"/>
+
+    <ImageView
+        app:layout_anchor="@id/appbar"
+        app:layout_anchorGravity="end|bottom"
+        android:layout_marginRight="30dp"
+        android:id="@+id/view_animation"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:visibility="invisible"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

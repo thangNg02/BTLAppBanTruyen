@@ -19,6 +19,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginStart="4dp"
+        android:layout_marginBottom="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/pop_1"/>
@@ -143,6 +144,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
+        android:visibility="gone"
         android:id="@+id/btn_dong_danhgia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

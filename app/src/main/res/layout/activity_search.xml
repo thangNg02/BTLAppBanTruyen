@@ -40,42 +40,48 @@
                     android:text="Tìm kiếm" />
             </RelativeLayout>
 
-            <LinearLayout
-                android:weightSum="10"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
+                <LinearLayout
+                    android:weightSum="10"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                <androidx.appcompat.widget.SearchView
-                    android:layout_weight="8"
-                    android:id="@+id/search_view"
-                    android:background="@drawable/search_view_bg"
-                    android:layout_width="0dp"
-                    android:layout_height="45dp"
-                    app:queryHint="Món ăn yêu thích ...."
-                    app:iconifiedByDefault="false"
-                    app:queryBackground="@null"/>
-                <ImageView
-                    android:layout_weight="1"
-                    android:id="@+id/img_mic"
-                    android:layout_marginStart="10dp"
-                    android:layout_gravity="center"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_mic"/>
+                    <androidx.appcompat.widget.SearchView
+                        android:layout_weight="8"
+                        android:id="@+id/search_view"
+                        android:background="@drawable/search_view_bg"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        app:queryHint="Món ăn yêu thích ...."
+                        app:iconifiedByDefault="false"
+                        app:queryBackground="@null">
+                    </androidx.appcompat.widget.SearchView>
+                    <ImageView
+                        android:layout_weight="1"
+                        android:id="@+id/img_mic"
+                        android:layout_marginStart="10dp"
+                        android:layout_gravity="center"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_mic"/>
 
-                <ImageView
-                    android:id="@+id/img_qrcode"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_qr"/>
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/img_qrcode"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_qr"/>
+                </LinearLayout>
+            </RelativeLayout>
+
 
 
 

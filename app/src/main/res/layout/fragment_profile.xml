@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        app:srcCompat="@drawable/top_background"
+        app:srcCompat="@drawable/layout_bg3"
         android:scaleType="fitXY"/>
         <LinearLayout
             android:layout_marginTop="5dp"
@@ -43,7 +43,7 @@
         android:orientation="vertical"
         android:gravity="center">
     <RelativeLayout
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="70dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <de.hdodenhof.circleimageview.CircleImageView
