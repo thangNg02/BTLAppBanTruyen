@@ -14,6 +14,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        android:minSdkVersion="30" />
 
     <application
         android:allowBackup="true"
@@ -28,7 +30,10 @@
         <activity android:name=".View.OrderSuccessActivity" />
         <activity
             android:name=".View.ChatActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"/>
         <activity android:name=".View.MessageActivity" />
         <activity android:name=".View.DanhGiaActivity" />
         <activity android:name=".View.FavoriteActivity" />
@@ -86,6 +91,8 @@
         <activity
             android:name=".View.SignInActivity"
             android:exported="true" />
+
+
         <activity
             android:name=".View.CaptureAct"
             android:screenOrientation="portrait"

@@ -3,10 +3,16 @@ package com.example.doan_tmdt.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +29,7 @@ import com.example.doan_tmdt.ChatBot.RetrofitAPI;
 import com.example.doan_tmdt.MainActivity;
 import com.example.doan_tmdt.Models.Chat;
 import com.example.doan_tmdt.Models.User;
+import com.example.doan_tmdt.Notification.MyApplication;
 import com.example.doan_tmdt.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,6 +48,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -155,6 +163,34 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
     }
+    private void sendPushNotification(String sender, String message) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_food2);
+        Intent notifyIntent = new Intent(this, ChatActivity.class);
+        notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent notifyPendingIntent = PendingIntent.getActivity(
+                this, getNotificationId(), notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+        Notification notification = new NotificationCompat.Builder(this, MyApplication.CHANNEL_ID)
+                .setContentTitle(sender)
+                .setContentText(message)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setLargeIcon(bitmap)
+                .setAutoCancel(true)    // Tự động xóa Notification sau khi user đã click vào
+
+                // truyền vào notifyPendingIntent đã khai báo ở trên đối với Special Activity
+                .setContentIntent(notifyPendingIntent)
+
+                .setColor(getResources().getColor(R.color.Orange))
+                .build();
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+        notificationManagerCompat.notify(getNotificationId(), notification);
+    }
+
+    private int getNotificationId(){
+        return (int) new Date().getTime();
+    }
 
     private void sendMessage(String sender, String receiver, String message){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -185,6 +221,9 @@ public class MessageActivity extends AppCompatActivity {
 
             }
         });
+
+//        sendPushNotification(sender, message);
+
 
 
     }

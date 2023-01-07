@@ -251,4 +251,21 @@ public class HoaDon implements Serializable {
             });
         }
     }
+
+    public void HandleGetHoaDonDaGiao(){
+        db.collection("HoaDon").whereEqualTo("trangthai",3)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                if(queryDocumentSnapshots.size()>0){
+                    for(QueryDocumentSnapshot d : queryDocumentSnapshots){
+                        callback.getDataHD(d.getId(),d.getString("UID"),d.getString("ghichu"),d.getString("diachi"),
+                                d.getString("hoten"),d.getString("ngaydat"),d.getString("phuongthuc"),d.getString("sdt"),
+                                d.getString("tongtien"),d.getLong("trangthai"));
+                    }
+                }
+
+            }
+        });
+    }
 }

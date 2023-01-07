@@ -25,6 +25,10 @@ public class HoaDonPreSenter implements IHoaDon {
         callback.getDataHD(id,uid,ghichu,diachi,hoten,ngaydat,phuongthuc,sdt,tongtien,type);
     }
 
+    public void HandleGetDataHDDaGiao(){
+        hoaDonModels.HandleGetHoaDonDaGiao();
+    }
+
     @Override
     public void OnSucess() {
         callback.OnSucess();
