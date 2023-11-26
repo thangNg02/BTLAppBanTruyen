@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.doan_tmdt">
+    package="com.example.btlAndroidG13">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the "MyLocation" functionality.
     -->
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA"
+        tools:ignore="PermissionImpliesUnsupportedChromeOsHardware" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -19,28 +20,28 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_food2"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_food2_round"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DoAn_TMDT"
         android:usesCleartextTraffic="true"
         tools:replace="android:theme">
-        <activity android:name=".View.CartActivity"></activity>
-        <activity android:name=".View.OrderSuccessActivity" />
+        <activity android:name="com.example.btlAndroidG13.View.CartActivity"></activity>
+        <activity android:name="com.example.btlAndroidG13.View.OrderSuccessActivity" />
         <activity
-            android:name=".View.ChatActivity"
+            android:name="com.example.btlAndroidG13.View.ChatActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:taskAffinity=""
             android:excludeFromRecents="true"/>
-        <activity android:name=".View.MessageActivity" />
-        <activity android:name=".View.DanhGiaActivity" />
-        <activity android:name=".View.FavoriteActivity" />
-        <activity android:name=".View.CommentActivity" />
-        <activity android:name=".View.DetailSPActivity" />
-        <activity android:name=".View.Admin.AdminUsersActivity" />
-        <activity android:name=".View.SearchActivity" />
+        <activity android:name="com.example.btlAndroidG13.View.MessageActivity" />
+        <activity android:name="com.example.btlAndroidG13.View.DanhGiaActivity" />
+        <activity android:name="com.example.btlAndroidG13.View.FavoriteActivity" />
+        <activity android:name="com.example.btlAndroidG13.View.CommentActivity" />
+        <activity android:name="com.example.btlAndroidG13.View.DetailSPActivity" />
+        <activity android:name="com.example.btlAndroidG13.View.Admin.AdminUsersActivity" />
+        <activity android:name="com.example.btlAndroidG13.View.SearchActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -53,31 +54,31 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".View.Admin.AdminCTHDActivity" />
-        <activity android:name=".View.Admin.AdminAddLoaiSPActivity" />
-        <activity android:name=".View.Admin.AdminAddSPActivity" />
-        <activity android:name=".View.Admin.AdminProductActivity" />
-        <activity android:name=".View.Admin.AdminChartBillActivity" />
+        <activity android:name="com.example.btlAndroidG13.View.Admin.AdminCTHDActivity" />
+        <activity android:name="com.example.btlAndroidG13.View.Admin.AdminAddLoaiSPActivity" />
+        <activity android:name="com.example.btlAndroidG13.View.Admin.AdminAddSPActivity" />
+        <activity android:name="com.example.btlAndroidG13.View.Admin.AdminProductActivity" />
+        <activity android:name="com.example.btlAndroidG13.View.Admin.AdminChartBillActivity" />
         <activity
-            android:name=".View.Admin.AdminBillMainActivity"
+            android:name="com.example.btlAndroidG13.View.Admin.AdminBillMainActivity"
             android:exported="true" />
         <activity
-            android:name=".View.Admin.AdminHomeActivity"
+            android:name="com.example.btlAndroidG13.View.Admin.AdminHomeActivity"
             android:exported="true" />
         <activity
-            android:name=".View.CTHDActivity"
+            android:name="com.example.btlAndroidG13.View.CTHDActivity"
             android:exported="true" />
         <activity
-            android:name=".View.CategoryActivity"
+            android:name="com.example.btlAndroidG13.View.CategoryActivity"
             android:exported="true" />
         <activity
-            android:name=".View.ForgotPasswordActivity"
+            android:name="com.example.btlAndroidG13.View.ForgotPasswordActivity"
             android:exported="true" />
         <activity
-            android:name=".View.SignUpActivity"
+            android:name="com.example.btlAndroidG13.View.SignUpActivity"
             android:exported="true" />
         <activity
-            android:name=".SplashActivity"
+            android:name="com.example.btlAndroidG13.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -86,21 +87,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.btlAndroidG13.MainActivity"
             android:exported="true" />
         <activity
-            android:name=".View.SignInActivity"
+            android:name="com.example.btlAndroidG13.View.SignInActivity"
             android:exported="true" />
 
 
         <activity
-            android:name=".View.CaptureAct"
+            android:name="com.example.btlAndroidG13.View.CaptureAct"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme" />
 
         <receiver
-            android:name=".ultil.MyReceiver"
+            android:name="com.example.btlAndroidG13.ultil.MyReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

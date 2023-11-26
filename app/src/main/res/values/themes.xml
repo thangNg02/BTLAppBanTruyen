@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.DoAn_TMDT" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#FF5722</item>
-        <item name="colorPrimaryVariant">#FF5722</item>
+        <item name="colorPrimary">#31CAD6</item>
+        <item name="colorPrimaryVariant">#31CAD6</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#008EFF</item>
@@ -18,7 +18,7 @@
     </style>
 
     <style name="CollapsingToolbarLayoutExpandedTextStyle" parent="AppTheme">
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">20dp</item>
         <item name="android:textStyle">bold</item>
     </style>

@@ -7,9 +7,9 @@
         android:id="@+id/textViewCountryName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
+        android:text="BookApp"
         android:textSize="16sp"
-        android:textColor="#2196F3"
+        android:textColor="@color/blueBook"
         android:padding="10dp"/>
     <View
         android:layout_width="match_parent"

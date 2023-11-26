@@ -17,7 +17,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/border3"
-            app:backgroundTint="#FF5722"
+            app:backgroundTint="@color/blueBook"
             android:id="@+id/btn_admin_updatehd"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
@@ -59,14 +59,15 @@
                 android:layout_marginStart="-25dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <TextView
-                    android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:text="Chi tiết hóa đơn"
+                    android:textColor="@color/blueBook"
                     android:textSize="20sp"
-                    android:textColor="#FF5722"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
             </RelativeLayout>
 
         </LinearLayout>

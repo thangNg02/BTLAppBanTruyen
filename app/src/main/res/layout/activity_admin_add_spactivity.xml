@@ -12,7 +12,7 @@
             android:id="@+id/layout_add"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#FF5722"
+            android:background="@color/blueBook"
             android:gravity="center_vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -61,7 +61,7 @@
             android:layout_marginTop="35dp"
             android:layout_marginEnd="10dp"
             android:scaleType="fitXY"
-            android:src="@drawable/pl"
+            android:src="@drawable/uploadimage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/edt_tensp"
             app:layout_constraintTop_toBottomOf="@id/layout_add" />
@@ -72,7 +72,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:text="Tên sản phẩm:"
-            android:textColor="#FF5722"
+            android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_add" />
@@ -93,7 +93,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:text="Giá tiền (VNĐ):"
-            android:textColor="#FF5722"
+            android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edt_tensp" />
@@ -150,7 +150,7 @@
                     android:id="@+id/btn_danhmuc"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    app:backgroundTint="#FF5722"
+                    app:backgroundTint="@color/blueBook"
                     android:background="@drawable/curve_bottom"
                     android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
                     android:text="Bàn phím"
@@ -186,7 +186,7 @@
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="Hạn sử dụng:"
+                    android:text="Ngày xuất bản:"
                     android:textSize="15sp" />
 
                 <EditText
@@ -283,7 +283,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mô tả chi tiết sản phẩm"
+                    android:text="Giới thiệu sơ qua về truyện"
                     android:textColor="#009688"
 
                     android:textSize="16sp"

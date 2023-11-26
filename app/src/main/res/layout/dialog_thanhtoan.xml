@@ -18,11 +18,11 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="end"
-            android:background="#FF5722"
+            android:background="@color/dark_gray"
             android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
         <TextView
-            android:textColor="#FF5722"
+            android:textColor="@color/blueBook"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
 
 
         <Button
-            app:backgroundTint="#FF5722"
+            app:backgroundTint="@color/blueBook"
             android:id="@+id/btn_xacnhan"
             android:layout_width="match_parent"
             android:layout_height="55dp"

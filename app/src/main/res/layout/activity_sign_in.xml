@@ -4,17 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/background_signin_user">
+    android:background="@drawable/bground">
 
-    <pl.droidsonroids.gif.GifImageView
-        android:layout_marginTop="30dp"
-        android:layout_width="250dp"
-        android:layout_height="150dp"
-        android:src="@drawable/img_gofood"
-        android:layout_gravity="center"/>
+<ImageView
+    android:layout_width="130dp"
+    android:layout_height="130dp"
+    android:background="@drawable/logo_booknocolor"
+    android:layout_marginLeft="130dp"/>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="370dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginTop="30dp"
@@ -23,20 +22,26 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:orientation="vertical">
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
                 android:layout_margin="15dp"
+                app:hintTextColor="@color/blueBook"
                 android:background="@android:color/background_light">
 
                 <EditText
                     android:id="@+id/edt_email_user"
                     android:layout_width="match_parent"
                     android:layout_height="65dp"
+                    android:textColor="@color/black"
                     android:background="@drawable/button"
                     android:drawableRight="@drawable/ic_email"
                     android:hint="Nhập Email"
+                    android:textColorHint="@color/dark_gray"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -44,6 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
                 android:layout_margin="15dp"
+                app:hintTextColor="@color/blueBook"
                 android:background="@android:color/background_light"
                 app:passwordToggleEnabled="true">
 
@@ -53,6 +59,8 @@
                     android:layout_height="65dp"
                     android:background="@drawable/button"
                     android:hint="Nhập Mật Khẩu"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/dark_gray"
                     android:inputType="textPassword"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -77,7 +85,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/button"
-                app:backgroundTint="#F44336"
+                app:backgroundTint="#65C8D0"
                 android:elevation="8dp"
                 android:text="Đăng Nhập" />
             <Button

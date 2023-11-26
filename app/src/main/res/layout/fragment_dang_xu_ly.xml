@@ -5,12 +5,12 @@
 
     <TextView
         android:id="@+id/tv_null_dangxuly"
-        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Đơn hàng đang trống"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:text="Đơn hàng đang trống"/>
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -51,7 +51,7 @@
             android:maxLines="1"
             android:singleLine="true"
             android:text="PC 2021 Asus"
-            android:textColor="#FF5722"
+            android:textColor="@color/blueBook"
             android:textSize="18sp"
             android:textStyle="bold"/>
 

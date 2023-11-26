@@ -5,7 +5,6 @@
     <corners
         android:radius="190dp"/>
     <solid
-        android:color="#FFFFFF"/>
-    <gradient
-        android:startColor="#FF9800"/>
+        android:color="@color/blueBook"/>
+
 </shape>

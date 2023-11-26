@@ -23,10 +23,20 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/ic_user"/>
+        <ImageView
+            android:layout_marginStart="110dp"
+            android:layout_marginTop="-25dp"
+            android:id="@+id/imgV_users"
+            android:layout_toEndOf="@+id/cir_users"
+            android:layout_below="@+id/cir_users"
+            android:background="@drawable/dot_online"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
 
         <TextView
             android:maxLines="1"
             android:singleLine="true"
+            android:layout_marginTop="8dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:gravity="center"

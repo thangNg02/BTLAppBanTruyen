@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.HomeFragment"
     android:id="@+id/swipe_home">
@@ -38,7 +39,7 @@
                     android:id="@+id/cir_avatar_home"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/logo3"/>
+                    android:src="@drawable/img_1"/>
                 <EditText
                     android:clickable="false"
                     android:cursorVisible="false"
@@ -63,12 +64,14 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content">
+
                     <ImageView
-                        android:layout_centerHorizontal="true"
                         android:id="@+id/img_home_cart"
                         android:layout_width="30dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/ic_cart4"/>
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_cart4"
+                        android:visibility="visible" />
 
                     <TextView
                         android:visibility="gone"
@@ -136,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
-                        android:textColor="#FF5722"
+                        android:textColor="@color/blueBook"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
@@ -144,7 +147,7 @@
                         android:text="Xin chào"
                         android:layout_marginEnd="5dp"/>
                     <TextView
-                        android:textColor="#FF5722"
+                        android:textColor="@color/blueBook"
                         android:id="@+id/tv_name_home"
                         android:layout_width="150dp"
                         android:maxLines="1"
@@ -166,21 +169,21 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="10dp"
+                                android:textSize="14dp"
                                 android:textStyle="italic"
-                                android:textColor="#FF5722"
+                                android:textColor="@color/blueBook"
                                 android:text="Email: "/>
                             <TextView
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:textStyle="italic"
                                 android:layout_marginStart="1dp"
-                                android:textColor="#FF5722"
+                                android:textColor="@color/blueBook"
                                 android:id="@+id/tv_email_home"
                                 android:layout_width="100dp"
                                 android:layout_height="wrap_content"
-                                android:textSize="10sp"
-                                android:text="nguyenvanchinh@gmail.com"/>
+                                android:textSize="14sp"
+                                android:text="xxx.com"/>
                         </LinearLayout>
                     </RelativeLayout>
                 </LinearLayout>
@@ -191,16 +194,22 @@
                 android:layout_marginStart="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:layout_width="370dp"
+                android:scaleType="fitCenter"
+                android:layout_height="160dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/bannerbook_2" />
             <TextView
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:id="@+id/txtsp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:elevation="5dp"
-                android:text="Danh Sách Sản Phẩm"
-                android:textColor="#FF5722"
+                android:text="Danh sách truyện | Hài hước"
+                android:textColor="@color/blueBook"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -216,8 +225,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:elevation="5dp"
-                android:text="Sản Phẩm Nổi Bật"
-                android:textColor="#FF5722"
+                android:text="Danh sách truyện | Hành động"
+                android:textColor="@color/blueBook"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -227,39 +236,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:text="Bạn ơi đặt món ngay đi"
-                android:textColor="#FF5722"
-                android:layout_marginBottom="2dp"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-            <LinearLayout
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:layout_width="190dp"
-                    android:layout_height="120dp"
-                    android:background="@drawable/banner1"/>
-                <ImageView
-                    android:layout_marginStart="5dp"
-                    android:layout_width="190dp"
-                    android:layout_height="120dp"
-                    android:background="@drawable/banner2"/>
-            </LinearLayout>
+
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Thức uống đa dạng cho bạn chọn"
-                android:textColor="#FF5722"
+                android:text="Bán chạy nhất | Nấu ăn"
+                android:textColor="@color/blueBook"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -270,20 +256,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <ImageView
-                android:layout_marginTop="10dp"
-                android:layout_width="370dp"
-                android:layout_height="130dp"
-                android:layout_marginStart="20dp"
-                android:background="@drawable/com" />
+<!--            <ImageView-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_width="370dp"-->
+<!--                android:layout_height="130dp"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:background="@drawable/x3" />-->
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Món ngon Hàn Quốc"
-                android:textColor="#FF5722"
+                android:text="Bán chạy nhất | Kiếm hiệp"
+                android:textColor="@color/blueBook"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -298,8 +284,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Lương về mời bạn ăn mì cay"
-                android:textColor="#FF5722"
+                android:text="Bán chạy nhất | Xuyên không"
+                android:textColor="@color/blueBook"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -309,74 +295,75 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <ImageView
-                android:layout_width="370dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
-                android:background="@drawable/flashs"/>
+<!--            <ImageView-->
+<!--                android:layout_width="370dp"-->
+<!--                android:layout_height="80dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:background="@drawable/x1"/>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
-                android:text="Món ăn được yêu thích của quán"
-                android:textColor="#FF5722"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:text="Bán chạy nhất | Thức uống"-->
+<!--                android:textColor="@color/blueBook"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold"/>-->
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcv_sp_yeuthich"
-                android:layout_marginStart="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/rcv_sp_yeuthich"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"/>-->
 
-            <ImageView
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
-                android:layout_width="390dp"
-                android:layout_height="150dp"
-                android:background="@drawable/banner3"/>
+<!--            <ImageView-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_width="390dp"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:background="@drawable/x1"/>-->
 
-            <TextView
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Lẩu cùng bạn bè và gia đình"
-                android:textColor="#FF5722"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+<!--            <TextView-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Bán chạy nhất | Đồ dùng gia đình"-->
+<!--                android:textColor="@color/blueBook"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold" />-->
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcv_sp_lau"
-                android:layout_marginStart="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/rcv_sp_lau"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content" />-->
 
-            <ImageView
-                android:layout_width="380dp"
-                android:layout_height="130dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
-                android:background="@drawable/kem"/>
+<!--            <ImageView-->
+<!--                android:layout_width="380dp"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:background="@drawable/x3"/>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
-                android:text="Gợi ý thêm các món ngon tại nhà hàng"
-                android:textColor="#FF5722"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:text="Bán chạy nhất | Đồ đóng hộp-->
+<!--"-->
+<!--                android:textColor="@color/blueBook"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold" />-->
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcv_sp_goiy"
-                android:layout_marginStart="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/rcv_sp_goiy"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"/>-->
 
             <ImageView
                 android:layout_width="match_parent"

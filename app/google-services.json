@@ -1,44 +1,27 @@
 {
   "project_info": {
-    "project_number": "710176436388",
-    "project_id": "doantmdt-ae252",
-    "storage_bucket": "doantmdt-ae252.appspot.com"
+    "project_number": "466735840833",
+    "firebase_url": "https://btl-android-g13-default-rtdb.firebaseio.com",
+    "project_id": "btl-android-g13",
+    "storage_bucket": "btl-android-g13.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:710176436388:android:f1c8ce892be05a718a3631",
+        "mobilesdk_app_id": "1:466735840833:android:382d5533cd3952df74d0c0",
         "android_client_info": {
-          "package_name": "com.example.doan_tmdt"
+          "package_name": "com.example.btlAndroidG13"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "710176436388-tgvdkqj03tjnv93jt68rr0nchd547k1g.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.doan_tmdt",
-            "certificate_hash": "a3bde450baec43568af455c3d95c5c0f393408a2"
-          }
-        },
-        {
-          "client_id": "710176436388-77pgfqrfrga829259nv1iokn69apvrk7.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDOO0pulpyWkgyQrVbdckJgywI6RKdozdQ"
+          "current_key": "AIzaSyCwcH1Wd03oyPMScqEOpl-bON8XJyvwB-8"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "710176436388-77pgfqrfrga829259nv1iokn69apvrk7.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

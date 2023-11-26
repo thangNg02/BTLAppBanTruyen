@@ -48,7 +48,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_money"
-                    app:tint="#FF5722"/>
+                    app:tint="@color/blueBook"/>
                 <TextView
                     android:layout_marginStart="2dp"
                     android:id="@+id/tv_gia_bottom"
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
                     android:text="40.000"
-                    android:textColor="#FF5722"
+                    android:textColor="@color/blueBook"
                     android:layout_toEndOf="@+id/ajfk"/>
                 <TextView
                     android:layout_marginStart="3dp"
@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
                     android:text="đ"
-                    android:textColor="#FF5722"
+                    android:textColor="@color/blueBook"
                     android:layout_toEndOf="@+id/tv_gia_bottom"/>
             </RelativeLayout>
 
@@ -137,5 +137,5 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Thêm vào giỏ hàng"
-        android:backgroundTint="#FF5722"/>
+        android:backgroundTint="@color/blueBook"/>
 </LinearLayout>

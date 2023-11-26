@@ -9,5 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="colorGray">#EEEEEE</color>
     <color name="Orange">#FF5722</color>
+    <color name="blueBook">#31CAD6</color>
 
 </resources>

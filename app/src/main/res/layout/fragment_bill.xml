@@ -13,7 +13,7 @@
         android:orientation="vertical">
         <TextView
             android:layout_marginTop="15dp"
-            android:textColor="#FF5722"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Đơn hàng của bạn"
@@ -22,7 +22,7 @@
             android:layout_gravity="center"/>
         <!-- Thuộc tính tabMode="scrollable" nếu có nhiều tab thì ta dùng nó sẽ trượt được-->
         <!-- Còn nếu tabMode="fixed" thì nó sẽ chia tablayout thành các phần bằng nhau-->
-        <com.example.doan_tmdt.Adapter.CustomTabLayout
+        <com.example.btlAndroidG13.Adapter.CustomTabLayout
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

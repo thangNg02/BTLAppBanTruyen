@@ -22,14 +22,15 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ic_back"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="BookApp"
+                android:textColor="@color/blueBook"
                 android:textSize="30dp"
-                android:text="GoFood"
-                android:textStyle="bold"
-                android:textColor="#FF5722"
-                android:layout_centerInParent="true"/>
+                android:textStyle="bold" />
         </RelativeLayout>
         <EditText
             android:visibility="gone"
@@ -74,9 +75,9 @@
                 android:id="@+id/tv_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Đồ uống"
+                android:text="Truyện tranh"
                 android:textSize="20dp"
-                android:textColor="#FF5722"
+                android:textColor="@color/blueBook"
                 android:textStyle="bold"/>
         </LinearLayout>
 

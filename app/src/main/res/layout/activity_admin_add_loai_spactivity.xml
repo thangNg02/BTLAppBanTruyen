@@ -9,7 +9,7 @@
 
     <RelativeLayout
         android:id="@+id/mnb"
-        android:background="#FF5722"
+        android:background="@color/blueBook"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize">
         <ImageView
@@ -38,7 +38,7 @@
         android:id="@+id/image_them_loai"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:background="@drawable/pl"/>
+        android:background="@drawable/uploadimage"/>
 
     <EditText
         android:id="@+id/edt_them_loai"

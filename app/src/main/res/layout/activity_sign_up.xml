@@ -4,14 +4,14 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_sign_up">
+    android:background="@drawable/bground">
 
     <ImageView
-        android:layout_marginTop="15dp"
-        android:src="@drawable/user"
-        android:layout_gravity="center"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/logo_booknocolor"
+        android:layout_gravity="center"/>
 
     <androidx.cardview.widget.CardView
 
@@ -23,14 +23,16 @@
 
         <LinearLayout
             android:orientation="vertical"
+            android:paddingBottom="20dp"
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_margin="15dp"
+                app:hintTextColor="@color/blueBook"
                 android:background="@android:color/background_light"
-
                 android:layout_height="65dp">
 
                 <EditText
@@ -38,6 +40,7 @@
                     android:drawableRight="@drawable/ic_email"
                     android:background="@android:color/background_light"
                     android:hint="Nhập Email"
+                    android:textColor="@color/black"
                     android:id="@+id/edt_sign_up_email"
                     android:layout_width="match_parent"
                     android:layout_height="65dp" />
@@ -47,12 +50,14 @@
                 android:layout_width="match_parent"
                 android:layout_margin="15dp"
                 app:passwordToggleEnabled="true"
+                app:hintTextColor="@color/blueBook"
                 android:background="@android:color/background_light"
                 android:layout_height="65dp">
 
                 <EditText
                     android:inputType="textPassword"
                     android:singleLine="true"
+                    android:textColor="@color/black"
                     android:background="@android:color/background_light"
                     android:hint="Nhập Mật Khẩu"
                     android:id="@+id/edt_sign_up_password"
@@ -64,6 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_margin="15dp"
                 app:passwordToggleEnabled="true"
+                app:hintTextColor="@color/blueBook"
                 android:background="@android:color/background_light"
 
                 android:layout_height="65dp">
@@ -71,6 +77,7 @@
                 <EditText
                     android:inputType="textPassword"
                     android:singleLine="true"
+                    android:textColor="@color/black"
                     android:background="@android:color/background_light"
                     android:hint="Nhập Lại Mật Khẩu"
                     android:id="@+id/edt_sign_up_confirm"
@@ -83,7 +90,8 @@
                 android:elevation="8dp"
                 android:id="@+id/btn_sign_up_dangky"
                 android:text="Đăng Ký"
-                app:backgroundTint="#F44336"
+                app:backgroundTint="#65C8D0"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/button"
                 android:layout_gravity="center"
                 android:layout_width="200dp"
@@ -99,9 +107,9 @@
 
     <TextView
         android:id="@+id/tv_log_in_user"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:layout_marginBottom="10dp"
-        android:textColor="#E49116"
+        android:textColor="#000000"
         android:padding="5dp"
         android:gravity="center"
         android:text="Bạn đã có tài khoản? Đăng Nhập"

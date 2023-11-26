@@ -8,7 +8,7 @@
         android:id="@+id/toolbar"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         style="@style/ThemeOverlay.AppCompat.Dark"
-        android:background="#FF5722"
+        android:background="@color/blueBook"
         android:layout_width="match_parent"
         android:layout_height="40dp"/>
 
@@ -30,7 +30,7 @@
         android:id="@+id/txtdiachi"
         android:textStyle="bold"
         android:textAllCaps="true"
-        android:textColor="#008000"
+        android:textColor="@color/blueBook"
         android:textSize="18sp"
         android:text="Địa Chỉ store: Hà Nội"
         android:layout_width="match_parent"

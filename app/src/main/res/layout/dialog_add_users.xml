@@ -15,7 +15,7 @@
 
         <TextView
             android:padding="10dp"
-            android:background="#FF5722"
+            android:background="@color/blueBook"
             android:gravity="center"
             android:textColor="@color/white"
             android:textStyle="bold"
