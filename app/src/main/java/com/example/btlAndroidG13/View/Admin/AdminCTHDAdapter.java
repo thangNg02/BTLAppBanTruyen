@@ -37,8 +37,8 @@ public class AdminCTHDAdapter extends RecyclerView.Adapter<AdminCTHDAdapter.View
     @Override
     public void onBindViewHolder(@NonNull @NotNull AdminCTHDAdapter.ViewHolder holder, int position) {
         Product product = list.get(position);
-        holder.tvTenCTHD.setText(product.getTensp());
-        holder.tvHansudungCTHD.setText(product.getHansudung());
+        holder.tvTenCTHD.setText(product.getTentruyen());
+        holder.tvHansudungCTHD.setText(product.getNgayxuatban());
         holder.tvSoluongCTHD.setText(product.getSoluong()+"");
         holder.tvDongiaCTHD.setText(NumberFormat.getInstance().format(product.getGiatien()));
         holder.tvTotalCTHD.setText(NumberFormat.getInstance().format(product.getGiatien() * product.getSoluong()));

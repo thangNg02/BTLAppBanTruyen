@@ -32,7 +32,9 @@ import com.example.btlAndroidG13.Adapter.ProductAdapter;
 import com.example.btlAndroidG13.Models.LoaiProduct;
 import com.example.btlAndroidG13.Models.Product;
 import com.example.btlAndroidG13.R;
+import com.example.btlAndroidG13.SensorActivity;
 import com.example.btlAndroidG13.View.CartActivity;
+import com.example.btlAndroidG13.View.CategoryActivity;
 import com.example.btlAndroidG13.View.ChatActivity;
 import com.example.btlAndroidG13.View.DetailSPActivity;
 import com.example.btlAndroidG13.View.SearchActivity;
@@ -113,37 +115,46 @@ public class HomeFragment extends Fragment {
 //            GetDataSPYeuThich();
 //            GetDataSPLau();
 //            GetDataSPGoiY();
-            LoadFavorite();
+            LoadCart();
 
         }
 
         return view;
     }
 
-    private void LoadFavorite() {
-        firestore.collection("Favorite").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+    private void LoadCart() {
+        firestore.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .collection("ALL")
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                if (queryDocumentSnapshots.size() > 0){
-                    int num = 0;
-                    Log.d("numCart", "Number: " + queryDocumentSnapshots.size());
-                    for (QueryDocumentSnapshot q : queryDocumentSnapshots){
-                        num++;
-                        tvNumberCart.setVisibility(View.VISIBLE);
-                        tvNumberCart.setText(num+"");
-                    }
+                int numberOfItems = queryDocumentSnapshots.size();
+
+                if (numberOfItems > 0) {
+                    tvNumberCart.setVisibility(View.VISIBLE);
+                    tvNumberCart.setText(String.valueOf(numberOfItems));
                 } else {
-                    tvNumberCart.setVisibility(View.GONE);
+//                    tvNumberCart.setVisibility(View.GONE);
                 }
             }
         });
     }
 
+
+
+    private void showItemCount(int count) {
+        if (count > 0) {
+            tvNumberCart.setVisibility(View.VISIBLE);
+            tvNumberCart.setText(String.valueOf(count));
+        } else {
+            tvNumberCart.setVisibility(View.GONE);
+        }
+    }
+
     private void replace(Fragment fragment){
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame, fragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -223,6 +234,15 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        cirAvatarHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                replace(new ProfileFragment());
+                Intent intent = new Intent(getActivity(), SensorActivity.class);
+                startActivity(intent);
+            }
+        });
+
         swipeHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -232,8 +252,8 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void run() {
                         swipeHome.setRefreshing(false);
-                        LoadFavorite();
-//                        getFragmentManager().beginTransaction().detach(HomeFragment.this).attach(HomeFragment.this).commit();
+                        LoadCart();
+                        getFragmentManager().beginTransaction().detach(HomeFragment.this).attach(HomeFragment.this).commit();
 //                        Toast.makeText(getContext(), "Swipe", Toast.LENGTH_SHORT).show();
                     }
                 }, 500);
@@ -262,10 +282,10 @@ public class HomeFragment extends Fragment {
             public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
                 if(queryDocumentSnapshots.size()>0){
                     for(QueryDocumentSnapshot d : queryDocumentSnapshots){
-                        arr_ds_sp.add(new Product(d.getId(),d.getString("tensp"),
+                        arr_ds_sp.add(new Product(d.getId(),d.getString("tentruyen"),
                                 d.getLong("giatien"),d.getString("hinhanh"),
-                                d.getString("loaisp"),d.getString("mota"),
-                                d.getLong("soluong"),d.getString("hansudung"),
+                                d.getString("theloai"),d.getString("mota"),
+                                d.getLong("soluong"),d.getString("ngayxuatban"),
                                 d.getLong("type"),d.getString("trongluong")));
                     }
                     productDSAdapter = new ProductAdapter(getContext(), arr_ds_sp, 1, new IClickOpenBottomSheet() {
@@ -295,10 +315,10 @@ public class HomeFragment extends Fragment {
             public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
                 if(queryDocumentSnapshots.size()>0){
                     for(QueryDocumentSnapshot d : queryDocumentSnapshots){
-                        arr_sp_nb.add(new Product(d.getId(),d.getString("tensp"),
+                        arr_sp_nb.add(new Product(d.getId(),d.getString("tentruyen"),
                                 d.getLong("giatien"),d.getString("hinhanh"),
-                                d.getString("loaisp"),d.getString("mota"),
-                                d.getLong("soluong"),d.getString("hansudung"),
+                                d.getString("theloai"),d.getString("mota"),
+                                d.getLong("soluong"),d.getString("ngayxuatban"),
                                 d.getLong("type"),d.getString("trongluong")));
                     }
                     productNBAdapter = new ProductAdapter(getContext(), arr_sp_nb, 2, new IClickOpenBottomSheet() {
@@ -326,10 +346,10 @@ public class HomeFragment extends Fragment {
                 if(queryDocumentSnapshots.size()>0){
                     for(QueryDocumentSnapshot d : queryDocumentSnapshots){
                         // lấy id trên firebase
-                        arr_sp_du.add(new Product(d.getId(),d.getString("tensp"),
+                        arr_sp_du.add(new Product(d.getId(),d.getString("tentruyen"),
                                 d.getLong("giatien"),d.getString("hinhanh"),
-                                d.getString("loaisp"),d.getString("mota"),
-                                d.getLong("soluong"),d.getString("hansudung"),
+                                d.getString("theloai"),d.getString("mota"),
+                                d.getLong("soluong"),d.getString("ngayxuatban"),
                                 d.getLong("type"),d.getString("trongluong")));
                     }
                     productDUAdapter = new ProductAdapter(getContext(), arr_sp_du, 3, new IClickOpenBottomSheet() {
@@ -359,10 +379,10 @@ public class HomeFragment extends Fragment {
                 if(queryDocumentSnapshots.size()>0){
                     for(QueryDocumentSnapshot d : queryDocumentSnapshots){
                         // lấy id trên firebase
-                        arr_sp_hq.add(new Product(d.getId(),d.getString("tensp"),
+                        arr_sp_hq.add(new Product(d.getId(),d.getString("tentruyen"),
                                 d.getLong("giatien"),d.getString("hinhanh"),
-                                d.getString("loaisp"),d.getString("mota"),
-                                d.getLong("soluong"),d.getString("hansudung"),
+                                d.getString("theloai"),d.getString("mota"),
+                                d.getLong("soluong"),d.getString("ngayxuatban"),
                                 d.getLong("type"),d.getString("trongluong")));
                     }
                     productHQAdapter = new ProductAdapter(getContext(), arr_sp_hq, 4, new IClickOpenBottomSheet() {
@@ -390,10 +410,10 @@ public class HomeFragment extends Fragment {
             public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
                 if(queryDocumentSnapshots.size()>0){
                     for(QueryDocumentSnapshot d : queryDocumentSnapshots){
-                        arr_sp_mc.add(new Product(d.getId(),d.getString("tensp"),
+                        arr_sp_mc.add(new Product(d.getId(),d.getString("tentruyen"),
                                 d.getLong("giatien"),d.getString("hinhanh"),
-                                d.getString("loaisp"),d.getString("mota"),
-                                d.getLong("soluong"),d.getString("hansudung"),
+                                d.getString("theloai"),d.getString("mota"),
+                                d.getLong("soluong"),d.getString("ngayxuatban"),
                                 d.getLong("type"),d.getString("trongluong")));
                     }
                     productMCAdapter = new ProductAdapter(getContext(), arr_sp_mc, 5, new IClickOpenBottomSheet() {
@@ -598,9 +618,9 @@ public class HomeFragment extends Fragment {
         loaiProductAdapter.setData(getListLoaiProduct(), new IClickLoaiProduct() {
             @Override
             public void onClickItemLoaiProduct(int position) {
-//                Intent intent = new Intent(getContext(), CategoryActivity.class);
-//                intent.putExtra("loaiproduct", position);
-//                startActivity(intent);
+                Intent intent = new Intent(getContext(), CategoryActivity.class);
+                intent.putExtra("loaiproduct", position);
+                startActivity(intent);
             }
         });
 

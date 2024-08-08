@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Thêm sản phẩm"
+                android:text="Thêm truyện"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="16sp"
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
-            android:text="Tên sản phẩm:"
+            android:text="Tên truyện:"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +82,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="50dp"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_add" />
@@ -283,7 +283,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Giới thiệu sơ qua về truyện"
+                    android:text="Mô tả"
                     android:textColor="#009688"
 
                     android:textSize="16sp"
@@ -303,7 +303,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/button"
-                    android:hint="Hiển thị thông tin sản phẩm"
+                    android:hint="Nội dung truyện"
                     android:padding="10dp"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
@@ -311,52 +311,56 @@
             </LinearLayout>
 
             <LinearLayout
-                android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="75dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="75dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
-                    android:visibility="gone"
                     android:id="@+id/tv_taomaqr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Tạo mã QR sản phẩm"
                     android:textColor="#009688"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:layout_marginStart="8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Tạo mã QR sản phẩm"/>
+                    android:visibility="gone" />
 
                 <ImageView
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/border5"
-                    android:visibility="gone"
                     android:id="@+id/img_qr_product"
                     android:layout_width="200dp"
-                    android:layout_height="200dp"/>
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/border5"
+                    android:visibility="gone" />
 
                 <LinearLayout
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
                     <Button
-                        android:visibility="gone"
                         android:id="@+id/btn_qr_product"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tạo QR"/>
+                        android:text="Tạo QR"
+                        android:visibility="visible" />
+
                     <Button
-                        android:visibility="gone"
-                        android:textColor="@color/black"
-                        android:backgroundTint="@color/colorGray"
                         android:id="@+id/btn_down_qr_product"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tải QR"/>
+                        android:backgroundTint="@color/colorGray"
+                        android:text="Tải QR"
+                        android:textColor="@color/black"
+                        android:visibility="visible" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -372,8 +376,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:layout_weight="1"
-                    android:visibility="gone"
-                    android:text="Xoá" />
+                    android:text="Xoá"
+                    android:visibility="visible" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_edit"
@@ -381,8 +385,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:layout_weight="1"
-                    android:visibility="gone"
-                    android:text="Lưu" />
+                    android:text="Lưu"
+                    android:visibility="visible" />
             </LinearLayout>
 
         </LinearLayout>

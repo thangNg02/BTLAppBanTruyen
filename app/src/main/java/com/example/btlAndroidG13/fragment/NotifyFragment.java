@@ -1,81 +1,43 @@
 package com.example.btlAndroidG13.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.btlAndroidG13.R;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.jetbrains.annotations.NotNull;
-
-public class NotifyFragment extends Fragment implements OnMapReadyCallback {
-    private Toolbar toolbar;
+public class NotifyFragment extends Fragment {
+    private LottieAnimationView lottie;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();;
-    private TextView txtdiachi,txtsdt,txtnoidung;
+    private TextView appname;
+    private View view;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_notify, container, false);
-
-        toolbar = v.findViewById(R.id.toolbar);
-        txtdiachi = v.findViewById(R.id.txtdiachi);
-        txtsdt = v.findViewById(R.id.txtsdt);
-        txtnoidung = v.findViewById(R.id.txtnoidung);
-
-        db.collection("ThongTinCuaHang").document("FQaw4inRmOCfsdotmL5W")
-                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
-
-                txtdiachi.setText("Địa chỉ : "+documentSnapshot.getString("diachi"));
-                txtsdt.setText("Liên hệ : "+documentSnapshot.getString("sdt"));
-                txtnoidung.setText("Nội Dung : "+documentSnapshot.getString("noidung"));
-
-
-            }
-        });
-
-        // GG maps
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        Log.d("state", "onCreateView");
-        return v;
+        view = inflater.inflate(R.layout.fragment_notify, container, false);
+        InitWidget();
+        animate();
+        return view;
     }
 
-    @Override
-    public void onMapReady(@NonNull @NotNull GoogleMap googleMap) {
-        db.collection("ThongTinCuaHang").document("FQaw4inRmOCfsdotmL5W").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                txtdiachi.setText("Địa chỉ : "+documentSnapshot.getString("diachi"));
-                txtsdt.setText("Liên hệ : "+documentSnapshot.getString("sdt"));
-                txtnoidung.setText("Nội Dung : "+documentSnapshot.getString("noidung"));
-                //đọc vị trí gg map
-
-            }
-        });
+    private void InitWidget() {
+        appname = view.findViewById(R.id.appname);
+        lottie = view.findViewById(R.id.lottie);
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.d("state", "onSave");
+    private void animate() {
+        appname.animate().translationY(-2100).setDuration(2700).setStartDelay(0);
+//        lottie.animate().translationX(2000).setDuration(2000).setStartDelay(2900);
+
     }
+
 }

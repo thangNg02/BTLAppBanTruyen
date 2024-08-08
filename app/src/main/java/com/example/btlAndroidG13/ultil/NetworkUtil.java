@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+/** @noinspection ALL*/
 public class NetworkUtil {
     private static int TYPE_WIFI = 1;
     private static int TYPE_MOBILE = 2;

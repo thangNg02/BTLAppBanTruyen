@@ -84,6 +84,7 @@ public class SignUpActivity extends AppCompatActivity {
                                         HashMap<String, String> mapRealtime = new HashMap<>();
                                         mapRealtime.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
                                         mapRealtime.put("name", email);
+                                        mapRealtime.put("email", email);
                                         mapRealtime.put("password", pass);
                                         mapRealtime.put("avatar", "default");
                                         mapRealtime.put("status", "online");
@@ -107,7 +108,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     } else if (!isEmailValid(email)){
                                         Toast.makeText(SignUpActivity.this, "Email định dạng không đúng", Toast.LENGTH_SHORT).show();
                                     } else {
-                                        Toast.makeText(SignUpActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SignUpActivity.this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
                                         Log.w("signup","failed", task.getException());
                                     }
                                 }

@@ -1,5 +1,6 @@
 package com.example.btlAndroidG13.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,10 +43,10 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         Product product = mlist.get(position);
-        holder.tvTenFavorite.setText(product.getTensp());
+        holder.tvTenFavorite.setText(product.getTentruyen());
         holder.tvGiaFavorite.setText(NumberFormat.getInstance().format(product.getGiatien()));
         holder.tvMotaFavorite.setText(product.getMota());
         Picasso.get().load(product.getHinhanh()).into(holder.imgFavorite);

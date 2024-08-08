@@ -76,40 +76,6 @@ public class AdminUsersAdapter extends RecyclerView.Adapter<AdminUsersAdapter.Vi
             }
         });
 
-//        holder.imgDeleteUsers.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                AlertDialog.Builder buidler = new AlertDialog.Builder(context);
-//                buidler.setTitle("Thông báo");
-//                buidler.setMessage("Bạn có thực sự muốn xóa tài khoản này không?");
-//                buidler.setPositiveButton("Đăng xuất", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//                        db.collection("IDUser").whereEqualTo("iduser", user.getIduser()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                            @Override
-//                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                                for (QueryDocumentSnapshot q : queryDocumentSnapshots){
-//                                    db.collection("IDUser").document(q.getId()).delete();
-//                                }
-//
-//                            }
-//                        });
-//
-//                        db.collection("User").document(user.getIduser()).delete();
-//                        mlistUser.remove(position);
-//                        notifyDataSetChanged();
-//                    }
-//                });
-//                buidler.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                    }
-//                });
-//                buidler.show();
-//            }
-//        });
-
     }
 
     @Override
@@ -131,7 +97,7 @@ public class AdminUsersAdapter extends RecyclerView.Adapter<AdminUsersAdapter.Vi
             tvNameUsers = itemView.findViewById(R.id.tv_name_users);
             tvEmailUsers = itemView.findViewById(R.id.tv_email_users);
             imgStatus = itemView.findViewById(R.id.imgV_users);
-//            imgDeleteUsers = itemView.findViewById(R.id.img_delete_users);
+            imgDeleteUsers = itemView.findViewById(R.id.imgV_delete_user);
             relativeItemUsers = itemView.findViewById(R.id.relative_item_users);
         }
     }

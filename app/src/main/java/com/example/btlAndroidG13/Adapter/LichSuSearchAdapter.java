@@ -1,5 +1,6 @@
 package com.example.btlAndroidG13.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +39,7 @@ public class LichSuSearchAdapter extends RecyclerView.Adapter<LichSuSearchAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ViewHOlder holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull ViewHOlder holder, @SuppressLint("RecyclerView") int position) {
         String s = mlist.get(position);
         holder.tvLichSuSearch.setText(s);
         holder.relativeItemStory.setOnClickListener(new View.OnClickListener() {

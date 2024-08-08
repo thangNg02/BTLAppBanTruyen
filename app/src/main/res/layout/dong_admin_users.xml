@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="165dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginEnd="10dp"
-    android:layout_marginBottom="8dp"
-    android:background="@drawable/cart_background"
-    android:elevation="3dp"
     android:id="@+id/relative_item_users"
     android:orientation="vertical">
-
-
+    
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="165dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/cart_background"
+        android:elevation="3dp">
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_gravity="center"
             android:id="@+id/cir_users"
@@ -23,6 +23,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/ic_user"/>
+
         <ImageView
             android:layout_marginStart="110dp"
             android:layout_marginTop="-25dp"
@@ -59,6 +60,16 @@
             android:layout_marginBottom="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"/>
+
+        <ImageView
+            android:id="@+id/imgV_delete_user"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_delete"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 </RelativeLayout>

@@ -199,7 +199,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
             @Override
             public void onClick(View view) {
                 for (Product product: listGiohang){
-                    sanpham += product.getTensp() +  " x " + product.getSoluong() + "\n";
+                    sanpham += product.getTentruyen() +  " x " + product.getSoluong() + "\n";
                 }
                 hoten = edthoten.getText().toString().trim();
                 diachi = edtdiachi.getText().toString().trim();
@@ -208,7 +208,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
                 if(hoten.length()>0){
                     if(diachi.length()>0){
                         if(sdt.length()>0){
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                             Calendar calendar = Calendar.getInstance();
                             ngaydat = simpleDateFormat.format(calendar.getTime());
                             phuongthuc = spinnerPhuongthuc.getSelectedItem().toString();
@@ -236,7 +236,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
                                                 for(Product sanPhamModels : listGiohang){
                                                     HashMap<String,Object> map_chitiet = new HashMap<>();
                                                     map_chitiet.put("id_hoadon",task.getResult().getId());
-                                                    map_chitiet.put("id_product",sanPhamModels.getIdsp());
+                                                    map_chitiet.put("id_product",sanPhamModels.getIdtruyen());
                                                     map_chitiet.put("soluong",sanPhamModels.getSoluong());
                                                     db.collection("ChitietHoaDon").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                                             .collection("ALL").add(map_chitiet).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -348,7 +348,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int pos = viewHolder.getAdapterPosition();
                 AlertDialog.Builder buidler = new AlertDialog.Builder(CartActivity.this);
-                buidler.setMessage("Bạn có muốn xóa  sản phẩm " + listGiohang.get(pos).getTensp() + " không?");
+                buidler.setMessage("Bạn có muốn xóa  sản phẩm " + listGiohang.get(pos).getTentruyen() + " không?");
                 buidler.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -387,7 +387,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
         map.put("receiver", FirebaseAuth.getInstance().getCurrentUser().getUid());
         String donhang = "";
         for (Product product: listGiohang){
-            donhang += product.getTensp() + " x " + product.getSoluong() + "\n";
+            donhang += product.getTentruyen() + " x " + product.getSoluong() + "\n";
         }
         String mess = "Đơn hàng của bạn: " + "\n" + donhang + "\n" + "Ngày đặt: " + ngaydat + "\n" + "Địa chỉ: " + diachi + "\n" + "SĐT: " + sdt
                 + "\n" + "Người nhận: " + hoten + "\n" + "Phương thức thanh toán: " + phuongthuc
@@ -428,11 +428,11 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
     }
 
     @Override
-    public void getDataSanPham(String id, String idsp, String tensp, Long giatien, String hinhanh, String loaisp, String mota, Long soluong, String hansudung, Long type, String trongluong) {
+    public void getDataSanPham(String id, String idtruyen, String tentruyen, Long giatien, String hinhanh, String theloai, String mota, Long soluong, String ngayxuatban, Long type, String trongluong) {
         try{
-            listGiohang.add(new Product(id,idsp,tensp,giatien,hinhanh,loaisp,mota,soluong,hansudung,type,trongluong));
-            product = new Product(id,idsp,tensp,giatien,hinhanh,loaisp,mota,soluong,hansudung,type,trongluong);
-            Log.d("product", "Sản phẩm: " + product.getId() + product.getTensp() + product.getSoluong() + product.getGiatien());
+            listGiohang.add(new Product(id,idtruyen,tentruyen,giatien,hinhanh,theloai,mota,soluong,ngayxuatban,type,trongluong));
+            product = new Product(id,idtruyen,tentruyen,giatien,hinhanh,theloai,mota,soluong,ngayxuatban,type,trongluong);
+            Log.d("product", "Sản phẩm: " + product.getId() + product.getTentruyen() + product.getSoluong() + product.getGiatien());
 
             if (listGiohang.size() != 0){
                 scrollViewCart.setVisibility(View.VISIBLE);
@@ -490,7 +490,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
             objExtraData.put("screen_name", "Đặc Biệt");
             String name ="";
             for(Product sanPham : listGiohang){
-                name+=sanPham.getTensp()+",";
+                name+=sanPham.getTentruyen()+",";
 
             }
             objExtraData.put("movie_name", name);
@@ -544,7 +544,7 @@ public class CartActivity extends AppCompatActivity implements GioHangView {
                                 for(Product sanPhamModels : listGiohang){
                                     HashMap<String,Object> map_chitiet = new HashMap<>();
                                     map_chitiet.put("id_hoadon",task.getResult().getId());
-                                    map_chitiet.put("id_product",sanPhamModels.getIdsp());
+                                    map_chitiet.put("id_product",sanPhamModels.getIdtruyen());
                                     map_chitiet.put("soluong",sanPhamModels.getSoluong());
                                     db.collection("ChitietHoaDon").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                             .collection("ALL").add(map_chitiet).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {

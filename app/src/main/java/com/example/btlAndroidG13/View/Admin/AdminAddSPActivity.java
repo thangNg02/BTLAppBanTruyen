@@ -1,8 +1,10 @@
 package com.example.btlAndroidG13.View.Admin;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -29,6 +31,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 
+import com.example.btlAndroidG13.Adapter.ProductAdapter;
 import com.example.btlAndroidG13.Models.Product;
 import com.example.btlAndroidG13.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -55,12 +58,12 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/** @noinspection ALL*/
 public class AdminAddSPActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private TextView tvTaoMaQR;
     private ImageView imgQRProduct;
     private Button btnQRProduct, btnDownQRProduct;
-
     private CircleImageView imgAddLoaiProduct;
     private ImageView btnAddBack, btnRefresh, btnSave;
     private EditText edtTenSP, edtGiatienSP, edtHansudungSP, edtTrongluongSP, edtSoluongSP, edtTypeSP, edtMotaSP;
@@ -76,7 +79,8 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
     private String image = "";
     private static final int LIBRARY_PICKER = 12312;
     private ProgressDialog dialog;
-    private String loaisp = "";
+    private String theloai = "";
+    private ProductAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +117,7 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AdminAddSPActivity.this, AdminAddLoaiSPActivity.class);
-                intent.putExtra("loaisp", loaisp);
+                intent.putExtra("theloai", theloai);
                 startActivity(intent);
             }
         });
@@ -147,42 +151,76 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db.collection("SanPham").document(product.getId()).delete().addOnSuccessListener(unused -> {
-                    db.collection("IDUser").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            for (QueryDocumentSnapshot q: queryDocumentSnapshots){
-                                Log.d("checkiduser", q.getString("iduser"));
+                AlertDialog.Builder builder = new AlertDialog.Builder(AdminAddSPActivity.this);
+                builder.setTitle("Xác nhận xóa");
+                builder.setMessage("Bạn có chắc chắn muốn xóa sản phẩm này không?");
 
-                                // Từ iduser mà ta có, lấy ra tất cả id_hoadon có id_product là KlUnpxIGoIFkHlvshil2
-                                db.collection("ChitietHoaDon").document(q.getString("iduser")).
-                                        collection("ALL").whereEqualTo("id_product", product.getId()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        for (QueryDocumentSnapshot d: queryDocumentSnapshots){
-                                            Log.d("checkidhoadon", d.getString("id_hoadon"));
+                builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        db.collection("SanPham").document(product.getId()).delete().addOnSuccessListener(unused -> {
+                            db.collection("IDUser").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                    for (QueryDocumentSnapshot q: queryDocumentSnapshots){
+                                        Log.d("checkiduser", q.getString("iduser"));
 
-                                            // Từ id_hoadon mà ta có, thực hiện xóa id hóa đơn của bảng HoaDon
-                                            db.collection("HoaDon").document(d.getString("id_hoadon")).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void unused) {
-                                                    Toast.makeText(AdminAddSPActivity.this, "Xoá sản phẩm thành công!!!", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
-//                                            db.collection("QRproduct").document(product.getId()).delete();
-                                        }
+                                        // Từ iduser mà ta có, lấy ra tất cả id_hoadon có id_product là KlUnpxIGoIFkHlvshil2
+                                        db.collection("ChitietHoaDon").document(q.getString("iduser")).
+                                                collection("ALL").whereEqualTo("id_product", product.getId()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                        for (QueryDocumentSnapshot d: queryDocumentSnapshots){
+                                                            Log.d("checkidhoadon", d.getString("id_hoadon"));
+
+                                                            // Từ id_hoadon mà ta có, thực hiện xóa id hóa đơn của bảng HoaDon
+                                                            db.collection("HoaDon").document(d.getString("id_hoadon")).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+                                                                    Toast.makeText(AdminAddSPActivity.this, "Xoá sản phẩm thành công!!!", Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            });
+
+//                                                            db.collection("QRProduct").document(d.getString("idproduct")).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                                @Override
+//                                                                public void onSuccess(Void unused) {
+//                                                                    // Xóa thành công idproduct khỏi trường QRProduct
+//
+//                                                                    setResult(RESULT_OK);
+//                                                                    finish();
+//                                                                }
+//                                                            }).addOnFailureListener(new OnFailureListener() {
+//                                                                @Override
+//                                                                public void onFailure(@NonNull Exception e) {
+//
+//                                                                }
+//                                                            });
+                                                        }
+                                                    }
+                                                });
                                     }
-                                });
-                            }
 
-                        }
-                    });
+                                }
+                            });
 
-                    setResult(RESULT_OK);
-                    finish();
-                }).addOnFailureListener(e -> {
-                    Toast.makeText(AdminAddSPActivity.this, "Xoá sản phẩm thất bại!!!", Toast.LENGTH_SHORT).show();
+
+                        }).addOnFailureListener(e -> {
+                            Toast.makeText(AdminAddSPActivity.this, "Xoá sản phẩm thất bại!!!", Toast.LENGTH_SHORT).show();
+                        });
+                        Toast.makeText(AdminAddSPActivity.this, "Xoá sản phẩm thành công!!!", Toast.LENGTH_SHORT).show();
+                        setResult(RESULT_OK);
+                        finish();
+                    }
                 });
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+
+                // Hiển thị hộp thoại
+                builder.show();
 
             }
         });
@@ -197,17 +235,18 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
                     Product sp = new Product();
                     sp.setGiatien(Long.parseLong(edtGiatienSP.getText().toString()));
                     sp.setMota(edtMotaSP.getText().toString());
-                    sp.setHansudung(edtHansudungSP.getText().toString());
+                    sp.setNgayxuatban(edtHansudungSP.getText().toString());
                     sp.setType(Long.parseLong(edtTypeSP.getText().toString()));
-                    sp.setTensp(edtTenSP.getText().toString());
+                    sp.setTentruyen(edtTenSP.getText().toString());
                     sp.setSoluong(Long.parseLong(edtSoluongSP.getText().toString()));
                     sp.setTrongluong(edtTrongluongSP.getText().toString());
-                    sp.setLoaisp(spinnerDanhMuc.getSelectedItem().toString());
+                    sp.setTheloai(spinnerDanhMuc.getSelectedItem().toString());
                     sp.setHinhanh(image);
 
                     db.collection("SanPham").add(sp).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(@NonNull DocumentReference documentReference) {
+//                            adapter.notifyDataSetChanged();
                             Toast.makeText(AdminAddSPActivity.this, "Thành công!!!", Toast.LENGTH_SHORT).show();
                             setResult(RESULT_OK);
                             finish();
@@ -216,6 +255,7 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+//                            adapter.notifyDataSetChanged();
                             Toast.makeText(AdminAddSPActivity.this, "Thất bại!!!", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -235,12 +275,12 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
                     Product sp = new Product();
                     sp.setGiatien(Long.parseLong(edtGiatienSP.getText().toString()));
                     sp.setMota(edtMotaSP.getText().toString());
-                    sp.setHansudung(edtHansudungSP.getText().toString());
+                    sp.setNgayxuatban(edtHansudungSP.getText().toString());
                     sp.setType(Long.parseLong(edtTypeSP.getText().toString()));
-                    sp.setTensp(edtTenSP.getText().toString());
+                    sp.setTentruyen(edtTenSP.getText().toString());
                     sp.setSoluong(Long.parseLong(edtSoluongSP.getText().toString()));
                     sp.setTrongluong(edtTrongluongSP.getText().toString());
-                    sp.setLoaisp(spinnerDanhMuc.getSelectedItem().toString());
+                    sp.setTheloai(spinnerDanhMuc.getSelectedItem().toString());
                     sp.setHinhanh(image);
                     db.collection("SanPham").document(product.getId()).set(sp)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -365,10 +405,10 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
 
             edtTrongluongSP.setText(product.getTrongluong());
             edtMotaSP.setText(product.getMota());
-            edtHansudungSP.setText(product.getHansudung());
+            edtHansudungSP.setText(product.getNgayxuatban());
             edtSoluongSP.setText(product.getSoluong() + "");
             edtGiatienSP.setText(product.getGiatien() + "");
-            edtTenSP.setText(product.getTensp());
+            edtTenSP.setText(product.getTentruyen());
             edtTypeSP.setText(product.getType()+"");
             btnEdit.setVisibility(View.VISIBLE);
             btnDelete.setVisibility(View.VISIBLE);
@@ -393,7 +433,7 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
                     spinnerDanhMuc.setSelection(1);
                     if (product != null) {
                         for (int i = 0; i < list.size(); i++) {
-                            if (list.get(i).equals(product.getLoaisp())) {
+                            if (list.get(i).equals(product.getTheloai())) {
                                 spinnerDanhMuc.setSelection(i);
                                 break;
                             }
@@ -416,11 +456,11 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
             return false;
         }
         if (TextUtils.isEmpty(edtTenSP.getText().toString())) {
-            Toast.makeText(this, "Vui lòng nhập tên sản phẩm", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Vui lòng nhập tên truyện", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (TextUtils.isEmpty(edtHansudungSP.getText().toString())) {
-            Toast.makeText(this, "Vui lòng nhập hạn sử dụng", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Vui lòng nhập ngày xuất bản", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (TextUtils.isEmpty(edtTrongluongSP.getText().toString())) {
@@ -432,7 +472,7 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
             return false;
         }
         if (TextUtils.isEmpty(edtTypeSP.getText().toString())) {
-            Toast.makeText(this, "Vui lòng nhập type", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Vui lòng nhập thể loại", Toast.LENGTH_SHORT).show();
             return false;
         }
         if (TextUtils.isEmpty(edtMotaSP.getText().toString())) {
@@ -513,7 +553,7 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
                 byte[] datas = baos.toByteArray();
                 String filename = System.currentTimeMillis() + "";
                 StorageReference storageReference;
-                storageReference = FirebaseStorage.getInstance("gs://doan-dc57a.appspot.com/").getReference();
+                storageReference = FirebaseStorage.getInstance("gs://btl-android-g13.appspot.com/").getReference();
                 storageReference.child("Profile").child(filename + ".jpg").putBytes(datas).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
@@ -543,7 +583,7 @@ public class AdminAddSPActivity extends AppCompatActivity implements AdapterView
         if (position > 0) {
             btnDanhmuc.setText(spinnerDanhMuc.getSelectedItem().toString());
             String s = list.get(position);
-            loaisp = s;
+            theloai = s;
         }
     }
 

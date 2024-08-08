@@ -42,8 +42,8 @@ public class GioHangPresenter implements IGioHang {
     }
 
     @Override
-    public void getDataSanPham(String id, String idsp,String tensp, Long giatien, String hinhanh, String loaisp, String mota, Long soluong, String hansudung, Long type, String trongluong) {
-        callback.getDataSanPham(id,idsp,tensp,giatien,hinhanh,loaisp,mota,soluong,hansudung,type,trongluong);
+    public void getDataSanPham(String id, String idtruyen,String tentruyen, Long giatien, String hinhanh, String theloai, String mota, Long soluong, String ngayxuatban, Long type, String trongluong) {
+        callback.getDataSanPham(id,idtruyen,tentruyen,giatien,hinhanh,theloai,mota,soluong,ngayxuatban,type,trongluong);
     }
 
     public void HandlegetDataCTHD(String id) {

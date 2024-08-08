@@ -98,7 +98,7 @@ public class DetailSPActivity extends AppCompatActivity implements BinhLuanView,
             @Override
             public void onClick(View view) {
                 setBottomSheetDialog();
-                tvTenBottom.setText(product.getTensp());
+                tvTenBottom.setText(product.getTentruyen());
                 tvGiaBottom.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
                 tvMotaBottom.setText(product.getMota());
                 Picasso.get().load(product.getHinhanh()).into(imgBottom);
@@ -226,9 +226,9 @@ public class DetailSPActivity extends AppCompatActivity implements BinhLuanView,
         });
 
 //        collapsingToolbarLayout.setTitle(product.getTensp());
-        tvTentruyen.setText(product.getTensp());
+        tvTentruyen.setText(product.getTentruyen());
         tvGiaDetail.setText(NumberFormat.getInstance().format(product.getGiatien()));
-        tvHansudungDetail.setText(product.getHansudung());
+        tvHansudungDetail.setText(product.getNgayxuatban());
         tvTrongluongDetail.setText(product.getTrongluong());
         tvMoTaDetail.setText(product.getMota());
         Picasso.get().load(product.getHinhanh()).into(imgDetail);
@@ -298,7 +298,7 @@ public class DetailSPActivity extends AppCompatActivity implements BinhLuanView,
     }
 
     @Override
-    public void getDataSanPham(String id, String idsp, String tensp, Long giatien, String hinhanh, String loaisp, String mota, Long soluong, String hansudung, Long type, String trongluong) {
+    public void getDataSanPham(String id, String idtruyen, String tentruyen, Long giatien, String hinhanh, String theloai, String mota, Long soluong, String ngayxuatban, Long type, String trongluong) {
 
     }
 }

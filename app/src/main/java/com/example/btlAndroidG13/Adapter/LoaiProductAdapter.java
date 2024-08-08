@@ -1,5 +1,6 @@
 package com.example.btlAndroidG13.Adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class LoaiProductAdapter extends RecyclerView.Adapter<LoaiProductAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         LoaiProduct loaiProduct = mList.get(position);
         if (loaiProduct == null){
             return;

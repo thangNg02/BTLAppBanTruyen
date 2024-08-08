@@ -91,7 +91,7 @@ public class Giohang {
                     for(Product sanPhamModels : arrayList){
                         HashMap<String,Object> map_chitiet = new HashMap<>();
                         map_chitiet.put("id_hoadon",task.getResult().getId());
-                        map_chitiet.put("id_product",sanPhamModels.getIdsp());
+                        map_chitiet.put("id_product",sanPhamModels.getIdtruyen());
                         map_chitiet.put("soluong",sanPhamModels.getSoluong());
                         db.collection("ChitietHoaDon").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                 .collection("ALL").add(map_chitiet).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -190,11 +190,11 @@ public class Giohang {
                             @Override
                             public void onSuccess(@NonNull DocumentSnapshot d) {
 
-                                callback.getDataSanPham(s.getId(),s.getString("id_product"),d.getString("tensp"),
+                                callback.getDataSanPham(s.getId(),s.getString("id_product"),d.getString("tentruyen"),
                                         d.getLong("giatien"),d.getString("hinhanh"),
-                                        d.getString("loaisp"),
+                                        d.getString("theloai"),
                                         d.getString("mota"),
-                                        s.getLong("soluong"),d.getString("hansudung"),
+                                        s.getLong("soluong"),d.getString("ngayxuatban"),
                                         d.getLong("type"),d.getString("trongluong"));
 
 
@@ -224,11 +224,11 @@ public class Giohang {
                                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(@NonNull DocumentSnapshot d) {
-                                callback.getDataSanPham(s.getId(),s.getString("id_product"),d.getString("tensp"),
+                                callback.getDataSanPham(s.getId(),s.getString("id_product"),d.getString("tentruyen"),
                                         d.getLong("giatien"),d.getString("hinhanh"),
-                                        d.getString("loaisp"),
+                                        d.getString("theloai"),
                                         d.getString("mota"),
-                                        s.getLong("soluong"),d.getString("hansudung"),
+                                        s.getLong("soluong"),d.getString("ngayxuatban"),
                                         1l,d.getString("trongluong"));
                             }
                         });
@@ -252,11 +252,11 @@ public class Giohang {
                                     .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
                                 public void onSuccess(@NonNull DocumentSnapshot d) {
-                                    callback.getDataSanPham(s.getId(),s.getString("id_product"),d.getString("tensp"),
+                                    callback.getDataSanPham(s.getId(),s.getString("id_product"),d.getString("tentruyen"),
                                             d.getLong("giatien"),d.getString("hinhanh"),
-                                            d.getString("loaisp"),
+                                            d.getString("theloai"),
                                             d.getString("mota"),
-                                            s.getLong("soluong"),d.getString("hansudung"),
+                                            s.getLong("soluong"),d.getString("ngayxuatban"),
                                             1l,d.getString("trongluong"));
                                 }
                             });

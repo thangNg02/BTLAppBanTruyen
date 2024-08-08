@@ -1,6 +1,8 @@
 package com.example.btlAndroidG13.View.Admin;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.btlAndroidG13.Models.User;
@@ -23,6 +26,7 @@ import com.example.btlAndroidG13.R;
 import com.example.btlAndroidG13.my_interface.IClickCTHD;
 import com.example.btlAndroidG13.my_interface.UserView;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -166,6 +170,20 @@ public class AdminUsersActivity extends AppCompatActivity implements UserView {
 
     private void Init() {
         mlistUser = new ArrayList<>();
+
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                int fromPosition = viewHolder.getAdapterPosition();
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                showDeleteConfirmationDialog(position);
+            }
+        };
     }
 
     private void InitWidget() {
@@ -197,6 +215,51 @@ public class AdminUsersActivity extends AppCompatActivity implements UserView {
     @Override
     public void OnFail() {
 
+    }
+
+    private void showDeleteConfirmationDialog(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Bạn có chắc chắn muốn xóa người dùng này không?")
+                .setCancelable(false)
+                .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        deleteUser(position);
+                    }
+                })
+                .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void deleteUser(int position) {
+        if (position < mlistUser.size()) {
+            String userId = mlistUser.get(position).getIduser();
+
+            mlistUser.remove(position);
+            adapter.notifyItemRemoved(position);
+
+            // Xóa người dùng từ cơ sở dữ liệu của bạn ở đây, sử dụng userId đã lấy
+
+            // Ví dụ: Xóa người dùng từ Firebase Firestore
+            db.collection("User").document(userId)
+                    .delete()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(AdminUsersActivity.this, "Người dùng đã được xóa", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(AdminUsersActivity.this, "Lỗi khi xóa người dùng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 
     @Override

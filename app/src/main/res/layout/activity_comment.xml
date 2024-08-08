@@ -72,16 +72,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/tv_songuoi_danhgia"
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="22"/>
+                        android:layout_gravity="center"
+                        android:text="22"
+                        android:visibility="visible" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" đánh giá"/>
+                        android:text=" đánh giá"
+                        android:visibility="visible" />
                 </LinearLayout>
 
             </LinearLayout>

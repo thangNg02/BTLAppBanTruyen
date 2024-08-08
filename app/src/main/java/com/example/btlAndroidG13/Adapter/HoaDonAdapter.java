@@ -1,4 +1,5 @@
 package com.example.btlAndroidG13.Adapter;
+
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,11 +9,17 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.btlAndroidG13.Models.HoaDon;
 import com.example.btlAndroidG13.R;
 import com.example.btlAndroidG13.my_interface.IClickCTHD;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.ViewHodler> {
     private ArrayList<HoaDon> arrayList;
@@ -23,6 +30,28 @@ public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.ViewHodler
         this.arrayList = list;
         this.iClickCTHD = iClickCTHD;
         notifyDataSetChanged();
+
+        //Sắp xếp theo ngày
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        Collections.sort(arrayList, new Comparator<HoaDon>() {
+            @Override
+            public int compare(HoaDon o1, HoaDon o2) {
+                try {
+                    Date date1 = simpleDateFormat.parse(o1.getNgaydat());
+                    Date date2 = simpleDateFormat.parse(o2.getNgaydat());
+
+                    // Sắp xếp giảm dần, từ date2 đến date1
+                    return date2.compareTo(date1);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    // Xử lý ngoại lệ nếu có
+                }
+                return 0;
+            }
+        });
+
+
     }
     @NonNull
     @Override
@@ -49,6 +78,8 @@ public class HoaDonAdapter extends RecyclerView.Adapter<HoaDonAdapter.ViewHodler
             }
         });
     }
+
+
 
     @Override
     public int getItemCount() {

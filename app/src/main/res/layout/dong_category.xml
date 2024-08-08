@@ -81,19 +81,18 @@
             <ImageView
                 android:layout_centerVertical="true"
                 android:id="@+id/fkldk"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:src="@drawable/ic_weight"
-                app:tint="#000000" />
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_can" />
             <TextView
                 android:id="@+id/tv_trongluong_category"
                 android:layout_marginStart="8dp"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#B3B2AB"
+                android:textColor="@color/dark_gray"
                 android:text="700"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:layout_toEndOf="@+id/fkldk"/>
         </RelativeLayout>
     </LinearLayout>

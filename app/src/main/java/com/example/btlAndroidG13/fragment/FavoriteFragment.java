@@ -85,7 +85,7 @@ public class FavoriteFragment extends Fragment implements ProductView, FavoriteV
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int pos = viewHolder.getAdapterPosition();
                 AlertDialog.Builder buidler = new AlertDialog.Builder(getContext());
-                buidler.setMessage("Bạn có muốn xóa  sản phẩm " + mlistProduct.get(pos).getTensp() + " không?");
+                buidler.setMessage("Bạn có muốn xóa  sản phẩm " + mlistProduct.get(pos).getTentruyen() + " không?");
                 buidler.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

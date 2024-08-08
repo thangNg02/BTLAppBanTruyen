@@ -14,7 +14,7 @@
         <!-- Customize your theme here. -->
         <item name="android:windowLightStatusBar">true</item>
 
-
+        <item name="android:windowBackground">@color/off_white</item>
     </style>
 
     <style name="CollapsingToolbarLayoutExpandedTextStyle" parent="AppTheme">

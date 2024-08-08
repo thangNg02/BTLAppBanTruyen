@@ -1,6 +1,8 @@
 package com.example.btlAndroidG13.View.Admin;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +25,7 @@ import com.example.btlAndroidG13.Presenter.HoaDonPreSenter;
 import com.example.btlAndroidG13.R;
 import com.example.btlAndroidG13.my_interface.HoaDonView;
 import com.example.btlAndroidG13.my_interface.IClickCTHD;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -66,27 +69,6 @@ public class AdminBillMainActivity extends AppCompatActivity implements HoaDonVi
             }
         });
 
-
-//        Log.d("position", "iduser là: " + iduser + " + " + "trạng thái là: " + positionStatus);
-//        Log.d("position","trạng thái là: " + positionStatus);
-
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
-                int pos = viewHolder.getAdapterPosition();
-                DiaLogUpDate(pos);
-
-
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(rcvBillAdmin);
     }
 
     private void InitWidget() {
@@ -113,13 +95,20 @@ public class AdminBillMainActivity extends AppCompatActivity implements HoaDonVi
         spinnerStatusAdmin.setAdapter(arrayAdapter);
         spinnerStatusAdmin.setOnItemSelectedListener(this);
 
+        addSwipeToDelete();
 
         mlistUser.add("Tất cả");
+
         db.collection("IDUser").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                mlistUser.clear();
+
+                mlistUser.add("Tất cả");
+
                 for(QueryDocumentSnapshot d : queryDocumentSnapshots){
                     mlistUser.add(d.getString("iduser"));
+                }
                     ArrayAdapter arrayAdapter2 = new ArrayAdapter(AdminBillMainActivity.this, R.layout.support_simple_spinner_dropdown_item, mlistUser);
                     arrayAdapter2.setDropDownViewResource(android.R.layout.simple_list_item_1);
                     spinnerUserAdmin.setAdapter(arrayAdapter2);
@@ -128,40 +117,23 @@ public class AdminBillMainActivity extends AppCompatActivity implements HoaDonVi
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                             String s = mlistUser.get(i);
                             iduser = s;
-                            Log.d("position", "iduser là: " + iduser);
-                            Log.d("position","trạng thái là: " + positionStatus);
 
-                            // Nếu spinnerUser, spinnerStatus đều có position = 0 thì show mlistFilter theo trạng thái:
-                            if (positionStatus == 0 && iduser.equals("Tất cả")){
-                                mListFilter.clear();
-                                if (adapter!=null){
-                                    adapter.notifyDataSetChanged();
-                                }
+                            // Xóa dữ liệu cũ trước khi áp dụng bộ lọc mới
+                            mListFilter.clear();
+
+                            if (positionStatus == 0 && iduser.equals("Tất cả")) {
+                                // Hiển thị tất cả các đơn hàng nếu cả hai Spinner đều ở vị trí mặc định
                                 hoaDonPreSenter.HandleReadDataHD(null, 0);
-                            } else if (positionStatus == 0){
-                                mListFilter.clear();
-                                if (adapter!=null){
-                                    adapter.notifyDataSetChanged();
-                                }
+                            } else if (positionStatus == 0) {
+                                // Lọc theo người dùng nếu Spinner trạng thái ở vị trí mặc định
                                 hoaDonPreSenter.HandleReadDataHD(iduser, 0);
-                                Log.d("listBill", mListFilter.size()+"");
-                            } else if (iduser.equals("Tất cả")){
-                                mListFilter.clear();
-                                if (adapter!=null){
-                                    adapter.notifyDataSetChanged();
-                                }
+                            } else if (iduser.equals("Tất cả")) {
+                                // Lọc theo trạng thái nếu Spinner người dùng ở vị trí mặc định
                                 hoaDonPreSenter.HandleReadDataHD(null, positionStatus);
-                                Log.d("listBill", mListFilter.size()+"");
-                            }
-                            // Show mlistFilter theo trạng thái, theo iduser:
-                            else {
-                                mListFilter.clear();
-                                if (adapter!=null){
-                                    adapter.notifyDataSetChanged();
-                                }
+                            } else {
+                                // Lọc theo cả trạng thái và người dùng đã chọn
                                 hoaDonPreSenter.HandleReadDataHD(iduser, positionStatus);
                             }
-
                         }
 
                         @Override
@@ -170,7 +142,6 @@ public class AdminBillMainActivity extends AppCompatActivity implements HoaDonVi
                         }
                     });
                 }
-            }
         });
 
     }
@@ -202,9 +173,74 @@ public class AdminBillMainActivity extends AppCompatActivity implements HoaDonVi
 
     }
 
+    //lướt trái hoặc lướt phải để xóa
+    private void addSwipeToDelete() {
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                // Lấy vị trí của item được swipe
+                int position = viewHolder.getAdapterPosition();
+
+                // Xóa hóa đơn tại vị trí được swipe
+                deleteHoaDon(position);
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(rcvBillAdmin);
+    }
+
+    private void deleteHoaDon(final int position) {
+        if (position < mListFilter.size()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Xác nhận xóa");
+            builder.setMessage("Bạn có chắc chắn muốn xóa hóa đơn này không?");
+
+            // Nếu người dùng chọn "Đồng ý", xóa hóa đơn
+            builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String hoaDonId = mListFilter.get(position).getId();
+                    db.collection("HoaDon").document(hoaDonId)
+                            .delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    mListFilter.remove(position);
+                                    adapter.notifyItemRemoved(position);
+                                    Toast.makeText(AdminBillMainActivity.this, "Đã xóa hóa đơn thành công", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(AdminBillMainActivity.this, "Lỗi khi xóa hóa đơn: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+            });
+
+            // Nếu người dùng chọn "Hủy", không thực hiện xóa
+            builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Cập nhật lại RecyclerView
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
+            // Hiển thị hộp thoại
+            builder.show();
+        }
+    }
+
     @Override
     public void getDataHD(String id, String uid, String ghichu, String diachi, String hoten, String ngaydat, String phuongthuc, String sdt, String tongtien, Long type) {
-//        mListStatus.add(new HoaDon(id,uid,ghichu,diachi,hoten,ngaydat,phuongthuc,sdt,tongtien,type));
         mListFilter.add(new HoaDon(id,uid,ghichu,diachi,hoten,ngaydat,phuongthuc,sdt,tongtien,type));
         adapter = new HoaDonAdapter();
         adapter.setDataHoadon(mListFilter, new IClickCTHD() {

@@ -460,7 +460,7 @@ public class ProfileFragment extends Fragment {
                                         if (task.isSuccessful()) {
                                             progressDialog.dismiss();
                                             dialog.cancel();
-                                            Toast.makeText(getActivity(), "User Email Address Updated", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(), "Cập nhật địa chỉ Email thành công", Toast.LENGTH_SHORT).show();
                                             mMainActivity.setProFile();
                                         }
                                     }
@@ -506,7 +506,7 @@ public class ProfileFragment extends Fragment {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] datas = baos.toByteArray();
                 String filename = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                storageReference= FirebaseStorage.getInstance("gs://doan-dc57a.appspot.com/").getReference();
+                storageReference= FirebaseStorage.getInstance("gs://btl-android-g13.appspot.com/").getReference();
                 storageReference.child("Profile").child(filename+".jpg").putBytes(datas).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
@@ -554,6 +554,14 @@ public class ProfileFragment extends Fragment {
         EditText newPassword = dialog.findViewById(R.id.edt_matkhaumoi_user);
         EditText reNewPassword = dialog.findViewById(R.id.edt_nhaplai_matkhau_user);
         Button btnUpdatePassword = dialog.findViewById(R.id.btn_update_password);
+        ImageView btnCloseChangePw = dialog.findViewById(R.id.btn_close_change);
+
+        btnCloseChangePw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
         
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
@@ -566,18 +574,21 @@ public class ProfileFragment extends Fragment {
                     String newPasswordStr = newPassword.getText().toString();
                     String reNewPasswordStr = reNewPassword.getText().toString();
 
-                    if (TextUtils.isEmpty(oldPasswordStr)) {
+                    if (TextUtils.isEmpty(oldPasswordStr) && TextUtils.isEmpty(newPasswordStr) && TextUtils.isEmpty(reNewPasswordStr)) {
+                        Toast.makeText(getActivity(), "Bạn chưa nhập thông tin", Toast.LENGTH_SHORT).show();
+                    }
+                    else if (TextUtils.isEmpty(oldPasswordStr)) {
                         oldPassword.setError("Nhập mật khẩu cũ");
                     } else if (!savedPassword.equals(oldPasswordStr)) {
                         oldPassword.setError("Mật khẩu cũ không trùng khớp");
                     } else if (TextUtils.isEmpty(newPasswordStr)) {
                         newPassword.setError("Nhập mật khẩu mới");
                     } else if (newPasswordStr.length() < 6) {
-                        newPassword.setError("Nhập khẩu phải lớn hơn 6 kí tự");
+                        newPassword.setError("Mật khẩu phải lớn hơn 6 kí tự");
                     } else if (newPasswordStr.equals(oldPasswordStr)) {
                         newPassword.setError("Mật khẩu mới phải khác mật khẩu cũ");
                     } else if (TextUtils.isEmpty(reNewPasswordStr)) {
-                        reNewPassword.setError("Nhập xác nhận mật khẩu mới");
+                        reNewPassword.setError("Xác nhận mật khẩu mới");
                     } else if (!reNewPasswordStr.equals(newPasswordStr)) {
                         reNewPassword.setError("Mật khẩu mới không trùng khớp");
                     } else {
@@ -615,7 +626,7 @@ public class ProfileFragment extends Fragment {
                         if (firebaseUser != null) {
                             DatabaseReference userRef = database.getReference("Users").child(firebaseUser.getUid());
 
-                            // Cập nhật trạng thái status thành "online"
+
                             userRef.child("password").setValue(newPasswordStr)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override

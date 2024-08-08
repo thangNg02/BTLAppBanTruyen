@@ -34,7 +34,7 @@ public class AutoTextAdapter extends ArrayAdapter<Product> {
 
         TextView tvcountryname = convertView.findViewById(R.id.textViewCountryName);
         Product product = getItem(position);
-        tvcountryname.setText(product.getTensp());
+        tvcountryname.setText(product.getTentruyen());
         return convertView;
     }
 
@@ -51,7 +51,7 @@ public class AutoTextAdapter extends ArrayAdapter<Product> {
                 } else {
                     String filter = charSequence.toString().toLowerCase().trim();
                     for (Product product: mlistProduct){
-                        if (product.getTensp().toLowerCase().contains(filter)){
+                        if (product.getTentruyen().toLowerCase().contains(filter)){
                             mListSuggest.add(product);
                         }
                     }
@@ -72,7 +72,7 @@ public class AutoTextAdapter extends ArrayAdapter<Product> {
 
             @Override
             public CharSequence convertResultToString(Object resultValue) {
-                return ((Product) resultValue).getTensp();
+                return ((Product) resultValue).getTentruyen();
             }
         };
     }

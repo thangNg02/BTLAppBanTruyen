@@ -1,13 +1,5 @@
 package com.example.btlAndroidG13.View;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -21,7 +13,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.btlAndroidG13.Adapter.MessageAdapter;
 import com.example.btlAndroidG13.ChatBot.MsgModal;
 import com.example.btlAndroidG13.ChatBot.RetrofitAPI;
@@ -136,12 +135,12 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                tvUserMessage.setText(user.getName());
-                if (user.getAvatar().equals("default")){
-                    profileImageMessage.setImageResource(R.drawable.background_blue);
-                } else {
-                    Glide.with(getApplicationContext()).load(user.getAvatar()).into(profileImageMessage);
-                }
+//                tvUserMessage.setText(user.getName());
+//                if (user.getAvatar() != null && user.getAvatar().equals("default")){
+//                    profileImageMessage.setImageResource(R.drawable.background_blue);
+//                } else {
+//                    Glide.with(getApplicationContext()).load(user.getAvatar()).into(profileImageMessage);
+//                }
 
                 readMessage(read, userid, user.getAvatar());
 

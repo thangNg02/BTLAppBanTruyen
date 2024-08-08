@@ -9,24 +9,46 @@
         android:id="@+id/bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:minHeight="?attr/actionBarSize">
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:src="@drawable/logo_book"
                 android:id="@+id/profile_image_message"/>
-            <TextView
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_username_message"
-                android:layout_marginLeft="25dp"
-                android:text="username"
-                android:textStyle="bold"
-                android:layout_marginStart="25dp"
-                android:textColor="@color/white"/>
+                android:layout_centerVertical="true"
+                android:orientation="vertical"
+                android:layout_toEndOf="@id/profilePic">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_username_message"
+                    android:text="Admin"
+                    android:layout_marginStart="10dp"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:layout_marginStart="10dp"
+                    android:text="Online"
+                    android:layout_marginTop="2dp"
+                    android:textColor="#00C853" />
+            </LinearLayout>
+
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -67,6 +89,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="10dp"
             android:background="@drawable/ic_action_name" />

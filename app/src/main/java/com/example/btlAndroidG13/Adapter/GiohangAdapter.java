@@ -69,7 +69,7 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
     public void onBindViewHolder(@NotNull ViewHolder holder, int position) {
 
         Product product = mListGiohang.get(position);
-        holder.tvTenGiohang.setText(product.getTensp());
+        holder.tvTenGiohang.setText(product.getTentruyen());
         holder.tvGiatienGiohang.setText(String.valueOf(product.getGiatien()));
         holder.tvNumberGiohang.setText(String.valueOf(product.getSoluong()));
 
@@ -81,7 +81,7 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
                 number = Integer.parseInt(soluong) - 1;
                 product.setSoluong(Long.parseLong(String.valueOf(number)));
                 db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .collection("ALL").whereEqualTo("id_product",product.getIdsp()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        .collection("ALL").whereEqualTo("id_product",product.getIdtruyen()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
                         if(queryDocumentSnapshots.size()!=0){
@@ -116,7 +116,7 @@ public class GiohangAdapter extends RecyclerView.Adapter<GiohangAdapter.ViewHold
                 number = Integer.parseInt(soluong) + 1;
                 product.setSoluong(Long.parseLong(String.valueOf(number)));
                 db.collection("GioHang").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .collection("ALL").whereEqualTo("id_product",product.getIdsp()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        .collection("ALL").whereEqualTo("id_product",product.getIdtruyen()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
                         Log.d("SL",queryDocumentSnapshots.size()+"");

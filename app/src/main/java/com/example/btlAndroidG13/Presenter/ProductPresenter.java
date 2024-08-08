@@ -32,7 +32,7 @@ public class ProductPresenter implements IProduct {
     }
 
     @Override
-    public void getDataProduct(String id, String ten, Long gia, String hinhanh, String loaisp, String mota, Long soluong, String hansudung, Long type, String trongluong) {
-        callback.getDataProduct(id, ten, gia, hinhanh, loaisp, mota, soluong, hansudung, type, trongluong);
+    public void getDataProduct(String id, String ten, Long gia, String hinhanh, String theloai, String mota, Long soluong, String ngayxuatban, Long type, String trongluong) {
+        callback.getDataProduct(id, ten, gia, hinhanh, theloai, mota, soluong, ngayxuatban, type, trongluong);
     }
 }

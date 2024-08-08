@@ -67,8 +67,8 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
     public void onBindViewHolder(@NonNull @NotNull HoaDonDaGiaoAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Log.d("abc", "onBind");
         Product product = list.get(position);
-        holder.tvTen.setText(product.getTensp());
-        holder.tvHansudung.setText(product.getHansudung());
+        holder.tvTen.setText(product.getTentruyen());
+        holder.tvHansudung.setText(product.getNgayxuatban());
         holder.tvSoluong.setText(product.getSoluong() + "");
         holder.tvDongia.setText(NumberFormat.getInstance().format(product.getGiatien()));
         holder.tvTotal.setText(NumberFormat.getInstance().format(product.getGiatien() * product.getSoluong()));
@@ -87,7 +87,7 @@ public class HoaDonDaGiaoAdapter extends RecyclerView.Adapter<HoaDonDaGiaoAdapte
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 for (QueryDocumentSnapshot q : queryDocumentSnapshots){
-                    if (product.getIdsp().equals(q.getString("idproduct"))){
+                    if (product.getIdtruyen().equals(q.getString("idproduct"))){
                         holder.btnDongDanhGia.setEnabled(false);
                         holder.btnDongDanhGia.setText("Đã đánh giá");
                     }

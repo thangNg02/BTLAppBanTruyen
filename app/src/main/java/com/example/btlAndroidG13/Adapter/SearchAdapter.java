@@ -1,5 +1,6 @@
 package com.example.btlAndroidG13.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,9 +47,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Product product = animalNamesList.get(position);
-        holder.tvNameSeach.setText(product.getTensp());
+        holder.tvNameSeach.setText(product.getTentruyen());
         holder.tvMotaSeach.setText(product.getMota());
         holder.tvGiaSearch.setText(NumberFormat.getInstance().format(product.getGiatien()));
         Picasso.get().load(product.getHinhanh()).into(holder.imgSearch);
@@ -89,7 +90,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             animalNamesList.addAll(arraylist);
         } else {
             for (Product wp : arraylist) {
-                if (wp.getTensp().toLowerCase(Locale.getDefault()).contains(charText)) {
+                if (wp.getTentruyen().toLowerCase(Locale.getDefault()).contains(charText)) {
                     animalNamesList.add(wp);
                 }
             }

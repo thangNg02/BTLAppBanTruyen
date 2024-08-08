@@ -14,14 +14,14 @@ import java.io.Serializable;
 public class Product implements Serializable{
 
     private  String id;
-    private  String idsp;
-    private  String tensp;
+    private  String idtruyen;
+    private  String tentruyen;
     private  long giatien;
     private  String hinhanh;
-    private  String loaisp;
+    private  String theloai;
     private  String mota;
     private  long soluong;
-    private  String hansudung;
+    private  String ngayxuatban;
     private  long type;
     private  String trongluong;
 
@@ -36,33 +36,33 @@ public class Product implements Serializable{
         db=FirebaseFirestore.getInstance();
     }
 
-    public Product(String tensp) {
-        this.tensp = tensp;
+    public Product(String tentruyen) {
+        this.tentruyen = tentruyen;
     }
 
-    public Product(String id, String idsp, String tensp, long giatien, String hinhanh, String loaisp, String mota, long soluong, String hansudung, long type, String trongluong) {
+    public Product(String id, String idtruyen, String tentruyen, long giatien, String hinhanh, String theloai, String mota, long soluong, String ngayxuatban, long type, String trongluong) {
         this.id = id;
-        this.idsp = idsp;
-        this.tensp = tensp;
+        this.idtruyen = idtruyen;
+        this.tentruyen = tentruyen;
         this.giatien = giatien;
         this.hinhanh = hinhanh;
-        this.loaisp = loaisp;
+        this.theloai = theloai;
         this.mota = mota;
         this.soluong = soluong;
-        this.hansudung = hansudung;
+        this.ngayxuatban = ngayxuatban;
         this.type = type;
         this.trongluong = trongluong;
     }
 
-    public Product(String id, String tensp, long giatien, String hinhanh, String loaisp, String mota, long soluong, String hansudung, long type, String trongluong) {
+    public Product(String id, String tentruyen, long giatien, String hinhanh, String theloai, String mota, long soluong, String ngayxuatban, long type, String trongluong) {
         this.id = id;
-        this.tensp = tensp;
+        this.tentruyen = tentruyen;
         this.giatien = giatien;
         this.hinhanh = hinhanh;
-        this.loaisp = loaisp;
+        this.theloai = theloai;
         this.mota = mota;
         this.soluong = soluong;
-        this.hansudung = hansudung;
+        this.ngayxuatban = ngayxuatban;
         this.type = type;
         this.trongluong = trongluong;
     }
@@ -75,20 +75,20 @@ public class Product implements Serializable{
         this.id = id;
     }
 
-    public String getIdsp() {
-        return idsp;
+    public String getIdtruyen() {
+        return idtruyen;
     }
 
-    public void setIdsp(String idsp) {
-        this.idsp = idsp;
+    public void setIdtruyen(String idtruyen) {
+        this.idtruyen = idtruyen;
     }
 
-    public String getTensp() {
-        return tensp;
+    public String getTentruyen() {
+        return tentruyen;
     }
 
-    public void setTensp(String tensp) {
-        this.tensp = tensp;
+    public void setTentruyen(String tentruyen) {
+        this.tentruyen = tentruyen;
     }
 
     public long getGiatien() {
@@ -107,12 +107,12 @@ public class Product implements Serializable{
         this.hinhanh = hinhanh;
     }
 
-    public String getLoaisp() {
-        return loaisp;
+    public String getTheloai() {
+        return theloai;
     }
 
-    public void setLoaisp(String loaisp) {
-        this.loaisp = loaisp;
+    public void setTheloai(String theloai) {
+        this.theloai = theloai;
     }
 
     public String getMota() {
@@ -131,12 +131,12 @@ public class Product implements Serializable{
         this.soluong = soluong;
     }
 
-    public String getHansudung() {
-        return hansudung;
+    public String getNgayxuatban() {
+        return ngayxuatban;
     }
 
-    public void setHansudung(String hansudung) {
-        this.hansudung = hansudung;
+    public void setNgayxuatban(String ngayxuatban) {
+        this.ngayxuatban = ngayxuatban;
     }
 
     public long getType() {
@@ -155,7 +155,6 @@ public class Product implements Serializable{
         this.trongluong = trongluong;
     }
 
-
     public void HandleGetDataProduct(){
         db.collection("SanPham").
                 get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -163,10 +162,10 @@ public class Product implements Serializable{
             public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
                 if(queryDocumentSnapshots.size()>0){
                     for(QueryDocumentSnapshot d : queryDocumentSnapshots){
-                        callback.getDataProduct(d.getId(),d.getString("tensp"),
+                        callback.getDataProduct(d.getId(),d.getString("tentruyen"),
                                 d.getLong("giatien"),d.getString("hinhanh"),
-                                d.getString("loaisp"),d.getString("mota"),
-                                d.getLong("soluong"),d.getString("hansudung"),
+                                d.getString("theloai"),d.getString("mota"),
+                                d.getLong("soluong"),d.getString("ngayxuatban"),
                                 d.getLong("type"),d.getString("trongluong"));
 
                     }
@@ -180,10 +179,10 @@ public class Product implements Serializable{
         db.collection("SanPham").document(idproduct).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot d) {
-                callback.getDataProduct(idproduct,d.getString("tensp"),
+                callback.getDataProduct(idproduct,d.getString("tentruyen"),
                         d.getLong("giatien"),d.getString("hinhanh"),
-                        d.getString("loaisp"),d.getString("mota"),
-                        d.getLong("soluong"),d.getString("hansudung"),
+                        d.getString("theloai"),d.getString("mota"),
+                        d.getLong("soluong"),d.getString("ngayxuatban"),
                         d.getLong("type"),d.getString("trongluong"));
 
             }

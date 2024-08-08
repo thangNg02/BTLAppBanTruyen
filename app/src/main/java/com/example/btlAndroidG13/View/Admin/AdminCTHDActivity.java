@@ -175,9 +175,9 @@ public class AdminCTHDActivity extends AppCompatActivity implements GioHangView,
         String s = "";
         for (Product product: mlist){
             i++;
-            if (product.getTensp().length() > 20 ){
-                s = product.getTensp().substring(0,20) + "...";
-            } else s = product.getTensp();
+            if (product.getTentruyen().length() > 20 ){
+                s = product.getTentruyen().substring(0,20) + "...";
+            } else s = product.getTentruyen();
 
             canvas.drawText(i + ". ", 40, 950+j, myPaint);
             canvas.drawText(s , 200, 950+j, myPaint);
@@ -336,8 +336,8 @@ public class AdminCTHDActivity extends AppCompatActivity implements GioHangView,
     }
 
     @Override
-    public void getDataSanPham(String id, String idsp, String tensp, Long giatien, String hinhanh, String loaisp, String mota, Long soluong, String hansudung, Long type, String trongluong) {
-        mlist.add(new Product(id,idsp,tensp,giatien,hinhanh,loaisp,mota,soluong,hansudung,type,trongluong));
+    public void getDataSanPham(String id, String idtruyen, String tentruyen, Long giatien, String hinhanh, String theloai, String mota, Long soluong, String ngayxuatban, Long type, String trongluong) {
+        mlist.add(new Product(id,idtruyen,tentruyen,giatien,hinhanh,theloai,mota,soluong,ngayxuatban,type,trongluong));
         adapter = new AdminCTHDAdapter();
         adapter.setData(mlist);
         rcvAminHD.setLayoutManager(new LinearLayoutManager(this));

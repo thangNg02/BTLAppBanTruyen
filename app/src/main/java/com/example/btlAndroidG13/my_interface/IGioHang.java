@@ -5,5 +5,5 @@ public interface IGioHang {
 
     void OnFail();
 
-    void getDataSanPham(String id, String id_sp,String tensp, Long giatien, String hinhanh, String loaisp, String mota, Long soluong, String hansudung, Long type, String trongluong);
+    void getDataSanPham(String id, String id_tentruyen,String tentruyen, Long giatien, String hinhanh, String theloai, String mota, Long soluong, String ngayxuatban, Long type, String trongluong);
 }

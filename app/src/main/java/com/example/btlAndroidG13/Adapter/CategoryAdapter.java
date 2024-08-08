@@ -46,7 +46,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         Product product = mListCategory.get(position);
-        holder.tvTenCategory.setText(product.getTensp());
+        holder.tvTenCategory.setText(product.getTentruyen());
         holder.tvGiaCategory.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
         holder.tvTrongLuongCategory.setText(product.getTrongluong());
         Picasso.get().load(product.getHinhanh()).into(holder.imgCategory);

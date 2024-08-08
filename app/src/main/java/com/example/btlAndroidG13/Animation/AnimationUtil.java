@@ -9,6 +9,7 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
+/** @noinspection ALL*/
 public class AnimationUtil {
 
     private static final int ANIMATION_DURUTION = 1000;

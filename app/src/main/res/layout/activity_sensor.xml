@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp"
+    tools:context=".SensorActivity">
+    <TextView
+        android:id="@+id/giatri"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Giá trị"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_marginBottom="20dp"
+        />
+    <LinearLayout
+        android:padding="15dp"
+        android:background="@drawable/border3"
+        android:id="@+id/layoutsensor"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="Tên"
+            android:textSize="25sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:singleLine="true"
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="Thời gian thực"
+            android:textSize="25sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true" />
+
+        <TextView
+            android:text="Giá trị ánh sáng"
+            android:textSize="25sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:singleLine="true"
+            android:id="@+id/anhsang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_marginTop="20dp"
+            android:id="@+id/btn_sign_up_dangkys"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/button"
+            android:elevation="8dp"
+            android:textSize="18sp"
+            android:text="Lưu"
+            android:backgroundTint="#10a46f" />
+
+    </LinearLayout>
+
+</LinearLayout>

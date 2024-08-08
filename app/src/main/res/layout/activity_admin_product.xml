@@ -25,14 +25,15 @@
                 android:layout_height="30dp"
                 android:src="@drawable/ic_back"
                 app:tint="#FFFFFF" />
+
             <TextView
-                android:textSize="20sp"
-                android:layout_centerInParent="true"
                 android:id="@+id/text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sản phẩm cửa hàng"
+                android:layout_centerInParent="true"
+                android:text="Truyện đã thêm"
                 android:textColor="#FFFFFF"
+                android:textSize="20sp"
                 android:textStyle="bold" />
         </RelativeLayout>
 
@@ -49,7 +50,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Loại SP: "
+                android:text="Thể loại: "
                 android:textStyle="bold"
                 android:textSize="16sp"/>
             <Spinner

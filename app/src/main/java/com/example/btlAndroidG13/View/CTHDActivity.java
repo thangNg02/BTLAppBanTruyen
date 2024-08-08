@@ -140,8 +140,8 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
     }
 
     @Override
-    public void getDataSanPham(String id, String idsp, String tensp, Long giatien, String hinhanh, String loaisp, String mota, Long soluong, String hansudung, Long type, String trongluong) {
-        mlist.add(new Product(id,idsp,tensp,giatien,hinhanh,loaisp,mota,soluong,hansudung,type,trongluong));
+    public void getDataSanPham(String id, String idtruyen, String tentruyen, Long giatien, String hinhanh, String theloai, String mota, Long soluong, String ngayxuatban, Long type, String trongluong) {
+        mlist.add(new Product(id,idtruyen,tentruyen,giatien,hinhanh,theloai,mota,soluong,ngayxuatban,type,trongluong));
 
         Log.d("cm", "cm: " + cm+"");
         if (cm){
@@ -191,7 +191,7 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
         Button btnHuyDanhgia = dialog.findViewById(R.id.btn_danhgia_huy);
 
         Picasso.get().load(product.getHinhanh()).into(imgDanhgia);
-        tvNameDanhgia.setText(product.getTensp());
+        tvNameDanhgia.setText(product.getTentruyen());
         tvNumberDanhgia.setText(product.getSoluong()+"");
         rdgDanhgia.clearCheck();
         edtDanhgiaKhac.setEnabled(false);
@@ -246,7 +246,7 @@ public class CTHDActivity extends AppCompatActivity implements GioHangView, HoaD
             @Override
             public void onClick(View view) {
                 HashMap<String, String> map = new HashMap<>();
-                map.put("idproduct", product.getIdsp());
+                map.put("idproduct", product.getIdtruyen());
                 map.put("iduser", FirebaseAuth.getInstance().getCurrentUser().getUid());
                 map.put("noidung", danhgia);
                 map.put("rate", r);

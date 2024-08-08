@@ -73,10 +73,10 @@ public class AdminProductActivity extends AppCompatActivity {
             public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
                 if(queryDocumentSnapshots.size()>0){
                     for(QueryDocumentSnapshot d : queryDocumentSnapshots){
-                        mlistProduct.add(new Product(d.getId(),d.getString("tensp"),
+                        mlistProduct.add(new Product(d.getId(),d.getString("tentruyen"),
                                 d.getLong("giatien"),d.getString("hinhanh"),
-                                d.getString("loaisp"),d.getString("mota"),
-                                d.getLong("soluong"),d.getString("hansudung"),
+                                d.getString("theloai"),d.getString("mota"),
+                                d.getLong("soluong"),d.getString("ngayxuatban"),
                                 d.getLong("type"),d.getString("trongluong")));
                     }
                     adapter = new AdminProductAdapter(AdminProductActivity.this, mlistProduct, new IClickCTHD() {
@@ -126,16 +126,16 @@ public class AdminProductActivity extends AppCompatActivity {
                                 if (adapter!=null){
                                     adapter.notifyDataSetChanged();
                                 }
-                                db.collection("SanPham").whereEqualTo("loaisp",category)
+                                db.collection("SanPham").whereEqualTo("theloai",category)
                                         .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                     @Override
                                     public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
                                         if(queryDocumentSnapshots.size()>0){
                                             for(QueryDocumentSnapshot d : queryDocumentSnapshots){
-                                                mlistProduct.add(new Product(d.getId(),d.getString("tensp"),
+                                                mlistProduct.add(new Product(d.getId(),d.getString("tentruyen"),
                                                         d.getLong("giatien"),d.getString("hinhanh"),
-                                                        d.getString("loaisp"),d.getString("mota"),
-                                                        d.getLong("soluong"),d.getString("hansudung"),
+                                                        d.getString("theloai"),d.getString("mota"),
+                                                        d.getLong("soluong"),d.getString("ngayxuatban"),
                                                         d.getLong("type"),d.getString("trongluong")));
                                             }
                                             adapter = new AdminProductAdapter(AdminProductActivity.this, mlistProduct, new IClickCTHD() {

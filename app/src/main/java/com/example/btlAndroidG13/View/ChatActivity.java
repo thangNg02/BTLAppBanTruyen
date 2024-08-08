@@ -123,7 +123,7 @@ public class ChatActivity extends AppCompatActivity {
     private void AdminChatsWithUsers() {
         Log.d("account", "user đăng nhập");
         mUsers.clear();
-        mUsers.add(new User("0Uq5FBdsROECM8irQ2Uq", "Admin", "default", "offline", "Admin"));
+        mUsers.add(new User("0Uq5FBdsROECM8irQ2Uq", "Admin", "default", "online", "Admin"));
         userAdapter = new UserAdapter(ChatActivity.this, mUsers, true, new IClickCTHD() {
             @Override
             public void onClickCTHD(int pos) {

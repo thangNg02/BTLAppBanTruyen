@@ -95,8 +95,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         Product product = arrayList.get(position);
-        holder.tvTenProduct.setText(product.getTensp());
-        holder.tvNgayxbProduct.setText(product.getHansudung());
+        holder.tvTenProduct.setText(product.getTentruyen());
+        holder.tvNgayxbProduct.setText(product.getNgayxuatban());
         holder.tvGiaProduct.setText(NumberFormat.getInstance().format(product.getGiatien())+"");
         Picasso.get().load(product.getHinhanh()).into(holder.imgProduct);
 

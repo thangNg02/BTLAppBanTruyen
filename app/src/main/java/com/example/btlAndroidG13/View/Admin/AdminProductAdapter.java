@@ -1,5 +1,6 @@
 package com.example.btlAndroidG13.View.Admin;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,9 +42,9 @@ public class AdminProductAdapter extends RecyclerView.Adapter<AdminProductAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NotNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NotNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Product product = mlist.get(position);
-        holder.tvTen.setText(product.getTensp());
+        holder.tvTen.setText(product.getTentruyen());
         holder.tvMota.setText(product.getMota());
         holder.tvSoluong.setText(product.getSoluong()+"");
         holder.tvDongia.setText(NumberFormat.getInstance().format(product.getGiatien()));

@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.example.btlAndroidG13.R;
-import com.example.btlAndroidG13.View.ChatActivity;
 import com.example.btlAndroidG13.View.SignInActivity;
 
 public class AdminHomeActivity extends AppCompatActivity {
@@ -30,7 +29,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         cChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AdminHomeActivity.this, ChatActivity.class);
+                Intent intent = new Intent(AdminHomeActivity.this, AdminMessagesActivity.class);
                 intent.putExtra("message", 1);
                 startActivity(intent);
             }

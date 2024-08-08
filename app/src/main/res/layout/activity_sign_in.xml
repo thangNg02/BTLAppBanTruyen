@@ -1,56 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/bground">
+    android:background="@drawable/book_bg">
 
-<ImageView
-    android:layout_width="130dp"
-    android:layout_height="130dp"
-    android:background="@drawable/logo_booknocolor"
-    android:layout_marginLeft="130dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.7"
+        android:background="@color/my_signup" />
+
+    <LinearLayout
+        android:id="@+id/heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="28dp">
+
+        <ImageView
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:background="@drawable/logo_book"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Book App"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="30dp"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="5dp">
+        android:layout_below="@id/heading"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="-20dp"
+        app:cardCornerRadius="28dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="28dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="Đăng nhập"
+                android:textAllCaps="true"
+                android:textColor="@color/my_signup"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
                 android:layout_margin="15dp"
-                app:hintTextColor="@color/blueBook"
-                android:background="@android:color/background_light">
+                android:background="@android:color/background_light"
+                app:hintTextColor="@color/blueBook">
 
                 <EditText
                     android:id="@+id/edt_email_user"
                     android:layout_width="match_parent"
                     android:layout_height="65dp"
-                    android:textColor="@color/black"
                     android:background="@drawable/button"
                     android:drawableRight="@drawable/ic_email"
                     android:hint="Nhập Email"
-                    android:textColorHint="@color/dark_gray"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/dark_gray" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
                 android:layout_margin="15dp"
-                app:hintTextColor="@color/blueBook"
                 android:background="@android:color/background_light"
+                app:hintTextColor="@color/blueBook"
                 app:passwordToggleEnabled="true">
 
                 <EditText
@@ -59,23 +97,23 @@
                     android:layout_height="65dp"
                     android:background="@drawable/button"
                     android:hint="Nhập Mật Khẩu"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/dark_gray"
                     android:inputType="textPassword"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/dark_gray" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:textColor="#2196F3"
                 android:id="@+id/tv_forgot_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginTop="5dp"
-                android:textSize="15dp"
                 android:layout_marginEnd="15dp"
                 android:background="?attr/selectableItemBackground"
-                android:text="@string/forgotpassword" />
+                android:text="@string/forgotpassword"
+                android:textColor="#2196F3"
+                android:textSize="15dp" />
 
             <Button
                 android:id="@+id/btn_dangnhap"
@@ -85,82 +123,84 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/button"
-                app:backgroundTint="#65C8D0"
                 android:elevation="8dp"
-                android:text="Đăng Nhập" />
-            <Button
-                android:id="@+id/btn_dangky"
-                android:layout_width="200dp"
-                android:layout_height="55dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/button"
-                android:backgroundTint="@color/black"
-                android:onClick="callRegisterFromLogin"
-                android:textColor="@color/black"
-                android:text="Đăng ký"
-                app:backgroundTint="#f5f5dc" />
+                android:text="Đăng Nhập"
+                app:backgroundTint="#65C8D0" />
 
+            <TextView
+                android:id="@+id/btn_dangky"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="Chưa có tài khoản? Đăng ký"
+                android:textColor="@color/my_secondary_signup"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:id="@+id/logInWithSocial"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="50dp"
+                        android:layout_height="1dp"
+                        android:background="#000000" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="Hoặc"
+                        android:textColor="#000000"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="50dp"
+                        android:layout_height="1dp"
+                        android:background="#000000" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/cir_dangnhap_facebook"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/facebook"
+                        app:civ_border_color="#FFFFFF"
+                        app:civ_border_width="2dp" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/cir_dangnhap_google"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="20dp"
+                        android:src="@drawable/google"
+                        app:civ_border_color="#FFFFFF"
+                        app:civ_border_width="2dp" />
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_marginTop="30dp"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <View
-                android:layout_width="50dp"
-                android:layout_height="1dp"
-                android:background="#000000"/>
-            <TextView
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hoặc"
-                android:textSize="14sp"
-                android:textColor="#000000"/>
-            <View
-                android:layout_width="50dp"
-                android:layout_height="1dp"
-                android:background="#000000"/>
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/cir_dangnhap_facebook"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/facebook"
-                app:civ_border_width="2dp"
-                app:civ_border_color="#FFFFFF"
-                />
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/cir_dangnhap_google"
-                android:layout_marginStart="20dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/google"
-                app:civ_border_width="2dp"
-                app:civ_border_color="#FFFFFF"/>
-        </LinearLayout>
-    </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

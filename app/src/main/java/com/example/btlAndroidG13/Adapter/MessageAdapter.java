@@ -7,12 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+
 import com.example.btlAndroidG13.Models.Chat;
 import com.example.btlAndroidG13.R;
 import com.google.firebase.auth.FirebaseUser;
+
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder>{
@@ -58,13 +60,25 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         // Khi đặt tên giống nhau ta sẽ settext cho cả bên left và right
         holder.tvShowMsg.setText(chat.getMessage());
 
-        if (imageURL.equals("default")){
-            // Và set Image cho cả left và right nếu img ở default
-            holder.imgChat.setImageResource(R.drawable.ic_launcher_background);
-        } else {
-            // Set Image cho cả left và right nếu img dc lấy từ URL
-            Glide.with(context).load(imageURL).into(holder.imgChat);
-        }
+        // Convert dp to pixels
+        float scale = context.getResources().getDisplayMetrics().density;
+        int marginInDp = 10; // Giá trị margin bạn muốn
+        int marginInPixels = (int) (marginInDp * scale + 0.5f);
+
+        // Set bottom margin for tvShowMsg
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) holder.tvShowMsg.getLayoutParams();
+        layoutParams.bottomMargin = marginInPixels;
+        holder.tvShowMsg.setLayoutParams(layoutParams);
+
+//        if (imageURL != null) {
+//            if (imageURL.equals("default")) {
+//                holder.imgChatRight.setImageResource(R.drawable.user);
+//            } else {
+//                Glide.with(context).load(imageURL).into(holder.imgChatRight);
+//            }
+//        } else {
+//            // Xử lý khi imageURL là null, có thể set một ảnh mặc định khác hoặc ẩn imageView
+//        }
 
         if (position == mListChat.size() - 1){
             if (chat.isIsseen()){
@@ -87,14 +101,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         private final TextView tvShowMsg;
-        private final ImageView imgItemUser, imgChat;
+        private final ImageView imgChatRight, imgChatLeft;
+
+        ImageView imgItemUser;
         public TextView tvSeen;
         public ViewHolder(View itemView) {
             super(itemView);
 
             // Chú ý tvShowMsg và imgChat của cả bên left và right phải đặt tên giống nhau
             tvShowMsg = itemView.findViewById(R.id.tv_show_msg);
-            imgChat = itemView.findViewById(R.id.img_chat);
+            imgChatLeft = itemView.findViewById(R.id.img_chat_left);
+            imgChatRight = itemView.findViewById(R.id.img_chat_right);
 
             imgItemUser = itemView.findViewById(R.id.img_item_user);
             tvSeen = itemView.findViewById(R.id.tv_seen);

@@ -12,6 +12,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -187,8 +188,8 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
     }
 
     @Override
-    public void getDataProduct(String id, String ten, Long gia, String hinhanh, String loaisp, String mota, Long soluong, String hansudung, Long type, String trongluong) {
-        mlistsearch.add(new Product(id, ten, gia, hinhanh, loaisp, mota, soluong, hansudung, type, trongluong));
+    public void getDataProduct(String id, String ten, Long gia, String hinhanh, String theloai, String mota, Long soluong, String ngayxuatban, Long type, String trongluong) {
+        mlistsearch.add(new Product(id, ten, gia, hinhanh, theloai, mota, soluong, ngayxuatban, type, trongluong));
         mlistAuto.add(new Product(ten));
         adapter = new SearchAdapter(SearchActivity.this, mlistsearch, new IClickCTHD() {
             @Override
@@ -206,14 +207,14 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-//                StorySearch(query);
+                StorySearch(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-//                rcvSearch.setVisibility(View.VISIBLE);
-//                adapter.filter(newText);
+                rcvSearch.setVisibility(View.VISIBLE);
+                adapter.filter(newText);
                 return true;
             }
         });
@@ -229,18 +230,18 @@ public class SearchActivity extends AppCompatActivity implements ProductView, St
     //Lịch sử tìm kiếm
     @Override
     public void getDataStory(String noidung) {
-//        mlistStory.add(noidung);
-//        lichSuSearchAdapter = new LichSuSearchAdapter();
-//        lichSuSearchAdapter.setdata(SearchActivity.this, mlistStory, new IClickCTHD() {
-//            @Override
-//            public void onClickCTHD(int pos) {
-//                String s = mlistStory.get(pos);
-//                searchView.setQuery(s, false);
-//            }
-//        });
-//        GridLayoutManager manager = new GridLayoutManager(SearchActivity.this, 6);
-//        rcvLichSuSearch.setLayoutManager(manager);
-//        rcvLichSuSearch.setAdapter(lichSuSearchAdapter);
+        mlistStory.add(noidung);
+        lichSuSearchAdapter = new LichSuSearchAdapter();
+        lichSuSearchAdapter.setdata(SearchActivity.this, mlistStory, new IClickCTHD() {
+            @Override
+            public void onClickCTHD(int pos) {
+                String s = mlistStory.get(pos);
+                searchView.setQuery(s, false);
+            }
+        });
+        GridLayoutManager manager = new GridLayoutManager(SearchActivity.this, 6);
+        rcvLichSuSearch.setLayoutManager(manager);
+        rcvLichSuSearch.setAdapter(lichSuSearchAdapter);
     }
 
     // Nhận đầu vào bằng giọng nói và xử lý nó

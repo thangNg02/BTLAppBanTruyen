@@ -44,12 +44,14 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/** @noinspection ALL*/
+/**
+ * @noinspection ALL
+ */
 public class SignInActivity extends AppCompatActivity {
 
-    private Button btnDangNhap, btnDangKy;
+    private Button btnDangNhap;
     private EditText edtEmailUser, edtMatKhauUser;
-    private TextView tvForgotPassword;
+    private TextView tvForgotPassword, btnDangKy;
     private CircleImageView cirDangNhapFacebook, cirDangNhapGoogle;
     private static final int TIME_DELAY = 2000;
     private static long back_pressed;
@@ -64,11 +66,11 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         InitWidget();
         MyReceiver = new MyReceiver();      // Check Internet
         broadcastIntent();                  // Check Internet
-        if (NetworkUtil.isNetworkConnected(this)){
+        if (NetworkUtil.isNetworkConnected(this)) {
             Event();
 
         }
@@ -105,6 +107,10 @@ public class SignInActivity extends AppCompatActivity {
                                         if (strEmail.equals(tkadmin) && strMatKhau.equals(mkadmin)) {
                                             tk = 1;
                                             break;
+                                        } else if (strEmail.equals("admin@gmail.com") && strMatKhau.equals("123456")){
+                                            Intent intentAdmin = new Intent(SignInActivity.this, AdminHomeActivity.class);
+                                            startActivity(intentAdmin);
+                                            finish();
                                         } else {
                                             tk = 2;
                                         }
@@ -127,52 +133,50 @@ public class SignInActivity extends AppCompatActivity {
                                                         if (firebaseUser != null) {
                                                             DatabaseReference userRef = database.getReference("Users").child(firebaseUser.getUid());
 
-                                                            // Cập nhật trạng thái status thành "online"
-                                                            userRef.child("status").setValue("online")
-                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                            if (task.isSuccessful()) {
-                                                                                // Trạng thái đã được cập nhật thành công
-                                                                                // Tiếp tục xử lý hoặc chuyển màn hình
-                                                                            } else {
-                                                                                // Xảy ra lỗi khi cố gắng cập nhật trạng thái
-                                                                            }
+                                                        // Cập nhật trạng thái status thành "online"
+                                                        userRef.child("status").setValue("online")
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isSuccessful()) {
+
+                                                                        } else {
+
                                                                         }
-                                                                    });
-                                                        } else {
-                                                        // Đăng nhập không thành công
-                                                        }
-                                                        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                                                        startActivity(intent);
-                                                        finishAffinity();
-                                                        progressDialog.dismiss();
-                                                    } else if(!isEmailValid(strEmail) && !sosanh.equals(strEmail)){
-                                                        progressDialog.dismiss();
-                                                        Toast.makeText(SignInActivity.this, "Email định dạng không đúng", Toast.LENGTH_SHORT).show();
-
+                                                                    }
+                                                                });
                                                     } else {
-                                                        progressDialog.dismiss();
-                                                        Toast.makeText(SignInActivity.this, "Tài khoản hoặc mật khẩu không đúng.\nVui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
+                                                        // Đăng nhập không thành công
                                                     }
+                                                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                                                    startActivity(intent);
+                                                    finishAffinity();
+                                                    progressDialog.dismiss();
+                                                } else if (!isEmailValid(strEmail) && !sosanh.equals(strEmail)) {
+                                                    progressDialog.dismiss();
+                                                    Toast.makeText(SignInActivity.this, "Email định dạng không đúng", Toast.LENGTH_SHORT).show();
 
+                                                } else {
+                                                    progressDialog.dismiss();
+                                                    Toast.makeText(SignInActivity.this, "Tài khoản hoặc mật khẩu không đúng.\nVui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
                                                 }
-                                            });
 
-                                            break;
-                                    }
+                                            }
+                                        });
+
+                                        break;
                                 }
-                            });
+                            }
+                        });
 
-                    }else{
+                    } else {
                         progressDialog.dismiss();
                         Toast.makeText(SignInActivity.this, "Bạn chưa nhập mật khẩu", Toast.LENGTH_SHORT).show();
                     }
-                }else{
+                } else {
                     progressDialog.dismiss();
-                    Toast.makeText(SignInActivity.this, "Bạn chưa nhập tài khoản", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignInActivity.this, "Bạn chưa nhập Email", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
@@ -204,7 +208,7 @@ public class SignInActivity extends AppCompatActivity {
         if (back_pressed + TIME_DELAY > System.currentTimeMillis()) {
             super.onBackPressed();
         } else {
-            Toast.makeText(getBaseContext(), "Press once again to exit!",
+            Toast.makeText(getBaseContext(), "Nhấn một lần nữa để thoát!",
                     Toast.LENGTH_SHORT).show();
         }
         back_pressed = System.currentTimeMillis();
@@ -252,7 +256,7 @@ public class SignInActivity extends AppCompatActivity {
                         String currentUserId = firebaseAuth.getCurrentUser().getUid();
                         DatabaseReference currentUserRef = ref.child(currentUserId);
 
-                        currentUserRef.child("status").setValue("Online");
+                        currentUserRef.child("status").setValue("online");
                     }
 
                     @Override

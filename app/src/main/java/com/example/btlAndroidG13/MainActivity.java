@@ -31,6 +31,7 @@ import com.squareup.picasso.Picasso;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
+/** @noinspection ALL*/
 public class MainActivity extends AppCompatActivity {
 
     public  static CountDownTimer countDownTimer;
@@ -130,6 +131,37 @@ public class MainActivity extends AppCompatActivity {
 
     private void Event() {
 //        bottomNavigation_Main.getCellById(3).setSelected(true);
+        bottomNavigation_Main.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
+            @Override
+            public Unit invoke(MeowBottomNavigation.Model model) {
+                switch (model.getId()){
+                    case 1:
+                        replace(new HomeFragment());
+                        break;
+
+                    case 2:
+                        replace(new ProfileFragment());
+                        break;
+
+                    case 3:
+                        replace(new FavoriteFragment());
+                        break;
+
+                    case 4:
+                        replace(new BillFragment());
+
+
+                        break;
+
+                    case 5:
+                        replace(new NotifyFragment());
+                        break;
+
+                }
+                return null;
+            }
+        });
+
         bottomNavigation_Main.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
             @Override
             public Unit invoke(MeowBottomNavigation.Model model) {

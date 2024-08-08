@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:elevation="2dp"
+    android:id="@+id/relative_message_user"
+    android:background="@drawable/boder2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_gravity="center"
+            android:id="@+id/cir_users_message"
+            android:layout_margin="5dp"
+            android:padding="4dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_user"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="5dp"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/tvUsernameMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvEmailMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email@gmail.com"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+<!--    <include layout="@layout/profile_pic_view"-->
+<!--        android:id="@+id/chat_img_user"-->
+<!--        android:layout_width="60dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_margin="10dp" />-->
+        
+
+
+</LinearLayout>
